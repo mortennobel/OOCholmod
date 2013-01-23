@@ -1,0 +1,127 @@
+//
+//  CholmodSparse.cpp
+//  OOCholmod
+//
+//  Created by Morten Nobel-Jørgensen on 1/21/13.
+//  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
+//  License: LGPL 3.0 
+
+#include "CholmodSparse.h"
+
+using namespace std;
+
+
+CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common)
+:Common(Common), sparse(NULL), nrow(nrow), ncol(ncol) {
+    int elements = (nrow*(ncol+1))/2;
+    triplet = cholmod_allocate_triplet(nrow, ncol, elements, (int)SYMMETRIC_UPPER, CHOLMOD_REAL, Common);
+    values = (double *)triplet->x;
+    iRow = (int *)triplet->i;
+	jColumn = (int *)triplet->j;
+    this->symmetry = SYMMETRIC_UPPER;
+#ifdef DEBUG
+    assert(nrow == ncol); // must be square
+    maxElements = elements;
+#endif
+}
+
+CholmodSparse::~CholmodSparse(){
+    if (sparse != NULL){
+        cholmod_free_sparse(&sparse, Common);
+        sparse = NULL;
+    }
+    if (triplet != NULL){
+        cholmod_free_triplet(&triplet, Common);
+        triplet = NULL;
+    }
+    if (lookupPosition != NULL){
+        delete [] lookupPosition;
+        lookupPosition = NULL;
+    }
+}
+
+void CholmodSparse::build(){
+#ifdef DEBUG
+    assert(sparse == NULL);
+#endif
+    sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, Common);
+    cholmod_free_triplet(&triplet, Common);
+    triplet = NULL;
+    values = NULL;
+    iRow = NULL;
+	jColumn = NULL;
+    
+    // build lookup index
+    int lookupPosSize = getTriangularNumber(ncol);
+    lookupPosition = new int[lookupPosSize];
+    for (int i=0;i<lookupPosSize;i++){
+        lookupPosition[i] = -1;
+    }
+#ifdef DEBUG
+    assert(sparse->stype == symmetry);
+    assert(sparse->packed);
+#endif
+    // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
+    int idx = 0;
+    for (int j=0;j<ncol;j++){
+        int iFrom = ((int*)sparse->p)[j];
+        int iTo = ((int*)sparse->p)[j+1]-1;
+        for (int i=iFrom;i<=iTo;i++){
+            int row = ((int*)sparse->i)[i];
+            int index = getTriangularNumber(j) + row;
+            lookupPosition[index] = idx;
+            idx++;
+        }
+    }
+    zero();
+}
+
+CholmodFactor *CholmodSparse::analyze(){
+#ifdef DEBUG
+    assert(sparse != NULL);
+#endif
+    cholmod_factor *L = cholmod_analyze(sparse, Common);
+    return new CholmodFactor(L, Common);
+}
+
+void CholmodSparse::zero(){
+#ifdef DEBUG
+    assert(sparse != NULL);
+#endif
+    memset(sparse->x, 0, sparse->nzmax * sizeof(double));
+}
+
+void CholmodSparse::print(const char* name){
+    if (sparse){
+        cholmod_print_sparse(sparse, name, Common);
+        cholmod_dense *dense = cholmod_sparse_to_dense(sparse, Common);
+        int n_rows = (int)dense->nrow;
+        int n_cols = (int)dense->ncol;
+        for (int r = 0; r  < n_rows; r++)
+        {
+            for (int c = 0; c  < n_cols; c++)
+            {
+                cout << ((double*)dense->x)[c*n_rows + r] << " ";
+            }
+            cout << endl;
+        }
+        cholmod_free_dense(&dense, Common);
+        cout << endl;
+        cout << "Packed "<<sparse->packed<< endl;
+        cout << "p: ";
+        for (int i=0;i<=sparse->ncol;i++){
+            printf("%4i ", ((int*)sparse->p)[i]);
+        }
+        cout << endl;
+        cout << "i: ";
+        for (int i=0;i<sparse->nzmax;i++){
+            printf("%4i ", ((int*)sparse->i)[i]);
+        }
+        cout << endl;
+        cout << "x: ";
+        for (int i=0;i<sparse->nzmax;i++){
+            printf("%3.3f ", ((double*)sparse->x)[i]);
+        }
+        cout << endl;
+    }
+}

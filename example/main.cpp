@@ -1,0 +1,75 @@
+//
+//  main.cpp
+//  OOCholmod
+//
+//  Created by Morten Nobel-Jørgensen on 1/21/13.
+//  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
+//  License: LGPL 3.0 
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+#include "CholmodSparse.h"
+#include "CholmodFactor.h"
+#include "CholmodDenseVector.h"
+
+using namespace std;
+
+void TestCase(){
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodSparse *A = new CholmodSparse(3,3,&com);
+    
+    A->mark(0, 0);
+    A->mark(0, 1);
+    A->mark(0, 2);
+    A->mark(1, 2);
+    A->mark(2, 2);
+    
+    A->build();
+    
+    // Ax = b
+    //x + y + z = 6
+    //2y +0y +5z = -4
+    //2x + 5y - z = 27
+    A->setValue(0, 0, 1);
+    A->setValue(0, 1, 1);
+    A->setValue(0, 2, 1);
+    A->setValue(1, 2, 5);
+    A->setValue(2, 2, -1);
+    
+    CholmodDenseVector * b = new CholmodDenseVector(3, &com);
+    (*b)[0] = 6;
+    (*b)[1] = -4;
+    (*b)[2] = 27;
+    b->print("b");
+    
+    A->print("A");
+    CholmodFactor *factor = A->analyze();
+    factor->factorize(A);
+    CholmodDenseVector * x = factor->solve(b);
+    x->print("x");
+    
+    // update values
+    A->zero();
+    A->setValue(0, 0, 2);
+    A->setValue(0, 1, 9);
+    A->setValue(0, 2, 7);
+    A->setValue(1, 2, 8);
+    A->setValue(2, 2, -3);
+    
+    factor->factorize(A);
+    A->print("A");
+    x = factor->solve(b);
+    x->print("x");
+
+}
+
+int main(int argc, const char * argv[])
+{
+    TestCase();
+    cout << flush;
+    return 0;
+}
+
