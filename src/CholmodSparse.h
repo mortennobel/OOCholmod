@@ -78,7 +78,6 @@ public:
         assert(sparse != NULL); // matrix must be build
 #endif
         int index = getIndex(row, column);
-        std::cout << "index "<<index<< std::endl;
         return ((double*)sparse->x)[index];
     }
 
