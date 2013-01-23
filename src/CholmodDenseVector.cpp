@@ -58,12 +58,9 @@ void CholmodDenseVector::get(double *outData){
 
 void CholmodDenseVector::get(float *outData){
     double *data = getData();
-    float sum;
     for (int i=0;i<size;i++){
         outData[i] = (float)data[i];
-        sum += outData[i];
     }
-    std::cout << "Sum "<< sum <<std::endl;
 }
 
 void CholmodDenseVector::print(const char* name){
