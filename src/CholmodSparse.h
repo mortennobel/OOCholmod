@@ -13,6 +13,7 @@
 #include <cassert>
 #include <set>
 #include <map>
+#include <cmath>
 
 #include "cholmod.h"
 #include "CholmodFactor.h"
@@ -58,9 +59,11 @@ public:
         } else if (symmetry == SYMMETRIC_LOWER) {
             assert(row >= column);
         }
+        int shiftBits = sizeof(long)*4;
+        long maxId = (long)pow(2, shiftBits);
+        assert (row < maxId);
+        assert (column < maxId);
 #endif
-        assert (row < 65536);
-        assert (column < 65536);
         long k = key(row, column);
         if (usedMap.find(k) != usedMap.end()) return;
         usedMap.insert(k);
@@ -123,7 +126,8 @@ private:
 	int *jColumn;
 //    int *lookupPosition; // provides fast access to matrix after build (lookupPosition[((column*(column+1))/2 + row])
     inline long key(int row, int column){
-        return (row<<16)+column;
+        int shiftBits = sizeof(long)*4;
+        return (row<<shiftBits)+column;
     }
     inline int getIndex(int row, int column) {
 #ifdef DEBUG
