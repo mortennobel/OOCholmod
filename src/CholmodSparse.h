@@ -124,10 +124,9 @@ private:
     std::map<long, int> lookupIndex;
     int *iRow;
 	int *jColumn;
-//    int *lookupPosition; // provides fast access to matrix after build (lookupPosition[((column*(column+1))/2 + row])
     inline long key(int row, int column){
         int shiftBits = sizeof(long)*4;
-        return (row<<shiftBits)+column;
+        return (((long)row)<<shiftBits)+column;
     }
     inline int getIndex(int row, int column) {
 #ifdef DEBUG
