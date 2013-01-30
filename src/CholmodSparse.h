@@ -59,7 +59,7 @@ public:
         } else if (symmetry == SYMMETRIC_LOWER) {
             assert(row >= column);
         }
-        int shiftBits = sizeof(long)*4;
+        int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
         long maxId = (long)pow(2, shiftBits);
         assert (row < maxId);
         assert (column < maxId);
@@ -125,7 +125,7 @@ private:
     int *iRow;
 	int *jColumn;
     inline long key(int row, int column){
-        int shiftBits = sizeof(long)*4;
+        int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
         return (((long)row)<<shiftBits)+column;
     }
     inline int getIndex(int row, int column) {
