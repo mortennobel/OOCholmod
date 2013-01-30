@@ -11,9 +11,14 @@
 using namespace std;
 
 
-CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common)
+CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common, int maxSize)
 :Common(Common), sparse(NULL), nrow(nrow), ncol(ncol) {
-    int elements = (nrow*(ncol+1))/2;
+    int elements;
+    if (maxSize == 0) {
+        elements = (nrow*(ncol+1))/2; // triangular number
+    } else {
+        elements = maxSize;
+    }
     triplet = cholmod_allocate_triplet(nrow, ncol, elements, (int)SYMMETRIC_UPPER, CHOLMOD_REAL, Common);
     values = (double *)triplet->x;
     iRow = (int *)triplet->i;
@@ -34,10 +39,6 @@ CholmodSparse::~CholmodSparse(){
         cholmod_free_triplet(&triplet, Common);
         triplet = NULL;
     }
-    if (lookupPosition != NULL){
-        delete [] lookupPosition;
-        lookupPosition = NULL;
-    }
 }
 
 void CholmodSparse::build(){
@@ -50,13 +51,9 @@ void CholmodSparse::build(){
     values = NULL;
     iRow = NULL;
 	jColumn = NULL;
+    usedMap.clear();
     
     // build lookup index
-    int lookupPosSize = getTriangularNumber(ncol);
-    lookupPosition = new int[lookupPosSize];
-    for (int i=0;i<lookupPosSize;i++){
-        lookupPosition[i] = -1;
-    }
 #ifdef DEBUG
     assert(sparse->stype == symmetry);
     assert(sparse->packed);
@@ -68,8 +65,7 @@ void CholmodSparse::build(){
         int iTo = ((int*)sparse->p)[j+1]-1;
         for (int i=iFrom;i<=iTo;i++){
             int row = ((int*)sparse->i)[i];
-            int index = getTriangularNumber(j) + row;
-            lookupPosition[index] = idx;
+            lookupIndex[key(row, j)] = idx;
             idx++;
         }
     }

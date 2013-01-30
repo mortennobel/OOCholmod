@@ -16,6 +16,15 @@
 
 using namespace std;
 
+void assertEqual(double *expected, double *actual, int length){
+    for (int i=0;i<length;i++){
+        if (fabs(expected[i] - actual[i]) > 0.01){
+            cout << "Vectors are not equal. Element "<<i<< " was " << actual[i]<< " but expected "<< expected[i] << endl;
+        }
+    }
+    cout << "Equal vectors"<< endl;
+}
+
 void TestCase(){
     cholmod_common com;
     cholmod_start(&com);
@@ -25,6 +34,13 @@ void TestCase(){
     A->mark(0, 1);
     A->mark(0, 2);
     A->mark(1, 2);
+    A->mark(2, 2);
+    A->mark(2, 2);
+    A->mark(2, 2);
+    A->mark(2, 2);
+    A->mark(2, 2);
+    A->mark(2, 2);
+    A->mark(2, 2);
     A->mark(2, 2);
     
     A->build();
@@ -50,6 +66,8 @@ void TestCase(){
     factor->factorize(A);
     CholmodDenseVector * x = factor->solve(b);
     x->print("x");
+    double expected[] = {2.78571f,4.57143f,-1.35714f};
+    assertEqual(expected, &((*x)[0]), 3);
     
     // update values
     A->zero();
@@ -63,7 +81,9 @@ void TestCase(){
     A->print("A");
     x = factor->solve(b);
     x->print("x");
-
+    
+    double expected2[] = {1.0935,1.76937,-1.73019};
+    assertEqual(expected2, &((*x)[0]), 3);
 }
 
 int main(int argc, const char * argv[])

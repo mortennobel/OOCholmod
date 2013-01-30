@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include <cassert>
+#include <set>
+#include <map>
 
 #include "cholmod.h"
 #include "CholmodFactor.h"
@@ -20,7 +22,6 @@ enum Symmetry {
     ASYMMETRIC = 0,
     SYMMETRIC_UPPER = 1, // Upper triangular part stored
 };
-
 
 ///
 /// Currently only real (double), upper symmetric matrices are supported.
@@ -35,7 +36,8 @@ class CholmodSparse {
 public:
     /// nrow # of rows of A
     /// ncol # of columns of A
-    CholmodSparse(int nrow, int ncol, cholmod_common *Common);
+    /// maxSize (size allocated before build). 0 means triangular
+    CholmodSparse(int nrow, int ncol, cholmod_common *Common, int maxSize = 0);
     ~CholmodSparse();
     
     void build();
@@ -57,11 +59,11 @@ public:
             assert(row >= column);
         }
 #endif
-        for (int i = 0; i < triplet->nnz; i++) {
-            if (iRow[i] == row && jColumn[i] == column){
-                return; // already marked skip
-            }
-        }
+        assert (row < 65536);
+        assert (column < 65536);
+        long k = key(row, column);
+        if (usedMap.find(k) != usedMap.end()) return;
+        usedMap.insert(k);
         iRow[triplet->nnz] = row;
         jColumn[triplet->nnz] = column;
 #ifdef DEBUG
@@ -115,9 +117,14 @@ private:
     int nrow;
     int ncol;
     double *values;
+    std::set<long> usedMap;
+    std::map<long, int> lookupIndex;
     int *iRow;
 	int *jColumn;
-    int *lookupPosition; // provides fast access to matrix after build (lookupPosition[((column*(column+1))/2 + row])
+//    int *lookupPosition; // provides fast access to matrix after build (lookupPosition[((column*(column+1))/2 + row])
+    inline long key(int row, int column){
+        return (row<<16)+column;
+    }
     inline int getIndex(int row, int column) {
 #ifdef DEBUG
         assert(symmetry == SYMMETRIC_UPPER);
@@ -128,17 +135,9 @@ private:
         } else if (symmetry == SYMMETRIC_LOWER) {
             assert(row >= column);
         }
-        assert(lookupPosition != NULL);
+        
 #endif
-        // Fast way to compute the column offset http://en.wikipedia.org/wiki/Triangular_number
-        int columnOffset = getTriangularNumber(column);
-        int position = lookupPosition[columnOffset + row];
-        assert(position>=0);
-        return position;
-    }
-    
-    inline int getTriangularNumber(int i) {
-        return (i*(i+1))/2;
+        return lookupIndex[key(row, column)];
     }
     Symmetry symmetry;
 #ifdef DEBUG
