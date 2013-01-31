@@ -52,6 +52,10 @@ public:
     
     Symmetry getSymmetry() { return symmetry; }
     
+    int getRows(){ return nrow; }
+    
+    int getColumns(){ return ncol; }
+    
     inline void mark(int row, int column, double value=0) {
 #ifdef DEBUG        
         assert(sparse == NULL); // must be called before matrix build
