@@ -18,6 +18,9 @@
 #include "cholmod.h"
 #include "CholmodFactor.h"
 
+// forward declaration
+class CholmodDenseVector;
+
 enum Symmetry {
     SYMMETRIC_LOWER = -1, // Lower triangular part stored
     ASYMMETRIC = 0,
@@ -39,6 +42,7 @@ public:
     /// ncol # of columns of A
     /// maxSize (size allocated before build). 0 means triangular
     CholmodSparse(int nrow, int ncol, cholmod_common *Common, int maxSize = 0);
+    CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common);
     ~CholmodSparse();
     
     void build();
@@ -48,7 +52,7 @@ public:
     
     Symmetry getSymmetry() { return symmetry; }
     
-    inline void mark(int row, int column) {
+    inline void mark(int row, int column, double value=0) {
 #ifdef DEBUG        
         assert(sparse == NULL); // must be called before matrix build
         assert(triplet->nnz < maxElements);
@@ -65,18 +69,24 @@ public:
         assert (column < maxId);
 #endif
         long k = key(row, column);
-        if (usedMap.find(k) != usedMap.end()) return;
-        usedMap.insert(k);
+        std::map<long, int>::iterator res = lookupIndex.find(k);
+        if (res != lookupIndex.end()) {
+            values[(*res).second] += value;
+            return;
+        }
+        lookupIndex[k] = triplet->nnz;
         iRow[triplet->nnz] = row;
         jColumn[triplet->nnz] = column;
-#ifdef DEBUG
-        values[triplet->nnz] = triplet->nnz + 1; // easy to tract value
-#else
-        values[triplet->nnz] = 1.0;
-#endif
+        values[triplet->nnz] = value;
         
         triplet->nnz++;
     }
+    
+    // computes alpha*(A*X) + beta*Y
+    // res is optional
+    // alpha is optional (default 1)
+    // beta is optional (default 0)
+    CholmodDenseVector *multiply(CholmodDenseVector *X, CholmodDenseVector *res = NULL, double alpha = 1, double beta = 0);
     
     inline double getValue(int row, int column){
 #ifdef DEBUG
@@ -114,13 +124,13 @@ public:
 
 private:
     CholmodSparse(const CholmodSparse& that); // prevent copy constructor
+    void buildLookupIndexFromSparse();
     cholmod_common *Common;
     cholmod_sparse *sparse;
     cholmod_triplet *triplet;
     int nrow;
     int ncol;
     double *values;
-    std::set<long> usedMap;
     std::map<long, int> lookupIndex;
     int *iRow;
 	int *jColumn;

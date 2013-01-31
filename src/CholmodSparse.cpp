@@ -7,6 +7,7 @@
 //  License: LGPL 3.0 
 
 #include "CholmodSparse.h"
+#include "CholmodDenseVector.h"
 
 using namespace std;
 
@@ -30,6 +31,11 @@ CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common, int max
 #endif
 }
 
+CholmodSparse::CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common)
+:sparse(sparse), Common(Common),  nrow(sparse->nrow), ncol(sparse->ncol){
+    buildLookupIndexFromSparse();
+}
+
 CholmodSparse::~CholmodSparse(){
     if (sparse != NULL){
         cholmod_free_sparse(&sparse, Common);
@@ -39,6 +45,25 @@ CholmodSparse::~CholmodSparse(){
         cholmod_free_triplet(&triplet, Common);
         triplet = NULL;
     }
+}
+
+// computes this * d
+CholmodDenseVector *CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
+    if (res==NULL){
+        res = new CholmodDenseVector(X->getSize(), Common);
+    } else {
+        assert(X->getSize() == res->getSize());
+        assert(X != res);
+    }
+    assert(nrow == X->getSize());
+
+    
+    // alpha*(A*X) + beta*Y
+    double _alpha[2] = {alpha,alpha};
+    double _beta[2] = {beta,beta};
+    // int cholmod_sdmult(cholmod_sparse *A, ￼￼int transpose, double alpha [2], double beta [2], cholmod_dense *X, cholmod_dense *Y, cholmod_common *Common );
+    cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), Common);
+    return res;
 }
 
 void CholmodSparse::build(){
@@ -51,13 +76,17 @@ void CholmodSparse::build(){
     values = NULL;
     iRow = NULL;
 	jColumn = NULL;
-    usedMap.clear();
     
     // build lookup index
 #ifdef DEBUG
     assert(sparse->stype == symmetry);
     assert(sparse->packed);
 #endif
+    buildLookupIndexFromSparse();
+}
+
+void CholmodSparse::buildLookupIndexFromSparse(){
+    lookupIndex.clear();
     // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
     int idx = 0;
     for (int j=0;j<ncol;j++){
@@ -69,7 +98,6 @@ void CholmodSparse::build(){
             idx++;
         }
     }
-    zero();
 }
 
 CholmodFactor *CholmodSparse::analyze(){

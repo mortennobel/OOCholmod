@@ -46,9 +46,6 @@ void TestCase(){
     A->build();
     
     // Ax = b
-    //x + y + z = 6
-    //2y +0y +5z = -4
-    //2x + 5y - z = 27
     A->setValue(0, 0, 1);
     A->setValue(0, 1, 1);
     A->setValue(0, 2, 1);
@@ -86,9 +83,36 @@ void TestCase(){
     assertEqual(expected2, &((*x)[0]), 3);
 }
 
+void MultiplyTest(){
+    cout << "Multiply test"<<endl;
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodSparse *A = new CholmodSparse(3,3,&com);
+    A->mark(0, 0, 1);
+    A->mark(0, 1, 1);
+    A->mark(0, 2, 1);
+    A->mark(1, 2, 5);
+    A->mark(2, 2, -1);
+    A->build();
+    A->print("A");
+    
+    CholmodDenseVector *x = new CholmodDenseVector(3, &com);
+    (*x)[0] = 3;
+    (*x)[1] = 7;
+    (*x)[2] = 9;
+
+    CholmodDenseVector *res = new CholmodDenseVector(3, &com);
+    
+    CholmodDenseVector *b = A->multiply(x, res);
+    b->print("b");
+    double expected[3] = {19,48,29};
+    assertEqual(expected, &((*b)[0]), 3);
+}
+
 int main(int argc, const char * argv[])
 {
     TestCase();
+    MultiplyTest();
     cout << flush;
     return 0;
 }
