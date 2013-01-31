@@ -105,14 +105,23 @@ void MultiplyTest(){
     
     CholmodDenseVector *b = A->multiply(x, res);
     b->print("b");
-    double expected[3] = {19,48,29};
+    double expected[3] = {19, 48, 29};
     assertEqual(expected, &((*b)[0]), 3);
+}
+
+void FillTest(){
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodDenseVector *res = new CholmodDenseVector(3, &com);
+    res->fill(123);
+    res->print("Fill 123 test");
 }
 
 int main(int argc, const char * argv[])
 {
     TestCase();
     MultiplyTest();
+    FillTest();
     cout << flush;
     return 0;
 }

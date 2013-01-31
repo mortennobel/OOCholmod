@@ -23,6 +23,7 @@ public:
     inline double *getData() const { return (double *)(x->x); };
     inline int getSize() { return size; }
     void zero();
+    void fill(double value);
     void set(float *data);
     void set(double *data);
     void get(double *outData);

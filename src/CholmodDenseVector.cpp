@@ -32,6 +32,14 @@ void CholmodDenseVector::zero(){
     memset(x->x, 0, size * sizeof(double));
 }
 
+void CholmodDenseVector::fill(double value){
+    double *data = getData();
+    for (int i=0;i<size;i++){
+        data[i] = value;
+    }
+
+}
+
 void CholmodDenseVector::set(float *inData){
 #ifdef DEBUG
     assert(x != NULL);
