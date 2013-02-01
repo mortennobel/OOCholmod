@@ -25,6 +25,8 @@ public:
     inline int getSize() { return size; }
     void copyTo(CholmodDenseVector *dest);
     void zero();
+    // computes the L^2 norm of the vector
+    double length();
     double dot(CholmodDenseVector *b);
     void fill(double value);
     void set(float *data);

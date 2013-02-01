@@ -45,6 +45,10 @@ void CholmodDenseVector::fill(double value){
     }
 }
 
+double CholmodDenseVector::length(){
+    return cblas_dnrm2(getSize(), getData(), 1);
+}
+
 void CholmodDenseVector::copyTo(CholmodDenseVector *dest){
     assert(dest->getSize() >= getSize());
     const double *srcPtr = getData();

@@ -134,7 +134,20 @@ void DotTest(){
     double expected = 32;
     cout << "Dot test" << endl;
     assertEqual(&expected, &res, 1);
+}
+
+void LengthTest(){
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodDenseVector *a = new CholmodDenseVector(3, &com);
+    (*a)[0] = 4;
+    (*a)[1] = 5;
+    (*a)[2] = 6;
     
+    double res = a->length();
+    double expected = sqrt(4*4+5*5+6*6);
+    cout << "Length test" << endl;
+    assertEqual(&expected, &res, 1);
 }
 
 int main(int argc, const char * argv[])
@@ -143,6 +156,7 @@ int main(int argc, const char * argv[])
     MultiplyTest();
     FillTest();
     DotTest();
+    LengthTest();
     cout << flush;
     return 0;
 }
