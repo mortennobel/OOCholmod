@@ -150,6 +150,23 @@ void LengthTest(){
     assertEqual(&expected, &res, 1);
 }
 
+void ScaleTest(){
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodDenseVector *a = new CholmodDenseVector(3, &com);
+    (*a)[0] = 4;
+    (*a)[1] = 5;
+    (*a)[2] = 6;
+
+    CholmodDenseVector *b = new CholmodDenseVector(3, &com);
+    (*b)[0] = -8;
+    (*b)[1] = -10;
+    (*b)[2] = -12;
+    a->scale(-2);
+    cout << "scale test"<<endl;
+    assertEqual(&((*a)[0]), &((*b)[0]), 3);
+}
+
 int main(int argc, const char * argv[])
 {
     TestCase();
@@ -157,6 +174,7 @@ int main(int argc, const char * argv[])
     FillTest();
     DotTest();
     LengthTest();
+    ScaleTest();
     cout << flush;
     return 0;
 }
