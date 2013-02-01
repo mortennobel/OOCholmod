@@ -30,18 +30,18 @@ void TestCase(){
     cholmod_start(&com);
     CholmodSparse *A = new CholmodSparse(3,3,&com);
     
-    A->mark(0, 0);
-    A->mark(0, 1);
-    A->mark(0, 2);
-    A->mark(1, 2);
-    A->mark(2, 2);
-    A->mark(2, 2);
-    A->mark(2, 2);
-    A->mark(2, 2);
-    A->mark(2, 2);
-    A->mark(2, 2);
-    A->mark(2, 2);
-    A->mark(2, 2);
+    A->initAddValue(0, 0);
+    A->initAddValue(0, 1);
+    A->initAddValue(0, 2);
+    A->initAddValue(1, 2);
+    A->initAddValue(2, 2);
+    A->initAddValue(2, 2);
+    A->initAddValue(2, 2);
+    A->initAddValue(2, 2);
+    A->initAddValue(2, 2);
+    A->initAddValue(2, 2);
+    A->initAddValue(2, 2);
+    A->initAddValue(2, 2);
     
     A->build();
     
@@ -88,11 +88,11 @@ void MultiplyTest(){
     cholmod_common com;
     cholmod_start(&com);
     CholmodSparse *A = new CholmodSparse(3,3,&com);
-    A->mark(0, 0, 1);
-    A->mark(0, 1, 1);
-    A->mark(0, 2, 1);
-    A->mark(1, 2, 5);
-    A->mark(2, 2, -1);
+    A->initAddValue(0, 0, 1);
+    A->initAddValue(0, 1, 1);
+    A->initAddValue(0, 2, 1);
+    A->initAddValue(1, 2, 5);
+    A->initAddValue(2, 2, -1);
     A->build();
     A->print("A");
     

@@ -31,7 +31,7 @@ enum Symmetry {
 /// Currently only real (double), upper symmetric matrices are supported.
 ///
 /// The sparse matrix must be used in the following way:
-/// 1. Fill the matrix elements using the mark() method
+/// 1. Fill the matrix elements using the initAddValue() method
 /// 2. Call build()
 /// 3. Fill matrix with elements using setValue or addValue
 ///
@@ -56,7 +56,7 @@ public:
     
     int getColumns(){ return ncol; }
     
-    inline void mark(int row, int column, double value=0) {
+    inline void initAddValue(int row, int column, double value=0) {
 #ifdef DEBUG        
         assert(sparse == NULL); // must be called before matrix build
         assert(triplet->nnz < maxElements);
