@@ -8,6 +8,8 @@
 
 #include "CholmodDenseVector.h"
 #include <cassert>
+#include <vecLib/cblas.h>
+
 
 CholmodDenseVector::CholmodDenseVector(int size, cholmod_common *Common)
 :Common(Common), size(size)
@@ -32,12 +34,22 @@ void CholmodDenseVector::zero(){
     memset(x->x, 0, size * sizeof(double));
 }
 
+double CholmodDenseVector::dot(CholmodDenseVector *b){
+    return cblas_ddot(getSize(), getData(), 1, b->getData(), 1);
+}
+
 void CholmodDenseVector::fill(double value){
     double *data = getData();
     for (int i=0;i<size;i++){
         data[i] = value;
     }
+}
 
+void CholmodDenseVector::copyTo(CholmodDenseVector *dest){
+    assert(dest->getSize() >= getSize());
+    const double *srcPtr = getData();
+    double *destPtr = dest->getData();
+    memcpy(destPtr, srcPtr, sizeof(double) * getSize());
 }
 
 void CholmodDenseVector::set(float *inData){

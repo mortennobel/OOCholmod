@@ -56,7 +56,7 @@ CholmodDenseVector *CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseV
         assert(X != res);
     }
     assert(nrow == X->getSize());
-
+    
     
     // alpha*(A*X) + beta*Y
     double _alpha[2] = {alpha,alpha};

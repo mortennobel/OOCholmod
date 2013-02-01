@@ -12,6 +12,7 @@
 #include <iostream>
 #include <cassert>
 
+
 #include "cholmod.h"
 
 class CholmodDenseVector {
@@ -22,7 +23,9 @@ public:
     inline double *getData(){ return (double *)(x->x); };
     inline double *getData() const { return (double *)(x->x); };
     inline int getSize() { return size; }
+    void copyTo(CholmodDenseVector *dest);
     void zero();
+    double dot(CholmodDenseVector *b);
     void fill(double value);
     void set(float *data);
     void set(double *data);

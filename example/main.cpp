@@ -117,11 +117,32 @@ void FillTest(){
     res->print("Fill 123 test");
 }
 
+void DotTest(){
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodDenseVector *a = new CholmodDenseVector(3, &com);
+    CholmodDenseVector *b = new CholmodDenseVector(3, &com);
+    (*a)[0] = 1;
+    (*a)[1] = 2;
+    (*a)[2] = 3;
+    
+    (*b)[0] = 4;
+    (*b)[1] = 5;
+    (*b)[2] = 6;
+    
+    double res = a->dot(b);
+    double expected = 32;
+    cout << "Dot test" << endl;
+    assertEqual(&expected, &res, 1);
+    
+}
+
 int main(int argc, const char * argv[])
 {
     TestCase();
     MultiplyTest();
     FillTest();
+    DotTest();
     cout << flush;
     return 0;
 }
