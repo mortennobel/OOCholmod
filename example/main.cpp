@@ -167,6 +167,27 @@ void ScaleTest(){
     assertEqual(&((*a)[0]), &((*b)[0]), 3);
 }
 
+
+void DivideTest(){
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodDenseVector *a = new CholmodDenseVector(3, &com);
+    (*a)[0] = 4;
+    (*a)[1] = 5;
+    (*a)[2] = 6;
+    
+    CholmodDenseVector *b = new CholmodDenseVector(3, &com);
+    (*b)[0] = -8;
+    (*b)[1] = -10;
+    (*b)[2] = -12;
+    a->divideBy(b);
+    cout << "divide test"<<endl;
+    
+    double expected[] = {-0.5,-0.5,-0.5};
+    
+    assertEqual(expected, &((*a)[0]), 3);
+}
+
 int main(int argc, const char * argv[])
 {
     TestCase();
@@ -175,6 +196,7 @@ int main(int argc, const char * argv[])
     DotTest();
     LengthTest();
     ScaleTest();
+    DivideTest();
     cout << flush;
     return 0;
 }

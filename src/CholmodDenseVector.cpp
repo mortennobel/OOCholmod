@@ -53,6 +53,15 @@ void CholmodDenseVector::scale(double alpha){
     cblas_dscal (getSize(), alpha, getData(), 1);
 }
 
+void CholmodDenseVector::divideBy(CholmodDenseVector *b){
+    assert(b->getSize() >= getSize());
+    double *thisData = getData();
+    double *bData = b->getData();
+    for (int i=0;i<getSize();i++){
+        thisData[i] /= bData[i];
+    }
+}
+
 void CholmodDenseVector::copyTo(CholmodDenseVector *dest){
     assert(dest->getSize() >= getSize());
     const double *srcPtr = getData();
