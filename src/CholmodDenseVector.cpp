@@ -62,6 +62,15 @@ void CholmodDenseVector::divideBy(CholmodDenseVector *b){
     }
 }
 
+void CholmodDenseVector::multiplyWith(CholmodDenseVector *b){
+    assert(b->getSize() >= getSize());
+    double *thisData = getData();
+    double *bData = b->getData();
+    for (int i=0;i<getSize();i++){
+        thisData[i] *= bData[i];
+    }
+}
+
 void CholmodDenseVector::copyTo(CholmodDenseVector *dest){
     assert(dest->getSize() >= getSize());
     const double *srcPtr = getData();

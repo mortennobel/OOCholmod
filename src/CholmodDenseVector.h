@@ -28,7 +28,10 @@ public:
     // computes the L^2 norm of the vector
     double length();
     void scale(double alpha);
+    // elementwise division
     void divideBy(CholmodDenseVector *b);
+    // elementwise multiplication
+    void multiplyWith(CholmodDenseVector *b);
     double dot(CholmodDenseVector *b);
     void fill(double value);
     void set(float *data);

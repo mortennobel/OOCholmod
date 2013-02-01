@@ -188,6 +188,26 @@ void DivideTest(){
     assertEqual(expected, &((*a)[0]), 3);
 }
 
+void MultiplyVectorTest(){
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodDenseVector *a = new CholmodDenseVector(3, &com);
+    (*a)[0] = 4;
+    (*a)[1] = 5;
+    (*a)[2] = 6;
+    
+    CholmodDenseVector *b = new CholmodDenseVector(3, &com);
+    (*b)[0] = -8;
+    (*b)[1] = -10;
+    (*b)[2] = -12;
+    a->multiplyWith(b);
+    cout << "multiply test"<<endl;
+    
+    double expected[] = {4 * -8,5 * -10, 6 * -12};
+    
+    assertEqual(expected, &((*a)[0]), 3);
+}
+
 int main(int argc, const char * argv[])
 {
     TestCase();
@@ -197,6 +217,7 @@ int main(int argc, const char * argv[])
     LengthTest();
     ScaleTest();
     DivideTest();
+    MultiplyVectorTest();
     cout << flush;
     return 0;
 }
