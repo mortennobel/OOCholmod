@@ -102,11 +102,11 @@ void MultiplyTest(){
     (*x)[2] = 9;
 
     CholmodDenseVector *res = new CholmodDenseVector(3, &com);
-    
-    CholmodDenseVector *b = A->multiply(x, res);
-    b->print("b");
+
+    A->multiply(x, res);
+    res->print("b");
     double expected[3] = {19, 48, 29};
-    assertEqual(expected, &((*b)[0]), 3);
+    assertEqual(expected, &((*res)[0]), 3);
 }
 
 void FillTest(){

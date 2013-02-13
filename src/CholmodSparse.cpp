@@ -47,14 +47,11 @@ CholmodSparse::~CholmodSparse(){
     }
 }
 
-// computes this * d
-CholmodDenseVector *CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
-    if (res==NULL){
-        res = new CholmodDenseVector(X->getSize(), Common);
-    } else {
-        assert(X->getSize() == res->getSize());
-        assert(X != res);
-    }
+// computes this * X and store the result in res
+void CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
+    assert(res != NULL);
+    assert(X->getSize() == res->getSize());
+    assert(X != res);
     assert(nrow == X->getSize());
     
     
@@ -63,7 +60,6 @@ CholmodDenseVector *CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseV
     double _beta[2] = {beta,beta};
     // int cholmod_sdmult(cholmod_sparse *A, ￼￼int transpose, double alpha [2], double beta [2], cholmod_dense *X, cholmod_dense *Y, cholmod_common *Common );
     cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), Common);
-    return res;
 }
 
 void CholmodSparse::build(){

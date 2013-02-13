@@ -87,10 +87,10 @@ public:
     }
     
     // computes alpha*(A*X) + beta*Y
-    // res is optional
+    // res is result
     // alpha is optional (default 1)
     // beta is optional (default 0)
-    CholmodDenseVector *multiply(CholmodDenseVector *X, CholmodDenseVector *res = NULL, double alpha = 1, double beta = 0);
+    void multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha = 1, double beta = 0);
     
     inline double getValue(int row, int column){
 #ifdef DEBUG
