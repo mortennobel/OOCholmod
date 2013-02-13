@@ -61,7 +61,8 @@ void TestCase(){
     A->print("A");
     CholmodFactor *factor = A->analyze();
     factor->factorize(A);
-    CholmodDenseVector * x = factor->solve(b);
+    CholmodDenseVector * x = NULL;
+    factor->solve(b, &x);
     x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, &((*x)[0]), 3);
@@ -76,11 +77,18 @@ void TestCase(){
     
     factor->factorize(A);
     A->print("A");
-    x = factor->solve(b);
+
+    factor->solve(b,&x);
     x->print("x");
     
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, &((*x)[0]), 3);
+    
+    while(true){
+        cholmod_dense *xDense = cholmod_allocate_dense(9999, 1, 9999 , CHOLMOD_REAL, &com);
+        cholmod_free_dense(&xDense, &com);
+        x = NULL;
+    }
 }
 
 void MultiplyTest(){

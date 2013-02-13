@@ -19,13 +19,13 @@ class CholmodDenseVector;
 class CholmodFactor {
 public:
     CholmodFactor(cholmod_factor *factor, cholmod_common *Common);
-    ~CholmodFactor();
+    virtual ~CholmodFactor();
     void factorize(CholmodSparse *sparse);
 
     cholmod_factor *getFactorHandle() { return factor; };
     
     // solves Ax=b
-    CholmodDenseVector *solve(CholmodDenseVector* b);
+    void solve(CholmodDenseVector* b, CholmodDenseVector** res);
 private:
     CholmodFactor(const CholmodFactor& that); // prevent copy constructor
     cholmod_factor *factor;

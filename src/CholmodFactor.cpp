@@ -27,7 +27,8 @@ void CholmodFactor::factorize(CholmodSparse *sparse){
     cholmod_factorize(sparse->getHandle(), factor, Common) ; /* factorize */
 }
 
-CholmodDenseVector *CholmodFactor::solve(CholmodDenseVector* b){
+void CholmodFactor::solve(CholmodDenseVector* b, CholmodDenseVector **res){
+    delete *res;
     cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b->getHandle(), Common);
-    return new CholmodDenseVector(x, Common, b->getSize());
+    *res = new CholmodDenseVector(x, Common, b->getSize());
 }

@@ -43,7 +43,7 @@ public:
     /// maxSize (size allocated before build). 0 means triangular
     CholmodSparse(int nrow, int ncol, cholmod_common *Common, int maxSize = 0);
     CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common);
-    ~CholmodSparse();
+    virtual ~CholmodSparse();
     
     void build();
     CholmodFactor *analyze();

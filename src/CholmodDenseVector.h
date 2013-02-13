@@ -19,7 +19,7 @@ class CholmodDenseVector {
 public:
     CholmodDenseVector(int size, cholmod_common *c);
     CholmodDenseVector(cholmod_dense *x, cholmod_common *Common, int size);
-    ~CholmodDenseVector();
+    virtual ~CholmodDenseVector();
     inline double *getData(){ return (double *)(x->x); };
     inline double *getData() const { return (double *)(x->x); };
     inline int getSize() { return size; }
