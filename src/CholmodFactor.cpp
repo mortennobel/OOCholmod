@@ -13,7 +13,7 @@
 using namespace std;
 
 // bad coffee odd food
-#define MAGIC_NUMBER 0xBADC0FFEE0DDF00DL
+#define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
 
 CholmodFactor::CholmodFactor(cholmod_factor *factor, cholmod_common *Common)
 :factor(factor), Common(Common)

@@ -11,7 +11,7 @@
 #include <vecLib/cblas.h>
 
 // bad coffee odd food
-#define MAGIC_NUMBER 0xBADC0FFEE0DDF00DL
+#define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
 
 CholmodDenseVector::CholmodDenseVector(int size, cholmod_common *Common)
 :Common(Common), size(size)
@@ -31,7 +31,9 @@ CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, cholmod_common *Common,
 }
 
 CholmodDenseVector::~CholmodDenseVector(){
+#ifdef DEBUG
     magicNumber = 0;
+#endif
     cholmod_free_dense(&x, Common);
     x = NULL;
 }

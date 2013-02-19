@@ -55,7 +55,7 @@ private:
     cholmod_common *Common;
     int size;
 #ifdef DEBUG
-    long magicNumber;
+    unsigned long magicNumber;
 #endif
 };
 

@@ -31,7 +31,7 @@ private:
     cholmod_factor *factor;
     cholmod_common *Common;
 #ifdef DEBUG
-    long magicNumber;
+    unsigned long magicNumber;
 #endif
 };
 

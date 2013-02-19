@@ -12,7 +12,7 @@
 using namespace std;
 
 // bad coffee odd food
-#define MAGIC_NUMBER 0xBADC0FFEE0DDF00DL
+#define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
 
 CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common, int maxSize)
 :Common(Common), sparse(NULL), nrow(nrow), ncol(ncol)

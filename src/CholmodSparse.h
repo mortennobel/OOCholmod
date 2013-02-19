@@ -158,7 +158,7 @@ private:
     }
     Symmetry symmetry;
 #ifdef DEBUG
-    long magicNumber;
+    unsigned long magicNumber;
     int maxElements;
 #endif
 };
