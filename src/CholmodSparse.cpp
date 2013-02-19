@@ -47,7 +47,9 @@ CholmodSparse::CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common)
 }
 
 CholmodSparse::~CholmodSparse(){
+#ifdef DEBUG
     magicNumber = 0;
+#endif
     if (sparse != NULL){
         cholmod_free_sparse(&sparse, Common);
         sparse = NULL;
