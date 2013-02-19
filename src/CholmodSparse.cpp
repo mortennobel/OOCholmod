@@ -11,9 +11,15 @@
 
 using namespace std;
 
+// bad coffee odd food
+#define MAGIC_NUMBER 0xBADC0FFEE0DDF00DL
 
 CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common, int maxSize)
-:Common(Common), sparse(NULL), nrow(nrow), ncol(ncol) {
+:Common(Common), sparse(NULL), nrow(nrow), ncol(ncol)
+#ifdef DEBUG
+,magicNumber(MAGIC_NUMBER)
+#endif
+{
     int elements;
     if (maxSize == 0) {
         elements = (nrow*(ncol+1))/2; // triangular number
@@ -32,11 +38,16 @@ CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common, int max
 }
 
 CholmodSparse::CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common)
-:sparse(sparse), Common(Common),  nrow(sparse->nrow), ncol(sparse->ncol){
+:sparse(sparse), Common(Common),  nrow(sparse->nrow), ncol(sparse->ncol)
+#ifdef DEBUG
+,magicNumber(MAGIC_NUMBER)
+#endif
+{
     buildLookupIndexFromSparse();
 }
 
 CholmodSparse::~CholmodSparse(){
+    magicNumber = 0;
     if (sparse != NULL){
         cholmod_free_sparse(&sparse, Common);
         sparse = NULL;
@@ -49,11 +60,13 @@ CholmodSparse::~CholmodSparse(){
 
 // computes this * X and store the result in res
 void CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
+#ifdef DEBUG
+    assert(magicNumber == MAGIC_NUMBER);
     assert(res != NULL);
     assert(X->getSize() == res->getSize());
     assert(X != res);
     assert(nrow == X->getSize());
-    
+#endif    
     
     // alpha*(A*X) + beta*Y
     double _alpha[2] = {alpha,alpha};
@@ -65,6 +78,7 @@ void CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, dou
 void CholmodSparse::build(){
 #ifdef DEBUG
     assert(sparse == NULL);
+    assert(magicNumber == MAGIC_NUMBER);
 #endif
     sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, Common);
     cholmod_free_triplet(&triplet, Common);
@@ -82,6 +96,9 @@ void CholmodSparse::build(){
 }
 
 void CholmodSparse::buildLookupIndexFromSparse(){
+#ifdef DEBUG
+    assert(magicNumber == MAGIC_NUMBER);
+#endif
     lookupIndex.clear();
     // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
     int idx = 0;
@@ -99,6 +116,7 @@ void CholmodSparse::buildLookupIndexFromSparse(){
 CholmodFactor *CholmodSparse::analyze(){
 #ifdef DEBUG
     assert(sparse != NULL);
+    assert(magicNumber == MAGIC_NUMBER);
 #endif
     cholmod_factor *L = cholmod_analyze(sparse, Common);
     return new CholmodFactor(L, Common);
@@ -107,11 +125,15 @@ CholmodFactor *CholmodSparse::analyze(){
 void CholmodSparse::zero(){
 #ifdef DEBUG
     assert(sparse != NULL);
+    assert(magicNumber == MAGIC_NUMBER);
 #endif
     memset(sparse->x, 0, sparse->nzmax * sizeof(double));
 }
 
 void CholmodSparse::print(const char* name){
+#ifdef DEBUG
+    assert(magicNumber == MAGIC_NUMBER);
+#endif
     if (sparse){
         cholmod_print_sparse(sparse, name, Common);
         cholmod_dense *dense = cholmod_sparse_to_dense(sparse, Common);

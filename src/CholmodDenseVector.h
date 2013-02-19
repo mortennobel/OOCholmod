@@ -54,6 +54,9 @@ private:
     cholmod_dense *x;
     cholmod_common *Common;
     int size;
+#ifdef DEBUG
+    long magicNumber;
+#endif
 };
 
 #endif /* defined(__CholmodTest__CholmodDenseVector__) */

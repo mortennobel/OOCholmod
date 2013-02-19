@@ -30,6 +30,9 @@ private:
     CholmodFactor(const CholmodFactor& that); // prevent copy constructor
     cholmod_factor *factor;
     cholmod_common *Common;
+#ifdef DEBUG
+    long magicNumber;
+#endif
 };
 
 #endif /* defined(__CholmodTest__CholmodFactor__) */
