@@ -45,7 +45,8 @@ public:
     CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common);
     virtual ~CholmodSparse();
     
-    void build();
+    void build(bool readOnly = false);
+    
     CholmodFactor *analyze();
     
     void zero();

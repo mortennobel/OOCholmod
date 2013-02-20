@@ -77,7 +77,7 @@ void CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, dou
     cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), Common);
 }
 
-void CholmodSparse::build(){
+void CholmodSparse::build(bool readOnly){
 #ifdef DEBUG
     assert(sparse == NULL);
     assert(magicNumber == MAGIC_NUMBER);
@@ -94,7 +94,9 @@ void CholmodSparse::build(){
     assert(sparse->stype == symmetry);
     assert(sparse->packed);
 #endif
-    buildLookupIndexFromSparse();
+    if (!readOnly){
+        buildLookupIndexFromSparse();
+    }
 }
 
 void CholmodSparse::buildLookupIndexFromSparse(){
