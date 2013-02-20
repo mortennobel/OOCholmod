@@ -17,8 +17,8 @@
 
 class CholmodDenseVector {
 public:
-    CholmodDenseVector(int size, cholmod_common *c);
-    CholmodDenseVector(cholmod_dense *x, cholmod_common *Common, int size);
+    CholmodDenseVector(unsigned int size, cholmod_common *c);
+    CholmodDenseVector(cholmod_dense *x, cholmod_common *Common, unsigned int size);
     virtual ~CholmodDenseVector();
     inline double *getData(){ return (double *)(x->x); };
     inline double *getData() const { return (double *)(x->x); };
@@ -38,7 +38,7 @@ public:
     void set(double *data);
     void get(double *outData);
     void get(float *outData);
-    inline void add(int index, double value) {
+    inline void add(unsigned int index, double value) {
 #ifdef DEBUG
         assert(index < size);
 #endif
@@ -53,7 +53,7 @@ private:
     CholmodDenseVector(const CholmodDenseVector& that); // prevent copy constructor
     cholmod_dense *x;
     cholmod_common *Common;
-    int size;
+    unsigned int size;
 #ifdef DEBUG
     unsigned long magicNumber;
 #endif

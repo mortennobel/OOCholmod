@@ -14,7 +14,7 @@ using namespace std;
 // bad coffee odd food
 #define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
 
-CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common, int maxSize)
+CholmodSparse::CholmodSparse(unsigned int nrow, unsigned int ncol, cholmod_common *Common, int maxSize)
 :Common(Common), sparse(NULL), nrow(nrow), ncol(ncol)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
@@ -38,7 +38,7 @@ CholmodSparse::CholmodSparse(int nrow, int ncol, cholmod_common *Common, int max
 }
 
 CholmodSparse::CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common)
-:sparse(sparse), Common(Common),  nrow(sparse->nrow), ncol(sparse->ncol)
+:sparse(sparse), Common(Common),  nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
 #endif

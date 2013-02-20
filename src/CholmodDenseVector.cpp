@@ -13,7 +13,7 @@
 // bad coffee odd food
 #define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
 
-CholmodDenseVector::CholmodDenseVector(int size, cholmod_common *Common)
+CholmodDenseVector::CholmodDenseVector(unsigned int size, cholmod_common *Common)
 :Common(Common), size(size)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
@@ -22,7 +22,7 @@ CholmodDenseVector::CholmodDenseVector(int size, cholmod_common *Common)
     x = cholmod_allocate_dense(size, 1, size /* leading dimension (equal rows) */ , CHOLMOD_REAL, Common);
 }
 
-CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, cholmod_common *Common, int size)
+CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, cholmod_common *Common, unsigned int size)
 :x(x), Common(Common), size(size)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)

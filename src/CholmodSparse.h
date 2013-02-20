@@ -41,7 +41,7 @@ public:
     /// nrow # of rows of A
     /// ncol # of columns of A
     /// maxSize (size allocated before build). 0 means triangular
-    CholmodSparse(int nrow, int ncol, cholmod_common *Common, int maxSize = 0);
+    CholmodSparse(unsigned int nrow, unsigned int ncol, cholmod_common *Common, int maxSize = 0);
     CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common);
     virtual ~CholmodSparse();
     
@@ -57,7 +57,7 @@ public:
     
     int getColumns(){ return ncol; }
     
-    inline void initAddValue(int row, int column, double value=0) {
+    inline void initAddValue(unsigned int row, unsigned int column, double value=0) {
 #ifdef DEBUG        
         assert(sparse == NULL); // must be called before matrix build
         assert(triplet->nnz < maxElements);
@@ -74,12 +74,12 @@ public:
         assert (column < maxId);
 #endif
         long k = key(row, column);
-        std::map<long, int>::iterator res = lookupIndex.find(k);
+        std::map<unsigned long, unsigned int>::iterator res = lookupIndex.find(k);
         if (res != lookupIndex.end()) {
             values[(*res).second] += value;
             return;
         }
-        lookupIndex[k] = triplet->nnz;
+        lookupIndex[k] = (int)triplet->nnz;
         iRow[triplet->nnz] = row;
         jColumn[triplet->nnz] = column;
         values[triplet->nnz] = value;
@@ -93,7 +93,7 @@ public:
     // beta is optional (default 0)
     void multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha = 1, double beta = 0);
     
-    inline double getValue(int row, int column){
+    inline double getValue(unsigned int row, unsigned int column){
 #ifdef DEBUG
         assert(sparse != NULL); // matrix must be build
 #endif
@@ -101,7 +101,7 @@ public:
         return ((double*)sparse->x)[index];
     }
 
-    inline void addValue(int row, int column, double value){
+    inline void addValue(unsigned int row, unsigned int column, double value){
 #ifdef DEBUG
         assert(sparse != NULL); // matrix must be build
 #endif
@@ -112,7 +112,7 @@ public:
     
     /// Set value of sparse matrix
     /// Must be invoked after build
-    inline void setValue(int row, int column, double value){
+    inline void setValue(unsigned int row, unsigned int column, double value){
 #ifdef DEBUG
         assert(sparse != NULL); // matrix must be build
 #endif
@@ -133,17 +133,17 @@ private:
     cholmod_common *Common;
     cholmod_sparse *sparse;
     cholmod_triplet *triplet;
-    int nrow;
-    int ncol;
+    unsigned int nrow;
+    unsigned int ncol;
     double *values;
-    std::map<long, int> lookupIndex;
+    std::map<unsigned long, unsigned int> lookupIndex;
     int *iRow;
 	int *jColumn;
-    inline long key(int row, int column){
+    inline long key(unsigned int row, unsigned int column){
         int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
         return (((long)row)<<shiftBits)+column;
     }
-    inline int getIndex(int row, int column) {
+    inline int getIndex(unsigned int row, unsigned int column) {
 #ifdef DEBUG
         assert(symmetry == SYMMETRIC_UPPER);
         assert(row < nrow);
