@@ -60,7 +60,8 @@ void TestCase(){
     
     A->print("A");
     CholmodFactor *factor = A->analyze();
-    factor->factorize(A);
+    bool res = factor->factorize(A);
+    cout << "factor->factorize(A) "<<res<<endl;
     CholmodDenseVector * x = NULL;
     factor->solve(b, &x);
     x->print("x");
@@ -84,11 +85,11 @@ void TestCase(){
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, &((*x)[0]), 3);
     
-    while(true){
-        cholmod_dense *xDense = cholmod_allocate_dense(9999, 1, 9999 , CHOLMOD_REAL, &com);
-        cholmod_free_dense(&xDense, &com);
-        x = NULL;
-    }
+    
+    cholmod_dense *xDense = cholmod_allocate_dense(9999, 1, 9999 , CHOLMOD_REAL, &com);
+    cholmod_free_dense(&xDense, &com);
+    x = NULL;
+    
 }
 
 void MultiplyTest(){
@@ -216,6 +217,30 @@ void MultiplyVectorTest(){
     assertEqual(expected, &((*a)[0]), 3);
 }
 
+void SingularTest(){
+    cholmod_common com;
+    cholmod_start(&com);
+    CholmodSparse *A = new CholmodSparse(3,3,&com);
+
+    A->initAddValue(2, 2, 1);
+    
+    A->build();
+    
+    CholmodDenseVector * b = new CholmodDenseVector(3, &com);
+    (*b)[0] = 0;
+    (*b)[1] = 1;
+    (*b)[2] = 0;
+    b->print("b");
+    
+    A->print("A");
+    CholmodFactor *factor = A->analyze();
+    bool res = factor->factorize(A);
+    cout << "Factorize ok "<< res << endl;
+    CholmodDenseVector * x = NULL;
+    factor->solve(b, &x);
+
+}
+
 int main(int argc, const char * argv[])
 {
     TestCase();
@@ -226,6 +251,7 @@ int main(int argc, const char * argv[])
     ScaleTest();
     DivideTest();
     MultiplyVectorTest();
+    SingularTest();
     cout << flush;
     return 0;
 }

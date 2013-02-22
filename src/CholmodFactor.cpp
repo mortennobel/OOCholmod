@@ -30,12 +30,17 @@ CholmodFactor::~CholmodFactor(){
     cholmod_free_factor(&factor, Common) ;
 }
 
-void CholmodFactor::factorize(CholmodSparse *sparse){
+bool CholmodFactor::factorize(CholmodSparse *sparse){
 #ifdef DEBUG
     assert(sparse->getSymmetry() != ASYMMETRIC);
     assert(magicNumber == MAGIC_NUMBER);
 #endif
     cholmod_factorize(sparse->getHandle(), factor, Common) ; /* factorize */
+    if (Common->status == CHOLMOD_OK){
+        return true;
+    }
+    Common->status = 0;
+    return false;
 }
 
 void CholmodFactor::solve(CholmodDenseVector* b, CholmodDenseVector **res){

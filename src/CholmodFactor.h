@@ -20,7 +20,10 @@ class CholmodFactor {
 public:
     CholmodFactor(cholmod_factor *factor, cholmod_common *Common);
     virtual ~CholmodFactor();
-    void factorize(CholmodSparse *sparse);
+    
+    // returns true if factorization is done
+    // Return false if matrix is not positive definite
+    bool factorize(CholmodSparse *sparse);
 
     cholmod_factor *getFactorHandle() { return factor; };
     
