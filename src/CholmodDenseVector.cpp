@@ -32,6 +32,7 @@ CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, cholmod_common *Common,
 
 CholmodDenseVector::~CholmodDenseVector(){
 #ifdef DEBUG
+    assert(magicNumber == MAGIC_NUMBER);
     magicNumber = 0;
 #endif
     cholmod_free_dense(&x, Common);

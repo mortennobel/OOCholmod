@@ -57,6 +57,20 @@ public:
     
     int getColumns(){ return ncol; }
     
+    /// Set the nullspace
+    /// Null = sparseDiagonal(N)
+    /// K = N^T * K * N - (Null-I)
+    ///
+    /// In other words it gives matrixes with the following patterns
+    /// where 0 elements in N marks the columns and rows to 'null'
+    ///
+    ///     0
+    ///     0
+    /// 00001000
+    ///     0
+    ///
+    void setNullSpace(CholmodDenseVector *N);
+    
     inline void initAddValue(unsigned int row, unsigned int column, double value=0) {
 #ifdef DEBUG        
         assert(sparse == NULL); // must be called before matrix build

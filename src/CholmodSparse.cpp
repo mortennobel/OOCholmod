@@ -48,6 +48,7 @@ CholmodSparse::CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common)
 
 CholmodSparse::~CholmodSparse(){
 #ifdef DEBUG
+    assert(magicNumber == MAGIC_NUMBER);
     magicNumber = 0;
 #endif
     if (sparse != NULL){
@@ -57,6 +58,30 @@ CholmodSparse::~CholmodSparse(){
     if (triplet != NULL){
         cholmod_free_triplet(&triplet, Common);
         triplet = NULL;
+    }
+}
+
+void CholmodSparse::setNullSpace(CholmodDenseVector *N){
+#ifdef DEBUG
+    assert(sparse != NULL);
+    assert(magicNumber == MAGIC_NUMBER);
+#endif
+    // naive implementation: Todo run fast
+    CholmodDenseVector &v = *N;
+    int idx = 0;
+    for (int j=0;j<ncol;j++){
+        int iFrom = ((int*)sparse->p)[j];
+        int iTo = ((int*)sparse->p)[j+1]-1;
+        for (int i=iFrom;i<=iTo;i++){
+            int row = ((int*)sparse->i)[i];
+            ((double*)sparse->x)[idx] *= v[row]*v[j];
+            idx++;
+        }
+    }
+    for (int i=0;i<v.getSize();i++){
+        if (v[i] == 0){
+            this->setValue(i,i,1);
+        }
     }
 }
 
@@ -168,6 +193,7 @@ void CholmodSparse::print(const char* name){
         for (int i=0;i<sparse->nzmax;i++){
             printf("%3.3f ", ((double*)sparse->x)[i]);
         }
+        cholmod_free_dense(&dense, Common);
         cout << endl;
     }
 }

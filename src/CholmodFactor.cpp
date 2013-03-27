@@ -25,6 +25,7 @@ CholmodFactor::CholmodFactor(cholmod_factor *factor, cholmod_common *Common)
 
 CholmodFactor::~CholmodFactor(){
 #ifdef DEBUG
+    assert(magicNumber == MAGIC_NUMBER);
     magicNumber = 0;
 #endif
     cholmod_free_factor(&factor, Common) ;
