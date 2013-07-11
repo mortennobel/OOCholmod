@@ -6,4 +6,15 @@
 //  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
 //
 
-#include "objects.h"
+#pragma once
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+#include "CholmodSparse.h"
+#include "CholmodFactor.h"
+#include "CholmodDenseVector.h"
+#include "cpp14.h"
+
+using namespace std;

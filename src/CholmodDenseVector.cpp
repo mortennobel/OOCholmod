@@ -1,9 +1,8 @@
 //
 //  CholmodDenseVector.cpp
 //  OOCholmod
-//
 //  Created by Morten Nobel-Jørgensen on 1/21/13.
-//  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
+//  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0 
 
 #include "CholmodDenseVector.h"
@@ -30,13 +29,52 @@ CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, cholmod_common *Common,
 {
 }
 
-CholmodDenseVector::~CholmodDenseVector(){
+CholmodDenseVector::CholmodDenseVector(CholmodDenseVector&& move)
+:x(move.x), Common(move.Common), size(move.size)
 #ifdef DEBUG
-    assert(magicNumber == MAGIC_NUMBER);
+,magicNumber(move.magicNumber)
+#endif
+{
+    move.x = nullptr;
+    move.Common = nullptr;
+    move.size = 0;
+#ifdef DEBUG
     magicNumber = 0;
 #endif
-    cholmod_free_dense(&x, Common);
-    x = NULL;
+}
+
+CholmodDenseVector& CholmodDenseVector::operator=(CholmodDenseVector&& other){
+    if (this != &other){
+        if (x != nullptr){
+            cholmod_free_dense(&x, Common);
+        }
+        x = other.x;
+        Common = other.Common;
+        size = other.size;
+#ifdef DEBUG
+        magicNumber = other.magicNumber;
+#endif
+
+        other.x = nullptr;
+        other.Common = nullptr;
+        other.size = 0;
+#ifdef DEBUG
+        magicNumber = 0;
+#endif
+        
+    }
+    return *this;
+}
+
+CholmodDenseVector::~CholmodDenseVector(){
+    if (Common != nullptr){
+#ifdef DEBUG
+        assert(magicNumber == MAGIC_NUMBER);
+        magicNumber = 0;
+#endif
+        cholmod_free_dense(&x, Common);
+        x = NULL;
+    }
 }
 
 void CholmodDenseVector::zero(){
@@ -52,6 +90,10 @@ double CholmodDenseVector::dot(CholmodDenseVector *b){
     assert(magicNumber == MAGIC_NUMBER);
 #endif
     return cblas_ddot(getSize(), getData(), 1, b->getData(), 1);
+}
+
+double CholmodDenseVector::dot(CholmodDenseVector& b){
+    return dot(&b);
 }
 
 void CholmodDenseVector::fill(double value){
@@ -90,6 +132,10 @@ void CholmodDenseVector::divideBy(CholmodDenseVector *b){
     }
 }
 
+void CholmodDenseVector::divideBy(CholmodDenseVector& b){
+    divideBy(&b);
+}
+
 void CholmodDenseVector::multiplyWith(CholmodDenseVector *b){
 #ifdef DEBUG
     assert(magicNumber == MAGIC_NUMBER);
@@ -102,6 +148,10 @@ void CholmodDenseVector::multiplyWith(CholmodDenseVector *b){
     }
 }
 
+void CholmodDenseVector::multiplyWith(CholmodDenseVector& b){
+    multiplyWith(&b);
+}
+
 void CholmodDenseVector::copyTo(CholmodDenseVector *dest){
 #ifdef DEBUG
     assert(magicNumber == MAGIC_NUMBER);
@@ -111,6 +161,11 @@ void CholmodDenseVector::copyTo(CholmodDenseVector *dest){
     double *destPtr = dest->getData();
     memcpy(destPtr, srcPtr, sizeof(double) * getSize());
 }
+
+void CholmodDenseVector::copyTo(CholmodDenseVector& dest){
+    copyTo(&dest);
+}
+
 
 void CholmodDenseVector::set(float *inData){
 #ifdef DEBUG

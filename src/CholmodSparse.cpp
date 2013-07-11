@@ -3,11 +3,14 @@
 //  OOCholmod
 //
 //  Created by Morten Nobel-Jørgensen on 1/21/13.
-//  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
+//  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0 
 
 #include "CholmodSparse.h"
+#include <cassert>
+
 #include "CholmodDenseVector.h"
+
 
 using namespace std;
 
@@ -46,18 +49,65 @@ CholmodSparse::CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common)
     buildLookupIndexFromSparse();
 }
 
-CholmodSparse::~CholmodSparse(){
+CholmodSparse::CholmodSparse(CholmodSparse&& move)
+:Common(move.Common), sparse(move.sparse), triplet(move.triplet), nrow(move.nrow), ncol(move.ncol), lookupIndex(std::move(move.lookupIndex)), iRow(move.iRow), jColumn(move.jColumn), symmetry(move.symmetry)
 #ifdef DEBUG
-    assert(magicNumber == MAGIC_NUMBER);
-    magicNumber = 0;
+    ,magicNumber(move.magicNumber), maxElements(move.maxElements)
 #endif
-    if (sparse != NULL){
-        cholmod_free_sparse(&sparse, Common);
-        sparse = NULL;
+{
+    move.Common = nullptr;
+    move.sparse = nullptr;
+    move.triplet = nullptr;
+    move.values = nullptr;
+    move.iRow = nullptr;
+    move.jColumn = nullptr;
+#ifdef DEBUG
+    move.magicNumber = 0L;
+    move.maxElements = 0;
+#endif
+}
+
+CholmodSparse& CholmodSparse::operator=(CholmodSparse&& other){
+    if (this != &other){
+        if (sparse != NULL){
+            cholmod_free_sparse(&sparse, Common);
+        }
+        if (triplet != NULL){
+            cholmod_free_triplet(&triplet, Common);
+        }
+        
+        Common = other.Common;
+        sparse = other.sparse;
+        triplet = other.triplet;
+        nrow = other.nrow;
+        ncol = other.ncol;
+        lookupIndex = std::move(other.lookupIndex);
+        iRow = other.iRow;
+        jColumn = other.jColumn;
+        symmetry = other.symmetry;
+#ifdef DEBUG
+        magicNumber = other.magicNumber;
+        maxElements = other.maxElements;
+#endif
     }
-    if (triplet != NULL){
-        cholmod_free_triplet(&triplet, Common);
-        triplet = NULL;
+    return *this;
+}
+
+
+CholmodSparse::~CholmodSparse(){
+    if (Common != nullptr){
+#ifdef DEBUG
+        assert(magicNumber == MAGIC_NUMBER);
+        magicNumber = 0;
+#endif
+        if (sparse != NULL){
+            cholmod_free_sparse(&sparse, Common);
+            sparse = NULL;
+        }
+        if (triplet != NULL){
+            cholmod_free_triplet(&triplet, Common);
+            triplet = NULL;
+        }
     }
 }
 
@@ -85,6 +135,10 @@ void CholmodSparse::setNullSpace(CholmodDenseVector *N){
     }
 }
 
+void CholmodSparse::setNullSpace(CholmodDenseVector& N){
+    setNullSpace(&N);
+}
+
 // computes this * X and store the result in res
 void CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
 #ifdef DEBUG
@@ -100,6 +154,16 @@ void CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, dou
     double _beta[2] = {beta,beta};
     // int cholmod_sdmult(cholmod_sparse *A, ￼￼int transpose, double alpha [2], double beta [2], cholmod_dense *X, cholmod_dense *Y, cholmod_common *Common );
     cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), Common);
+}
+
+CholmodDenseVector CholmodSparse::multiply(CholmodDenseVector& X, double alpha, double beta){
+    CholmodDenseVector res(X.getSize(), Common);
+    multiply(X, res, alpha, beta);
+    return res;
+}
+
+void CholmodSparse::multiply(CholmodDenseVector& X, CholmodDenseVector& res, double alpha, double beta){
+    multiply(&X, &res, alpha, beta);
 }
 
 void CholmodSparse::build(bool readOnly){
@@ -142,7 +206,7 @@ void CholmodSparse::buildLookupIndexFromSparse(){
     }
 }
 
-CholmodFactor *CholmodSparse::analyze(){
+CholmodFactor *CholmodSparse::analyzePtr(){
 #ifdef DEBUG
     assert(sparse != NULL);
     assert(magicNumber == MAGIC_NUMBER);
@@ -150,6 +214,16 @@ CholmodFactor *CholmodSparse::analyze(){
     cholmod_factor *L = cholmod_analyze(sparse, Common);
     return new CholmodFactor(L, Common);
 }
+
+CholmodFactor CholmodSparse::analyze(){
+#ifdef DEBUG
+    assert(sparse != NULL);
+    assert(magicNumber == MAGIC_NUMBER);
+#endif
+    cholmod_factor *L = cholmod_analyze(sparse, Common);
+    return CholmodFactor(L, Common);
+}
+
 
 void CholmodSparse::zero(){
 #ifdef DEBUG
@@ -196,4 +270,42 @@ void CholmodSparse::print(const char* name){
         cholmod_free_dense(&dense, Common);
         cout << endl;
     }
+}
+
+void CholmodSparse::assertValidIndex(unsigned int row, unsigned int column){
+#ifdef DEBUG
+    assert(symmetry == SYMMETRIC_UPPER);
+    assert(row < nrow);
+    assert(column < ncol);
+    if (symmetry == SYMMETRIC_UPPER) {
+        assert(row <= column);
+    } else if (symmetry == SYMMETRIC_LOWER) {
+        assert(row >= column);
+    }
+    
+#endif
+}
+
+void CholmodSparse::assertHasSparse(){
+#ifdef DEBUG
+    assert(sparse != NULL); // matrix must be build
+#endif
+}
+
+void CholmodSparse::assertValidInitAddValue(unsigned int row, unsigned int column, double value){
+#ifdef DEBUG
+    assert(sparse == NULL); // must be called before matrix build
+    assert(triplet->nnz < maxElements);
+    assert(row < nrow);
+    assert(column < ncol);
+    if (symmetry == SYMMETRIC_UPPER) {
+        assert(row <= column);
+    } else if (symmetry == SYMMETRIC_LOWER) {
+        assert(row >= column);
+    }
+    int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
+    long maxId = (long)pow(2, shiftBits);
+    assert (row < maxId);
+    assert (column < maxId);
+#endif
 }

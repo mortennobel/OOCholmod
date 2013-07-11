@@ -3,14 +3,13 @@
 //  OOCholmod
 //
 //  Created by Morten Nobel-Jørgensen on 1/21/13.
-//  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
+//  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0 
 
 #ifndef __CholmodTest__CholmodSparse__
 #define __CholmodTest__CholmodSparse__
 
 #include <iostream>
-#include <cassert>
 #include <set>
 #include <map>
 #include <cmath>
@@ -43,11 +42,15 @@ public:
     /// maxSize (size allocated before build). 0 means triangular
     CholmodSparse(unsigned int nrow, unsigned int ncol, cholmod_common *Common, int maxSize = 0);
     CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common);
+    CholmodSparse(CholmodSparse&& move);
+    CholmodSparse& operator=(CholmodSparse&& other);
+    
     virtual ~CholmodSparse();
     
     void build(bool readOnly = false);
     
-    CholmodFactor *analyze();
+    CholmodFactor *analyzePtr();
+    CholmodFactor analyze();
     
     void zero();
     
@@ -70,25 +73,12 @@ public:
     ///     0
     ///
     void setNullSpace(CholmodDenseVector *N);
+    void setNullSpace(CholmodDenseVector& N);
     
     inline void initAddValue(unsigned int row, unsigned int column, double value=0) {
-#ifdef DEBUG        
-        assert(sparse == NULL); // must be called before matrix build
-        assert(triplet->nnz < maxElements);
-        assert(row < nrow);
-        assert(column < ncol);
-        if (symmetry == SYMMETRIC_UPPER) {
-            assert(row <= column);
-        } else if (symmetry == SYMMETRIC_LOWER) {
-            assert(row >= column);
-        }
-        int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
-        long maxId = (long)pow(2, shiftBits);
-        assert (row < maxId);
-        assert (column < maxId);
-#endif
+        assertValidInitAddValue(row, column, value);
         long k = key(row, column);
-        std::map<unsigned long, unsigned int>::iterator res = lookupIndex.find(k);
+        auto res = lookupIndex.find(k);
         if (res != lookupIndex.end()) {
             values[(*res).second] += value;
             return;
@@ -106,19 +96,17 @@ public:
     // alpha is optional (default 1)
     // beta is optional (default 0)
     void multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha = 1, double beta = 0);
+    void multiply(CholmodDenseVector& X, CholmodDenseVector& res, double alpha = 1, double beta = 0);
+    CholmodDenseVector multiply(CholmodDenseVector& X, double alpha = 1, double beta = 0);
     
     inline double getValue(unsigned int row, unsigned int column){
-#ifdef DEBUG
-        assert(sparse != NULL); // matrix must be build
-#endif
+        assertHasSparse();
         int index = getIndex(row, column);
         return ((double*)sparse->x)[index];
     }
 
     inline void addValue(unsigned int row, unsigned int column, double value){
-#ifdef DEBUG
-        assert(sparse != NULL); // matrix must be build
-#endif
+        assertHasSparse();
         int index = getIndex(row, column);
         ((double*)sparse->x)[index] += value;
     }
@@ -127,9 +115,7 @@ public:
     /// Set value of sparse matrix
     /// Must be invoked after build
     inline void setValue(unsigned int row, unsigned int column, double value){
-#ifdef DEBUG
-        assert(sparse != NULL); // matrix must be build
-#endif
+        assertHasSparse();
         int index = getIndex(row, column);
         ((double*)sparse->x)[index] += value;
     }
@@ -157,18 +143,11 @@ private:
         int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
         return (((long)row)<<shiftBits)+column;
     }
+    void assertValidIndex(unsigned int row, unsigned int column);
+    void assertHasSparse();
+    void assertValidInitAddValue(unsigned int row, unsigned int column, double value);
     inline int getIndex(unsigned int row, unsigned int column) {
-#ifdef DEBUG
-        assert(symmetry == SYMMETRIC_UPPER);
-        assert(row < nrow);
-        assert(column < ncol);
-        if (symmetry == SYMMETRIC_UPPER) {
-            assert(row <= column);
-        } else if (symmetry == SYMMETRIC_LOWER) {
-            assert(row >= column);
-        }
-        
-#endif
+        assertValidIndex(row, column);
         return lookupIndex[key(row, column)];
     }
     Symmetry symmetry;
