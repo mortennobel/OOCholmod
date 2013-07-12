@@ -100,8 +100,16 @@ int AddTestObj()
     B.initAddValue(2, 2, -1);
     B.build();
     
-    SparseMatrix res = A + B;
-    res.print("res");
+    SparseMatrix C = A + B;
+    C.print("C");
+    
+    SparseMatrix D;
+    D = (A+B) + B;
+    D.print("D");
+    
+    SparseMatrix E = std::move(A) + (B+A);
+    E.print("E");
+    
     return 1;
 }
 

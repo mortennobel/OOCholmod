@@ -41,16 +41,16 @@ public:
     /// nrow # of rows of A
     /// ncol # of columns of A
     /// maxSize (size allocated before build). 0 means triangular
-    SparseMatrix(unsigned int nrow, unsigned int ncol, int maxSize = 0);
     SparseMatrix(cholmod_sparse *sparse);
     SparseMatrix(SparseMatrix&& move);
     SparseMatrix& operator=(SparseMatrix&& other);
     
     virtual ~SparseMatrix();
     
-    
     friend SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
     friend SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
+    friend SparseMatrix&& operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
+    friend SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
     
     void build(bool readOnly = false);
     
@@ -164,6 +164,8 @@ private:
     
     SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
     SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
+    SparseMatrix&& operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
+    SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
     
 }
 
