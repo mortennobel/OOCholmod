@@ -12,7 +12,7 @@
 #include <cassert>
 
 
-#include "cholmod.h"
+#include <cholmod.h>
 
 namespace oocholmod {
     

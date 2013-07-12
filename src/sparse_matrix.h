@@ -13,7 +13,7 @@
 #include <map>
 #include <cmath>
 
-#include "cholmod.h"
+#include <cholmod.h>
 #include "factor.h"
 
 namespace oocholmod {
