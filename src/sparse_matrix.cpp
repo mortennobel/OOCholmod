@@ -51,29 +51,29 @@ SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
     buildLookupIndexFromSparse();
 }
 
-SparseMatrix::SparseMatrix(SparseMatrix&& move)
-:sparse(move.sparse), triplet(move.triplet), nrow(move.nrow), ncol(move.ncol), lookupIndex(std::move(move.lookupIndex)), iRow(move.iRow), jColumn(move.jColumn), symmetry(move.symmetry)
+SparseMatrix::SparseMatrix(SparseMatrix&& other)
+:sparse(other.sparse), triplet(other.triplet), nrow(other.nrow), ncol(other.ncol), lookupIndex(std::move(other.lookupIndex)), iRow(other.iRow), jColumn(other.jColumn), symmetry(other.symmetry)
 #ifdef DEBUG
-    ,magicNumber(move.magicNumber), maxElements(move.maxElements)
+    ,magicNumber(other.magicNumber), maxElements(other.maxElements)
 #endif
 {
-    move.sparse = nullptr;
-    move.triplet = nullptr;
-    move.values = nullptr;
-    move.iRow = nullptr;
-    move.jColumn = nullptr;
+    other.sparse = nullptr;
+    other.triplet = nullptr;
+    other.values = nullptr;
+    other.iRow = nullptr;
+    other.jColumn = nullptr;
 #ifdef DEBUG
-    move.magicNumber = 0L;
-    move.maxElements = 0;
+    other.magicNumber = 0L;
+    other.maxElements = 0;
 #endif
 }
 
 SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other){
     if (this != &other){
-        if (sparse != NULL){
+        if (sparse != nullptr){
             cholmod_free_sparse(&sparse, ConfigSingleton::getCommonPtr());
         }
-        if (triplet != NULL){
+        if (triplet != nullptr){
             cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
         }
         
@@ -88,6 +88,15 @@ SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other){
 #ifdef DEBUG
         magicNumber = other.magicNumber;
         maxElements = other.maxElements;
+#endif
+        other.sparse = nullptr;
+        other.triplet = nullptr;
+        other.values = nullptr;
+        other.iRow = nullptr;
+        other.jColumn = nullptr;
+#ifdef DEBUG
+        other.magicNumber = 0L;
+        other.maxElements = 0;
 #endif
     }
     return *this;
