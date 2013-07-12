@@ -25,25 +25,19 @@ SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, int maxSize)
 ,magicNumber(MAGIC_NUMBER)
 #endif
 {
-    int elements;
     if (maxSize == 0) {
-        elements = (nrow*(ncol+1))/2; // triangular number
+        maxTripletElements = (nrow*(ncol+1))/2; // triangular number
     } else {
-        elements = maxSize;
+        maxTripletElements = maxSize;
     }
-    triplet = cholmod_allocate_triplet(nrow, ncol, elements, (int)SYMMETRIC_UPPER, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
-    values = (double *)triplet->x;
-    iRow = (int *)triplet->i;
-	jColumn = (int *)triplet->j;
     this->symmetry = SYMMETRIC_UPPER;
 #ifdef DEBUG
     assert(nrow == ncol); // must be square
-    maxElements = elements;
 #endif
 }
 
 SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
-:sparse(sparse), triplet(nullptr), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol)
+:sparse(sparse), triplet(nullptr), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol), maxTripletElements(0)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
 #endif
@@ -52,9 +46,9 @@ SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
 }
 
 SparseMatrix::SparseMatrix(SparseMatrix&& other)
-:sparse(other.sparse), triplet(other.triplet), nrow(other.nrow), ncol(other.ncol), lookupIndex(std::move(other.lookupIndex)), iRow(other.iRow), jColumn(other.jColumn), symmetry(other.symmetry)
+:sparse(other.sparse), triplet(other.triplet), nrow(other.nrow), ncol(other.ncol), lookupIndex(std::move(other.lookupIndex)), iRow(other.iRow), jColumn(other.jColumn), symmetry(other.symmetry), maxTripletElements(other.maxTripletElements)
 #ifdef DEBUG
-    ,magicNumber(other.magicNumber), maxElements(other.maxElements)
+    ,magicNumber(other.magicNumber)
 #endif
 {
     other.sparse = nullptr;
@@ -62,9 +56,9 @@ SparseMatrix::SparseMatrix(SparseMatrix&& other)
     other.values = nullptr;
     other.iRow = nullptr;
     other.jColumn = nullptr;
+    other.maxTripletElements = 0;
 #ifdef DEBUG
     other.magicNumber = 0L;
-    other.maxElements = 0;
 #endif
 }
 
@@ -85,18 +79,18 @@ SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other){
         iRow = other.iRow;
         jColumn = other.jColumn;
         symmetry = other.symmetry;
+        maxTripletElements = other.maxTripletElements;
 #ifdef DEBUG
         magicNumber = other.magicNumber;
-        maxElements = other.maxElements;
 #endif
         other.sparse = nullptr;
         other.triplet = nullptr;
         other.values = nullptr;
         other.iRow = nullptr;
         other.jColumn = nullptr;
+        other.maxTripletElements = 0;
 #ifdef DEBUG
         other.magicNumber = 0L;
-        other.maxElements = 0;
 #endif
     }
     return *this;
@@ -304,7 +298,7 @@ void SparseMatrix::assertHasSparse(){
 void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column, double value){
 #ifdef DEBUG
     assert(sparse == nullptr); // must be called before matrix build
-    assert(triplet->nnz < maxElements);
+    assert(triplet->nnz < maxTripletElements);
     assert(row < nrow);
     assert(column < ncol);
     if (symmetry == SYMMETRIC_UPPER) {
@@ -348,5 +342,4 @@ void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column
     {
         return std::move(LHS) + RHS;
     }
-    
 }

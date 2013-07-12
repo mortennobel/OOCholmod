@@ -15,6 +15,7 @@
 
 #include <cholmod.h>
 #include "factor.h"
+#include "config_singleton.h"
 
 namespace oocholmod {
     
@@ -127,6 +128,12 @@ private:
         return lookupIndex[key(row, column)];
     }
     inline double& initAddValue(unsigned int row, unsigned int column, double value=0) {
+        if (!triplet){
+            triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, (int)SYMMETRIC_UPPER, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+            values = (double *)triplet->x;
+            iRow = (int *)triplet->i;
+            jColumn = (int *)triplet->j;
+        }
         assertValidInitAddValue(row, column, value);
         long k = key(row, column);
         auto res = lookupIndex.find(k);
@@ -149,9 +156,9 @@ private:
         return ((double*)sparse->x)[index];
     }
     Symmetry symmetry;
+    int maxTripletElements;
 #ifdef DEBUG
     unsigned long magicNumber;
-    int maxElements;
 #endif
 };
     
