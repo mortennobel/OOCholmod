@@ -101,14 +101,14 @@ int AddTestObj()
     B.build();
     
     SparseMatrix C = A + B;
-    C.print("C");
     
     SparseMatrix D;
     D = (A+B) + B;
-    D.print("D");
     
     SparseMatrix E = std::move(A) + (B+A);
-    E.print("E");
+    
+    assert(E(2,2) == -3);
+    assert(E(0,2) == 5);
     
     return 1;
 }
@@ -170,6 +170,36 @@ int TestCaseFunctionOperatorObj(){
     
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, x.getData(), 3);
+    
+    return 1;
+}
+
+int MultiplyMatrixMatrixTestObj(){
+    SparseMatrix A(3,3);
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
+    A.build();
+    
+    SparseMatrix B(3,3);
+    B(0, 0) = 2;
+    B(0, 1) = -1;
+    B(0, 2) = 3;
+    B(1, 1) = 6;
+    B(1, 2) = -5;
+    B(2, 2) = -1;
+    B.build();
+    
+    SparseMatrix C = A*B;
+    
+    SparseMatrix D = B*(A*B);
+//    assert(D(2,2) == 22);
+//    assert(D(0,2) == -67);
+    
+    SparseMatrix E;
+    E = (A*B)*C;
     
     return 1;
 }

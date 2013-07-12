@@ -49,10 +49,17 @@ namespace oocholmod {
         
         virtual ~SparseMatrix();
         
+        // Addition
         friend SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
         friend SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
         friend SparseMatrix&& operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
         friend SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
+        
+        // Multiplication
+        friend SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS);
+        friend SparseMatrix&& operator*(SparseMatrix&& LHS, const SparseMatrix& RHS);
+        friend SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
+        friend SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
         
         void build(bool readOnly = false);
         
@@ -163,11 +170,16 @@ namespace oocholmod {
 #endif
     };
     
-    
+    // Addition
     SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
     SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
     SparseMatrix&& operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
     SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
     
+    // Multiplication
+    SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS);
+    SparseMatrix&& operator*(SparseMatrix&& LHS, const SparseMatrix& RHS);
+    SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
+    SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
 }
 
