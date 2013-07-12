@@ -57,6 +57,7 @@ TINYTEST_ADD_TEST(TestCaseObj);
 TINYTEST_ADD_TEST(AddTestObj);
 TINYTEST_ADD_TEST(TestCaseFunctionOperatorObj);
 TINYTEST_ADD_TEST(MultiplyMatrixMatrixTestObj);
+TINYTEST_ADD_TEST(MultiplyScalarMatrixTestObj);
 TINYTEST_ADD_TEST(MultiplyTestObj);
 TINYTEST_ADD_TEST(FillTestObj);
 TINYTEST_ADD_TEST(DotTestObj);

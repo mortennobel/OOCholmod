@@ -388,4 +388,35 @@ namespace oocholmod {
     {
         return std::move(LHS) * RHS;
     }
+    
+    SparseMatrix operator*(const SparseMatrix& LHS, const double& RHS)
+    {
+        assert(LHS.sparse);
+        cholmod_dense *dense = cholmod_zeros(1, 1, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        ((double*)dense->x)[0] = RHS;
+        cholmod_sparse *sparse = cholmod_copy_sparse(LHS.sparse, ConfigSingleton::getCommonPtr()); // NOTE: Copying!!!
+        cholmod_scale(dense, CHOLMOD_SCALAR, sparse, ConfigSingleton::getCommonPtr());
+        cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
+        return SparseMatrix(sparse);
+    }
+    
+    SparseMatrix&& operator*(SparseMatrix&& LHS, const double& RHS)
+    {
+        assert(LHS.sparse);
+        cholmod_dense *dense = cholmod_zeros(1, 1, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        ((double*)dense->x)[0] = RHS;
+        cholmod_scale(dense, CHOLMOD_SCALAR, LHS.sparse, ConfigSingleton::getCommonPtr());
+        cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
+        return std::move(LHS);
+    }
+    
+    SparseMatrix operator*(const double& LHS, const SparseMatrix& RHS)
+    {
+        return RHS * LHS;
+    }
+    
+    SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS)
+    {
+        return std::move(RHS) * LHS;
+    }
 }

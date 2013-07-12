@@ -204,6 +204,27 @@ int MultiplyMatrixMatrixTestObj(){
     return 1;
 }
 
+int MultiplyScalarMatrixTestObj(){
+    SparseMatrix A(3,3);
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
+    A.build();
+    
+    SparseMatrix B = A*0.1;
+    SparseMatrix C = -13.4*(A*B);
+    
+    A = 0.3 * A;
+    A.print();
+//    assert(C(2,2) == 281.4);
+//    assert(C(0,2) == 40.2);
+    
+    return 1;
+}
+
+
 int MultiplyTestObj(){
     SparseMatrix A{3,3};
     A(0, 0) = 1;
