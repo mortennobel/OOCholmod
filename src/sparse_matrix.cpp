@@ -394,7 +394,7 @@ namespace oocholmod {
         assert(LHS.sparse);
         cholmod_dense *dense = cholmod_zeros(1, 1, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
         ((double*)dense->x)[0] = RHS;
-        cholmod_sparse *sparse = cholmod_copy_sparse(LHS.sparse, ConfigSingleton::getCommonPtr()); // NOTE: Copying!!!
+        cholmod_sparse *sparse = cholmod_copy_sparse(LHS.sparse, ConfigSingleton::getCommonPtr());
         cholmod_scale(dense, CHOLMOD_SCALAR, sparse, ConfigSingleton::getCommonPtr());
         cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
         return SparseMatrix(sparse);
@@ -428,14 +428,14 @@ namespace oocholmod {
         ncol = static_cast<int>(sparse->ncol);
     }
     
-    SparseMatrix transpose(const SparseMatrix& M)
+    SparseMatrix transposed(const SparseMatrix& M)
     {
         assert(M.symmetry == ASYMMETRIC);
         cholmod_sparse *sparse = cholmod_transpose(M.sparse, 1, ConfigSingleton::getCommonPtr());
         return SparseMatrix(sparse);
     }
     
-    SparseMatrix&& transpose(SparseMatrix&& M)
+    SparseMatrix&& transposed(SparseMatrix&& M)
     {
         assert(M.symmetry == ASYMMETRIC);
         cholmod_sparse *sparse = cholmod_transpose(M.sparse, 1, ConfigSingleton::getCommonPtr());

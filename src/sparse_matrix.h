@@ -68,8 +68,8 @@ namespace oocholmod {
         
         // Transpose
         void transpose();
-        friend SparseMatrix transpose(const SparseMatrix& M);
-        friend SparseMatrix&& transpose(SparseMatrix&& M);
+        friend SparseMatrix transposed(const SparseMatrix& M);
+        friend SparseMatrix&& transposed(SparseMatrix&& M);
         
         void build(bool readOnly = false);
         
@@ -198,8 +198,8 @@ namespace oocholmod {
     SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
     
     // Transpose
-    SparseMatrix transpose(const SparseMatrix& M);
-    SparseMatrix&& transpose(SparseMatrix&& M);
+    SparseMatrix transposed(const SparseMatrix& M);
+    SparseMatrix&& transposed(SparseMatrix&& M);
     
 }
 
