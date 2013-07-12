@@ -1,24 +1,26 @@
 //
-//  CholmodSparse.cpp
+//  SparseMatrix.cpp
 //  OOCholmod
 //
 //  Created by Morten Nobel-Jørgensen on 1/21/13.
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0 
 
-#include "CholmodSparse.h"
+#include "sparse_matrix.h"
 #include <cassert>
 
-#include "CholmodDenseVector.h"
-
+#include "dense_vector.h"
+#include "config_singleton.h"
 
 using namespace std;
 
 // bad coffee odd food
 #define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
 
-CholmodSparse::CholmodSparse(unsigned int nrow, unsigned int ncol, cholmod_common *Common, int maxSize)
-:Common(Common), sparse(NULL), nrow(nrow), ncol(ncol)
+namespace oocholmod{
+
+SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, int maxSize)
+:sparse(NULL), nrow(nrow), ncol(ncol)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
 #endif
@@ -29,7 +31,7 @@ CholmodSparse::CholmodSparse(unsigned int nrow, unsigned int ncol, cholmod_commo
     } else {
         elements = maxSize;
     }
-    triplet = cholmod_allocate_triplet(nrow, ncol, elements, (int)SYMMETRIC_UPPER, CHOLMOD_REAL, Common);
+    triplet = cholmod_allocate_triplet(nrow, ncol, elements, (int)SYMMETRIC_UPPER, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
     values = (double *)triplet->x;
     iRow = (int *)triplet->i;
 	jColumn = (int *)triplet->j;
@@ -40,8 +42,8 @@ CholmodSparse::CholmodSparse(unsigned int nrow, unsigned int ncol, cholmod_commo
 #endif
 }
 
-CholmodSparse::CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common)
-:sparse(sparse), Common(Common),  nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol)
+SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
+:sparse(sparse), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
 #endif
@@ -49,13 +51,12 @@ CholmodSparse::CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common)
     buildLookupIndexFromSparse();
 }
 
-CholmodSparse::CholmodSparse(CholmodSparse&& move)
-:Common(move.Common), sparse(move.sparse), triplet(move.triplet), nrow(move.nrow), ncol(move.ncol), lookupIndex(std::move(move.lookupIndex)), iRow(move.iRow), jColumn(move.jColumn), symmetry(move.symmetry)
+SparseMatrix::SparseMatrix(SparseMatrix&& move)
+:sparse(move.sparse), triplet(move.triplet), nrow(move.nrow), ncol(move.ncol), lookupIndex(std::move(move.lookupIndex)), iRow(move.iRow), jColumn(move.jColumn), symmetry(move.symmetry)
 #ifdef DEBUG
     ,magicNumber(move.magicNumber), maxElements(move.maxElements)
 #endif
 {
-    move.Common = nullptr;
     move.sparse = nullptr;
     move.triplet = nullptr;
     move.values = nullptr;
@@ -67,16 +68,15 @@ CholmodSparse::CholmodSparse(CholmodSparse&& move)
 #endif
 }
 
-CholmodSparse& CholmodSparse::operator=(CholmodSparse&& other){
+SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other){
     if (this != &other){
         if (sparse != NULL){
-            cholmod_free_sparse(&sparse, Common);
+            cholmod_free_sparse(&sparse, ConfigSingleton::getCommonPtr());
         }
         if (triplet != NULL){
-            cholmod_free_triplet(&triplet, Common);
+            cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
         }
         
-        Common = other.Common;
         sparse = other.sparse;
         triplet = other.triplet;
         nrow = other.nrow;
@@ -94,24 +94,24 @@ CholmodSparse& CholmodSparse::operator=(CholmodSparse&& other){
 }
 
 
-CholmodSparse::~CholmodSparse(){
-    if (Common != nullptr){
+SparseMatrix::~SparseMatrix(){
+    if (sparse != nullptr || triplet != nullptr){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         magicNumber = 0;
 #endif
         if (sparse != NULL){
-            cholmod_free_sparse(&sparse, Common);
+            cholmod_free_sparse(&sparse, ConfigSingleton::getCommonPtr());
             sparse = NULL;
         }
         if (triplet != NULL){
-            cholmod_free_triplet(&triplet, Common);
+            cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
             triplet = NULL;
         }
     }
 }
 
-void CholmodSparse::setNullSpace(CholmodDenseVector *N){
+void SparseMatrix::setNullSpace(CholmodDenseVector *N){
 #ifdef DEBUG
     assert(sparse != NULL);
     assert(magicNumber == MAGIC_NUMBER);
@@ -135,12 +135,12 @@ void CholmodSparse::setNullSpace(CholmodDenseVector *N){
     }
 }
 
-void CholmodSparse::setNullSpace(CholmodDenseVector& N){
+void SparseMatrix::setNullSpace(CholmodDenseVector& N){
     setNullSpace(&N);
 }
 
 // computes this * X and store the result in res
-void CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
+void SparseMatrix::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
 #ifdef DEBUG
     assert(magicNumber == MAGIC_NUMBER);
     assert(res != NULL);
@@ -153,26 +153,26 @@ void CholmodSparse::multiply(CholmodDenseVector *X, CholmodDenseVector *res, dou
     double _alpha[2] = {alpha,alpha};
     double _beta[2] = {beta,beta};
     // int cholmod_sdmult(cholmod_sparse *A, ￼￼int transpose, double alpha [2], double beta [2], cholmod_dense *X, cholmod_dense *Y, cholmod_common *Common );
-    cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), Common);
+    cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), ConfigSingleton::getCommonPtr());
 }
 
-CholmodDenseVector CholmodSparse::multiply(CholmodDenseVector& X, double alpha, double beta){
-    CholmodDenseVector res(X.getSize(), Common);
+CholmodDenseVector SparseMatrix::multiply(CholmodDenseVector& X, double alpha, double beta){
+    CholmodDenseVector res(X.getSize());
     multiply(X, res, alpha, beta);
     return res;
 }
 
-void CholmodSparse::multiply(CholmodDenseVector& X, CholmodDenseVector& res, double alpha, double beta){
+void SparseMatrix::multiply(CholmodDenseVector& X, CholmodDenseVector& res, double alpha, double beta){
     multiply(&X, &res, alpha, beta);
 }
 
-void CholmodSparse::build(bool readOnly){
+void SparseMatrix::build(bool readOnly){
 #ifdef DEBUG
     assert(sparse == NULL);
     assert(magicNumber == MAGIC_NUMBER);
 #endif
-    sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, Common);
-    cholmod_free_triplet(&triplet, Common);
+    sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, ConfigSingleton::getCommonPtr());
+    cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
     triplet = NULL;
     values = NULL;
     iRow = NULL;
@@ -188,7 +188,7 @@ void CholmodSparse::build(bool readOnly){
     }
 }
 
-void CholmodSparse::buildLookupIndexFromSparse(){
+void SparseMatrix::buildLookupIndexFromSparse(){
 #ifdef DEBUG
     assert(magicNumber == MAGIC_NUMBER);
 #endif
@@ -206,26 +206,26 @@ void CholmodSparse::buildLookupIndexFromSparse(){
     }
 }
 
-CholmodFactor *CholmodSparse::analyzePtr(){
+CholmodFactor *SparseMatrix::analyzePtr(){
 #ifdef DEBUG
     assert(sparse != NULL);
     assert(magicNumber == MAGIC_NUMBER);
 #endif
-    cholmod_factor *L = cholmod_analyze(sparse, Common);
-    return new CholmodFactor(L, Common);
+    cholmod_factor *L = cholmod_analyze(sparse, ConfigSingleton::getCommonPtr());
+    return new CholmodFactor(L);
 }
 
-CholmodFactor CholmodSparse::analyze(){
+CholmodFactor SparseMatrix::analyze(){
 #ifdef DEBUG
     assert(sparse != NULL);
     assert(magicNumber == MAGIC_NUMBER);
 #endif
-    cholmod_factor *L = cholmod_analyze(sparse, Common);
-    return CholmodFactor(L, Common);
+    cholmod_factor *L = cholmod_analyze(sparse, ConfigSingleton::getCommonPtr());
+    return CholmodFactor(L);
 }
 
 
-void CholmodSparse::zero(){
+void SparseMatrix::zero(){
 #ifdef DEBUG
     assert(sparse != NULL);
     assert(magicNumber == MAGIC_NUMBER);
@@ -233,13 +233,13 @@ void CholmodSparse::zero(){
     memset(sparse->x, 0, sparse->nzmax * sizeof(double));
 }
 
-void CholmodSparse::print(const char* name){
+void SparseMatrix::print(const char* name){
 #ifdef DEBUG
     assert(magicNumber == MAGIC_NUMBER);
 #endif
     if (sparse){
-        cholmod_print_sparse(sparse, name, Common);
-        cholmod_dense *dense = cholmod_sparse_to_dense(sparse, Common);
+        cholmod_print_sparse(sparse, name, ConfigSingleton::getCommonPtr());
+        cholmod_dense *dense = cholmod_sparse_to_dense(sparse, ConfigSingleton::getCommonPtr());
         int n_rows = (int)dense->nrow;
         int n_cols = (int)dense->ncol;
         for (int r = 0; r  < n_rows; r++)
@@ -250,7 +250,7 @@ void CholmodSparse::print(const char* name){
             }
             cout << endl;
         }
-        cholmod_free_dense(&dense, Common);
+        cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
         cout << endl;
         cout << "Packed "<<sparse->packed<< endl;
         cout << "p: ";
@@ -267,12 +267,12 @@ void CholmodSparse::print(const char* name){
         for (int i=0;i<sparse->nzmax;i++){
             printf("%3.3f ", ((double*)sparse->x)[i]);
         }
-        cholmod_free_dense(&dense, Common);
+        cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
         cout << endl;
     }
 }
 
-void CholmodSparse::assertValidIndex(unsigned int row, unsigned int column){
+void SparseMatrix::assertValidIndex(unsigned int row, unsigned int column){
 #ifdef DEBUG
     assert(symmetry == SYMMETRIC_UPPER);
     assert(row < nrow);
@@ -286,13 +286,13 @@ void CholmodSparse::assertValidIndex(unsigned int row, unsigned int column){
 #endif
 }
 
-void CholmodSparse::assertHasSparse(){
+void SparseMatrix::assertHasSparse(){
 #ifdef DEBUG
     assert(sparse != NULL); // matrix must be build
 #endif
 }
 
-void CholmodSparse::assertValidInitAddValue(unsigned int row, unsigned int column, double value){
+void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column, double value){
 #ifdef DEBUG
     assert(sparse == NULL); // must be called before matrix build
     assert(triplet->nnz < maxElements);
@@ -308,4 +308,6 @@ void CholmodSparse::assertValidInitAddValue(unsigned int row, unsigned int colum
     assert (row < maxId);
     assert (column < maxId);
 #endif
+}
+    
 }

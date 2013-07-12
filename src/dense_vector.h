@@ -1,13 +1,12 @@
 //
-//  CholmodDenseVector.h
+//  dense_vector.h
 //  OOCholmod
 //
 //  Created by Morten Nobel-Jørgensen on 1/21/13.
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0 
 
-#ifndef __CholmodTest__CholmodDenseVector__
-#define __CholmodTest__CholmodDenseVector__
+#pragma once
 
 #include <iostream>
 #include <cassert>
@@ -15,10 +14,12 @@
 
 #include "cholmod.h"
 
+namespace oocholmod {
+    
 class CholmodDenseVector {
 public:
-    CholmodDenseVector(unsigned int size, cholmod_common *c);
-    CholmodDenseVector(cholmod_dense *x, cholmod_common *Common, unsigned int size);
+    CholmodDenseVector(unsigned int size);
+    CholmodDenseVector(cholmod_dense *x, unsigned int size);
     CholmodDenseVector(CholmodDenseVector&& move);
     CholmodDenseVector& operator=(CholmodDenseVector&& other);
     virtual ~CholmodDenseVector();
@@ -56,13 +57,13 @@ public:
     inline cholmod_dense *getHandle() { return x; }
     void print(const char* name);
 private:
-    CholmodDenseVector(const CholmodDenseVector& that); // prevent copy constructor
+    CholmodDenseVector(const CholmodDenseVector& that) = delete; // prevent copy constructor
     cholmod_dense *x;
-    cholmod_common *Common;
     unsigned int size;
 #ifdef DEBUG
     unsigned long magicNumber;
 #endif
 };
+    
+}
 
-#endif /* defined(__CholmodTest__CholmodDenseVector__) */

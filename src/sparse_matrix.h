@@ -1,13 +1,12 @@
 //
-//  CholmodSparse.h
+//  sparse_matrix.h
 //  OOCholmod
 //
 //  Created by Morten Nobel-Jørgensen on 1/21/13.
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0 
 
-#ifndef __CholmodTest__CholmodSparse__
-#define __CholmodTest__CholmodSparse__
+#pragma once
 
 #include <iostream>
 #include <set>
@@ -15,8 +14,10 @@
 #include <cmath>
 
 #include "cholmod.h"
-#include "CholmodFactor.h"
+#include "factor.h"
 
+namespace oocholmod {
+    
 // forward declaration
 class CholmodDenseVector;
 
@@ -35,17 +36,17 @@ enum Symmetry {
 /// 3. Fill matrix with elements using setValue or addValue
 ///
 /// At any point after the matrix has been build, you can call 
-class CholmodSparse {
+class SparseMatrix {
 public:
     /// nrow # of rows of A
     /// ncol # of columns of A
     /// maxSize (size allocated before build). 0 means triangular
-    CholmodSparse(unsigned int nrow, unsigned int ncol, cholmod_common *Common, int maxSize = 0);
-    CholmodSparse(cholmod_sparse *sparse, cholmod_common *Common);
-    CholmodSparse(CholmodSparse&& move);
-    CholmodSparse& operator=(CholmodSparse&& other);
+    SparseMatrix(unsigned int nrow, unsigned int ncol, int maxSize = 0);
+    SparseMatrix(cholmod_sparse *sparse);
+    SparseMatrix(SparseMatrix&& move);
+    SparseMatrix& operator=(SparseMatrix&& other);
     
-    virtual ~CholmodSparse();
+    virtual ~SparseMatrix();
     
     void build(bool readOnly = false);
     
@@ -128,9 +129,8 @@ public:
     void print(const char* name);
 
 private:
-    CholmodSparse(const CholmodSparse& that); // prevent copy constructor
+    SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
     void buildLookupIndexFromSparse();
-    cholmod_common *Common;
     cholmod_sparse *sparse;
     cholmod_triplet *triplet;
     unsigned int nrow;
@@ -156,5 +156,6 @@ private:
     int maxElements;
 #endif
 };
+    
+}
 
-#endif /* defined(__CholmodTest__CholmodSparse__) */

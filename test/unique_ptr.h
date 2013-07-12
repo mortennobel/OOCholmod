@@ -10,18 +10,17 @@
 #include <vector>
 #include <cmath>
 
-#include "CholmodSparse.h"
-#include "CholmodFactor.h"
-#include "CholmodDenseVector.h"
+#include "sparse_matrix.h"
+#include "factor.h"
+#include "dense_vector.h"
 #include "cpp14.h"
 
 using namespace std;
+using namespace oocholmod;
 
 
 int TestCaseUniquePtr(){
-    cholmod_common com;
-    cholmod_start(&com);
-    auto A = make_unique<CholmodSparse>(3,3,&com);
+    auto A = make_unique<SparseMatrix>(3,3);
     
     A->initAddValue(0, 0);
     A->initAddValue(0, 1);
@@ -45,7 +44,7 @@ int TestCaseUniquePtr(){
     A->setValue(1, 2, 5);
     A->setValue(2, 2, -1);
     
-    auto b = make_unique<CholmodDenseVector>(3, &com);
+    auto b = make_unique<CholmodDenseVector>(3);
     (*b)[0] = 6;
     (*b)[1] = -4;
     (*b)[2] = 27;
@@ -81,10 +80,7 @@ int TestCaseUniquePtr(){
 }
 
 int MultiplyTestUniquePtr(){
-    //cout << "Multiply test"<<endl;
-    cholmod_common com;
-    cholmod_start(&com);
-    auto A = make_unique<CholmodSparse>(3,3,&com);
+    auto A = make_unique<SparseMatrix>(3,3);
     A->initAddValue(0, 0, 1);
     A->initAddValue(0, 1, 1);
     A->initAddValue(0, 2, 1);
@@ -93,12 +89,12 @@ int MultiplyTestUniquePtr(){
     A->build();
     //A->print("A");
     
-    auto x = make_unique<CholmodDenseVector>(3, &com);
+    auto x = make_unique<CholmodDenseVector>(3);
     (*x)[0] = 3;
     (*x)[1] = 7;
     (*x)[2] = 9;
     
-    auto res = make_unique<CholmodDenseVector>(3, &com);
+    auto res = make_unique<CholmodDenseVector>(3);
     
     A->multiply(x.get(), res.get());
     //res->print("b");
@@ -108,9 +104,7 @@ int MultiplyTestUniquePtr(){
 }
 
 int FillTestUniquePtr(){
-    cholmod_common com;
-    cholmod_start(&com);
-    auto res = make_unique<CholmodDenseVector>(3, &com);
+    auto res = make_unique<CholmodDenseVector>(3);
     res->fill(123);
     double expected[3] = {123, 123, 123};
     assertEqual(expected, res->getData(), 3);
@@ -118,10 +112,8 @@ int FillTestUniquePtr(){
 }
 
 int DotTestUniquePtr(){
-    cholmod_common com;
-    cholmod_start(&com);
-    auto a = make_unique<CholmodDenseVector>(3, &com);
-    auto b = make_unique<CholmodDenseVector>(3, &com);
+    auto a = make_unique<CholmodDenseVector>(3);
+    auto b = make_unique<CholmodDenseVector>(3);
     (*a)[0] = 1;
     (*a)[1] = 2;
     (*a)[2] = 3;
@@ -138,9 +130,7 @@ int DotTestUniquePtr(){
 }
 
 int LengthTestUniquePtr(){
-    cholmod_common com;
-    cholmod_start(&com);
-    auto a = make_unique<CholmodDenseVector>(3, &com);
+    auto a = make_unique<CholmodDenseVector>(3);
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
@@ -153,14 +143,12 @@ int LengthTestUniquePtr(){
 }
 
 int ScaleTestUniquePtr(){
-    cholmod_common com;
-    cholmod_start(&com);
-    auto a = make_unique<CholmodDenseVector>(3, &com);
+    auto a = make_unique<CholmodDenseVector>(3);
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    auto b = make_unique<CholmodDenseVector>(3, &com);
+    auto b = make_unique<CholmodDenseVector>(3);
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -172,14 +160,12 @@ int ScaleTestUniquePtr(){
 
 
 int DivideTestUniquePtr(){
-    cholmod_common com;
-    cholmod_start(&com);
-    auto a = make_unique<CholmodDenseVector>(3, &com);
+    auto a = make_unique<CholmodDenseVector>(3);
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    auto b = make_unique<CholmodDenseVector>(3, &com);
+    auto b = make_unique<CholmodDenseVector>(3);
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -193,14 +179,12 @@ int DivideTestUniquePtr(){
 }
 
 int MultiplyVectorTestUniquePtr(){
-    cholmod_common com;
-    cholmod_start(&com);
-    auto a = make_unique<CholmodDenseVector>(3, &com);
+    auto a = make_unique<CholmodDenseVector>(3);
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    auto b = make_unique<CholmodDenseVector>(3, &com);
+    auto b = make_unique<CholmodDenseVector>(3);
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -214,15 +198,13 @@ int MultiplyVectorTestUniquePtr(){
 }
 
 int SingularTestUniquePtr(){
-    cholmod_common com;
-    cholmod_start(&com);
-    auto A = make_unique<CholmodSparse>(3,3,&com);
+    auto A = make_unique<SparseMatrix>(3,3);
     
     A->initAddValue(2, 2, 1);
     
     A->build();
     
-    auto b = make_unique<CholmodDenseVector>(3, &com);
+    auto b = make_unique<CholmodDenseVector>(3);
     (*b)[0] = 0;
     (*b)[1] = 1;
     (*b)[2] = 0;

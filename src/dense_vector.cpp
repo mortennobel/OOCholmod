@@ -5,24 +5,27 @@
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0 
 
-#include "CholmodDenseVector.h"
+#include "dense_vector.h"
 #include <cassert>
 #include <vecLib/cblas.h>
+#include "config_singleton.h"
 
+namespace oocholmod {
+    
 // bad coffee odd food
 #define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
 
-CholmodDenseVector::CholmodDenseVector(unsigned int size, cholmod_common *Common)
-:Common(Common), size(size)
+CholmodDenseVector::CholmodDenseVector(unsigned int size)
+:size(size)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
 #endif
 {
-    x = cholmod_allocate_dense(size, 1, size /* leading dimension (equal rows) */ , CHOLMOD_REAL, Common);
+    x = cholmod_allocate_dense(size, 1, size /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
 }
 
-CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, cholmod_common *Common, unsigned int size)
-:x(x), Common(Common), size(size)
+CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, unsigned int size)
+:x(x), size(size)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
 #endif
@@ -30,13 +33,12 @@ CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, cholmod_common *Common,
 }
 
 CholmodDenseVector::CholmodDenseVector(CholmodDenseVector&& move)
-:x(move.x), Common(move.Common), size(move.size)
+:x(move.x), size(move.size)
 #ifdef DEBUG
 ,magicNumber(move.magicNumber)
 #endif
 {
     move.x = nullptr;
-    move.Common = nullptr;
     move.size = 0;
 #ifdef DEBUG
     magicNumber = 0;
@@ -46,17 +48,15 @@ CholmodDenseVector::CholmodDenseVector(CholmodDenseVector&& move)
 CholmodDenseVector& CholmodDenseVector::operator=(CholmodDenseVector&& other){
     if (this != &other){
         if (x != nullptr){
-            cholmod_free_dense(&x, Common);
+            cholmod_free_dense(&x, ConfigSingleton::getCommonPtr());
         }
         x = other.x;
-        Common = other.Common;
         size = other.size;
 #ifdef DEBUG
         magicNumber = other.magicNumber;
 #endif
 
         other.x = nullptr;
-        other.Common = nullptr;
         other.size = 0;
 #ifdef DEBUG
         other.magicNumber = 0;
@@ -67,12 +67,12 @@ CholmodDenseVector& CholmodDenseVector::operator=(CholmodDenseVector&& other){
 }
 
 CholmodDenseVector::~CholmodDenseVector(){
-    if (Common != nullptr){
+    if (x != nullptr){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         magicNumber = 0;
 #endif
-        cholmod_free_dense(&x, Common);
+        cholmod_free_dense(&x, ConfigSingleton::getCommonPtr());
         x = NULL;
     }
 }
@@ -208,7 +208,7 @@ void CholmodDenseVector::print(const char* name){
 #ifdef DEBUG
     assert(magicNumber == MAGIC_NUMBER);
 #endif
-    cholmod_print_dense(x, name, Common);
+    cholmod_print_dense(x, name, ConfigSingleton::getCommonPtr());
     int n_rows = (int)x->nrow;
     int n_cols = (int)x->ncol;
     for (int r = 0; r  < n_rows; r++)
@@ -220,4 +220,6 @@ void CholmodDenseVector::print(const char* name){
         std::cout << std::endl;
     }
     std::cout << std::endl;
+}
+    
 }
