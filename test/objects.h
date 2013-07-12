@@ -23,31 +23,31 @@ using namespace oocholmod;
 
 int TestCaseObj(){
     
-    SparseMatrix A(3,3);
+    SparseMatrix A{3,3};
     
-    A.initAddValue(0, 0);
-    A.initAddValue(0, 1);
-    A.initAddValue(0, 2);
-    A.initAddValue(1, 2);
-    A.initAddValue(2, 2);
-    A.initAddValue(2, 2);
-    A.initAddValue(2, 2);
-    A.initAddValue(2, 2);
-    A.initAddValue(2, 2);
-    A.initAddValue(2, 2);
-    A.initAddValue(2, 2);
-    A.initAddValue(2, 2);
+    A(0, 0);
+    A(0, 1);
+    A(0, 2);
+    A(1, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
     
     A.build();
     
     // Ax = b
-    A.setValue(0, 0, 1);
-    A.setValue(0, 1, 1);
-    A.setValue(0, 2, 1);
-    A.setValue(1, 2, 5);
-    A.setValue(2, 2, -1);
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
     
-    CholmodDenseVector b(3);
+    CholmodDenseVector b{3};
     b[0] = 6;
     b[1] = -4;
     b[2] = 27;
@@ -64,11 +64,11 @@ int TestCaseObj(){
     
     // update values
     A.zero();
-    A.setValue(0, 0, 2);
-    A.setValue(0, 1, 9);
-    A.setValue(0, 2, 7);
-    A.setValue(1, 2, 8);
-    A.setValue(2, 2, -3);
+    A(0, 0) = 2;
+    A(0, 1) = 9;
+    A(0, 2) = 7;
+    A(1, 2) = 8;
+    A(2, 2) = -3;
     
     factor.factorize(A);
     //A->print("A");
@@ -85,19 +85,19 @@ int TestCaseObj(){
 int AddTestObj()
 {
     SparseMatrix A(3,3);
-    A.initAddValue(0, 0, 1);
-    A.initAddValue(0, 1, 1);
-    A.initAddValue(0, 2, 1);
-    A.initAddValue(1, 2, 5);
-    A.initAddValue(2, 2, -1);
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
     A.build();
     
     SparseMatrix B(3,3);
-    B.initAddValue(0, 0, 2);
-    B.initAddValue(0, 1, -1);
-    B.initAddValue(0, 2, 3);
-    B.initAddValue(1, 2, -5);
-    B.initAddValue(2, 2, -1);
+    B(0, 0) = 2;
+    B(0, 1) = -1;
+    B(0, 2) = 3;
+    B(1, 2) = -5;
+    B(2, 2) = -1;
     B.build();
     
     SparseMatrix C = A + B;
@@ -113,17 +113,78 @@ int AddTestObj()
     return 1;
 }
 
-int MultiplyTestObj(){
-    SparseMatrix A(3,3);
-    A.initAddValue(0, 0, 1);
-    A.initAddValue(0, 1, 1);
-    A.initAddValue(0, 2, 1);
-    A.initAddValue(1, 2, 5);
-    A.initAddValue(2, 2, -1);
+int TestCaseFunctionOperatorObj(){
+    
+    SparseMatrix A{3,3};
+    
+    A(0, 0) = 0;
+    A(0, 1);
+    A(0, 2);
+    A(1, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    A(2, 2);
+    
     A.build();
+    
+    // Ax = b
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
+    
+    CholmodDenseVector b{3};
+    b[0] = 6;
+    b[1] = -4;
+    b[2] = 27;
+    //b->print("b");
+    
+    //A->print("A");
+    CholmodFactor factor = A.analyze();
+    bool res = factor.factorize(A);
+    //cout << "factor->factorize(A) "<<res<<endl;
+    CholmodDenseVector x = factor.solve(b);
+    //x->print("x");
+    double expected[] = {2.78571f,4.57143f,-1.35714f};
+    assertEqual(expected, x.getData(), 3);
+    
+    // update values
+    A.zero();
+    A(0, 0) = 2;
+    A(0, 1) = 9;
+    A(0, 2) = 7;
+    A(1, 2) = 8;
+    A(2, 2) = -3;
+    
+    factor.factorize(A);
     //A->print("A");
     
-    CholmodDenseVector x(3);
+    x = factor.solve(b);
+    //x->print("x");
+    
+    double expected2[] = {1.0935,1.76937,-1.73019};
+    assertEqual(expected2, x.getData(), 3);
+    
+    return 1;
+}
+
+int MultiplyTestObj(){
+    SparseMatrix A{3,3};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
+    A.build();
+    //A.print("A");
+    
+    CholmodDenseVector x{3};
     x[0] = 3;
     x[1] = 7;
     x[2] = 9;
@@ -145,8 +206,8 @@ int FillTestObj(){
 }
 
 int DotTestObj(){
-    CholmodDenseVector a(3);
-    CholmodDenseVector b(3);
+    CholmodDenseVector a{3};
+    CholmodDenseVector b{3};
     a[0] = 1;
     a[1] = 2;
     a[2] = 3;
@@ -162,7 +223,7 @@ int DotTestObj(){
 }
 
 int LengthTestObj(){
-    CholmodDenseVector a(3);
+    CholmodDenseVector a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
@@ -174,12 +235,12 @@ int LengthTestObj(){
 }
 
 int ScaleTestObj(){
-    CholmodDenseVector a(3);
+    CholmodDenseVector a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    CholmodDenseVector b(3);
+    CholmodDenseVector b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -190,12 +251,12 @@ int ScaleTestObj(){
 
 
 int DivideTestObj(){
-    CholmodDenseVector a(3);
+    CholmodDenseVector a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    CholmodDenseVector b(3);
+    CholmodDenseVector b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -208,12 +269,12 @@ int DivideTestObj(){
 }
 
 int MultiplyVectorTestObj(){
-    CholmodDenseVector a(3);
+    CholmodDenseVector a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    CholmodDenseVector b(3);
+    CholmodDenseVector b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -226,13 +287,13 @@ int MultiplyVectorTestObj(){
 }
 
 int SingularTestObj(){
-    SparseMatrix A(3,3);
+    SparseMatrix A{3,3};
     
-    A.initAddValue(2, 2, 1);
+    A(2, 2) = 1;
     
     A.build();
     
-    CholmodDenseVector b(3);
+    CholmodDenseVector b{3};
     b[0] = 0;
     b[1] = 1;
     b[2] = 0;
