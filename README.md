@@ -3,10 +3,11 @@ OOCholmod
 
 An object oriented C++ wrapper for Timothy A. Davis' Cholmod library (part of SuiteSparse).
 The main purpose of the library is to provide an easy way use Cholmod from C++ (without comprimising the performance).
+The library also has a wrapper for dense vectors (which is accelerated by BLAS).
 
 Usage:
 ======
-See example/main.cpp
+See test/object.h or unique_ptr.h (raw pointers is disencourage)
 
 
 License:
