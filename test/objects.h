@@ -113,6 +113,12 @@ int AddTestObj()
     return 1;
 }
 
+int TransposeTestObj()
+{
+    // Cannot do before asymmetric matrices are supported.
+    return 1;
+}
+
 int TestCaseFunctionOperatorObj(){
     
     SparseMatrix A{3,3};

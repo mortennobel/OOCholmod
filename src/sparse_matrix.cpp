@@ -419,4 +419,30 @@ namespace oocholmod {
     {
         return std::move(RHS) * LHS;
     }
+    
+    void SparseMatrix::transpose()
+    {
+        assert(symmetry == ASYMMETRIC);
+        sparse = cholmod_transpose(sparse, 1, ConfigSingleton::getCommonPtr());
+        nrow = static_cast<int>(sparse->nrow);
+        ncol = static_cast<int>(sparse->ncol);
+    }
+    
+    SparseMatrix transpose(const SparseMatrix& M)
+    {
+        assert(M.symmetry == ASYMMETRIC);
+        cholmod_sparse *sparse = cholmod_transpose(M.sparse, 1, ConfigSingleton::getCommonPtr());
+        return SparseMatrix(sparse);
+    }
+    
+    SparseMatrix&& transpose(SparseMatrix&& M)
+    {
+        assert(M.symmetry == ASYMMETRIC);
+        cholmod_sparse *sparse = cholmod_transpose(M.sparse, 1, ConfigSingleton::getCommonPtr());
+        cholmod_free_sparse(&M.sparse, ConfigSingleton::getCommonPtr());
+        M.sparse = sparse;
+        M.nrow = static_cast<int>(sparse->nrow);
+        M.ncol = static_cast<int>(sparse->ncol);
+        return std::move(M);
+    }
 }

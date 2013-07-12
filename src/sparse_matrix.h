@@ -66,6 +66,11 @@ namespace oocholmod {
         friend SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
         friend SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
         
+        // Transpose
+        void transpose();
+        friend SparseMatrix transpose(const SparseMatrix& M);
+        friend SparseMatrix&& transpose(SparseMatrix&& M);
+        
         void build(bool readOnly = false);
         
         Factor *analyzePtr();
@@ -191,5 +196,10 @@ namespace oocholmod {
     SparseMatrix&& operator*(SparseMatrix&& LHS, const SparseMatrix& RHS);
     SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
     SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
+    
+    // Transpose
+    SparseMatrix transpose(const SparseMatrix& M);
+    SparseMatrix&& transpose(SparseMatrix&& M);
+    
 }
 
