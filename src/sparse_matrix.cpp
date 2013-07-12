@@ -130,7 +130,7 @@ void SparseMatrix::setNullSpace(CholmodDenseVector *N){
     }
     for (int i=0;i<v.getSize();i++){
         if (v[i] == 0){
-            this->setValue(i,i,1);
+            (*this)(i,i) = 1;
         }
     }
 }
@@ -288,13 +288,13 @@ void SparseMatrix::assertValidIndex(unsigned int row, unsigned int column){
 
 void SparseMatrix::assertHasSparse(){
 #ifdef DEBUG
-    assert(sparse != NULL); // matrix must be build
+    assert(sparse != nullptr); // matrix must be build
 #endif
 }
 
 void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column, double value){
 #ifdef DEBUG
-    assert(sparse == NULL); // must be called before matrix build
+    assert(sparse == nullptr); // must be called before matrix build
     assert(triplet->nnz < maxElements);
     assert(row < nrow);
     assert(column < ncol);

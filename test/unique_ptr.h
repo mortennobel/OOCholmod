@@ -22,27 +22,27 @@ using namespace oocholmod;
 int TestCaseUniquePtr(){
     auto A = make_unique<SparseMatrix>(3,3);
     
-    A->initAddValue(0, 0);
-    A->initAddValue(0, 1);
-    A->initAddValue(0, 2);
-    A->initAddValue(1, 2);
-    A->initAddValue(2, 2);
-    A->initAddValue(2, 2);
-    A->initAddValue(2, 2);
-    A->initAddValue(2, 2);
-    A->initAddValue(2, 2);
-    A->initAddValue(2, 2);
-    A->initAddValue(2, 2);
-    A->initAddValue(2, 2);
+    (*A)(0, 0);
+    (*A)(0, 1);
+    (*A)(0, 2);
+    (*A)(1, 2);
+    (*A)(2, 2);
+    (*A)(2, 2);
+    (*A)(2, 2);
+    (*A)(2, 2);
+    (*A)(2, 2);
+    (*A)(2, 2);
+    (*A)(2, 2);
+    (*A)(2, 2);
     
     A->build();
     
     // Ax = b
-    A->setValue(0, 0, 1);
-    A->setValue(0, 1, 1);
-    A->setValue(0, 2, 1);
-    A->setValue(1, 2, 5);
-    A->setValue(2, 2, -1);
+    (*A)(0, 0) = 1;
+    (*A)(0, 1) = 1;
+    (*A)(0, 2) = 1;
+    (*A)(1, 2) = 5;
+    (*A)(2, 2) = -1;
     
     auto b = make_unique<CholmodDenseVector>(3);
     (*b)[0] = 6;
@@ -62,11 +62,11 @@ int TestCaseUniquePtr(){
     
     // update values
     A->zero();
-    A->setValue(0, 0, 2);
-    A->setValue(0, 1, 9);
-    A->setValue(0, 2, 7);
-    A->setValue(1, 2, 8);
-    A->setValue(2, 2, -3);
+    (*A)(0, 0) = 2;
+    (*A)(0, 1) = 9;
+    (*A)(0, 2) = 7;
+    (*A)(1, 2) = 8;
+    (*A)(2, 2) = -3;
     
     factor->factorize(A.get());
     //A->print("A");
@@ -81,11 +81,11 @@ int TestCaseUniquePtr(){
 
 int MultiplyTestUniquePtr(){
     auto A = make_unique<SparseMatrix>(3,3);
-    A->initAddValue(0, 0, 1);
-    A->initAddValue(0, 1, 1);
-    A->initAddValue(0, 2, 1);
-    A->initAddValue(1, 2, 5);
-    A->initAddValue(2, 2, -1);
+    (*A)(0, 0) = 1;
+    (*A)(0, 1) = 1;
+    (*A)(0, 2) = 1;
+    (*A)(1, 2) = 5;
+    (*A)(2, 2) = -1;
     A->build();
     //A->print("A");
     
@@ -200,7 +200,7 @@ int MultiplyVectorTestUniquePtr(){
 int SingularTestUniquePtr(){
     auto A = make_unique<SparseMatrix>(3,3);
     
-    A->initAddValue(2, 2, 1);
+    (*A)(2, 2) = 1;
     
     A->build();
     

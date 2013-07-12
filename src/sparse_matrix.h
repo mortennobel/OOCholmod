@@ -76,22 +76,6 @@ public:
     void setNullSpace(CholmodDenseVector *N);
     void setNullSpace(CholmodDenseVector& N);
     
-    inline void initAddValue(unsigned int row, unsigned int column, double value=0) {
-        assertValidInitAddValue(row, column, value);
-        long k = key(row, column);
-        auto res = lookupIndex.find(k);
-        if (res != lookupIndex.end()) {
-            values[(*res).second] += value;
-            return;
-        }
-        lookupIndex[k] = (int)triplet->nnz;
-        iRow[triplet->nnz] = row;
-        jColumn[triplet->nnz] = column;
-        values[triplet->nnz] = value;
-        
-        triplet->nnz++;
-    }
-    
     // computes alpha*(A*X) + beta*Y
     // res is result
     // alpha is optional (default 1)
@@ -99,35 +83,21 @@ public:
     void multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha = 1, double beta = 0);
     void multiply(CholmodDenseVector& X, CholmodDenseVector& res, double alpha = 1, double beta = 0);
     CholmodDenseVector multiply(CholmodDenseVector& X, double alpha = 1, double beta = 0);
-    
-    inline double getValue(unsigned int row, unsigned int column){
-        assertHasSparse();
-        int index = getIndex(row, column);
-        return ((double*)sparse->x)[index];
-    }
 
-    inline void addValue(unsigned int row, unsigned int column, double value){
-        assertHasSparse();
-        int index = getIndex(row, column);
-        ((double*)sparse->x)[index] += value;
-    }
-    
-    
-    /// Set value of sparse matrix
-    /// Must be invoked after build
-    inline void setValue(unsigned int row, unsigned int column, double value){
-        assertHasSparse();
-        int index = getIndex(row, column);
-        ((double*)sparse->x)[index] += value;
-    }
-    
-    
     /// Get cholmod_sparse pointer
     inline cholmod_sparse *getHandle() { return sparse; }
     
     /// Print debugging information
     void print(const char* name);
-
+    
+    double& operator()(unsigned int row, unsigned int column) {
+        if (sparse != nullptr){
+            return getValue(row, column);
+        } else {
+            return initAddValue(row, column);
+        }
+        
+    }
 private:
     SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
     void buildLookupIndexFromSparse();
@@ -149,6 +119,28 @@ private:
     inline int getIndex(unsigned int row, unsigned int column) {
         assertValidIndex(row, column);
         return lookupIndex[key(row, column)];
+    }
+    inline double& initAddValue(unsigned int row, unsigned int column, double value=0) {
+        assertValidInitAddValue(row, column, value);
+        long k = key(row, column);
+        auto res = lookupIndex.find(k);
+        if (res != lookupIndex.end()) {
+            auto& pos = (*res).second;
+            values[pos] += value;
+            return values[pos];
+        }
+        lookupIndex[k] = (int)triplet->nnz;
+        iRow[triplet->nnz] = row;
+        jColumn[triplet->nnz] = column;
+        values[triplet->nnz] = value;
+        
+        triplet->nnz++;
+        return values[triplet->nnz - 1];
+    }
+    inline double& getValue(unsigned int row, unsigned int column){
+        assertHasSparse();
+        int index = getIndex(row, column);
+        return ((double*)sparse->x)[index];
     }
     Symmetry symmetry;
 #ifdef DEBUG

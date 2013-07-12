@@ -8,7 +8,8 @@
 
 #pragma once
 
-
+namespace oocholmod {
+    
 #if __cplusplus <= 201103L // if not C++14
 
 // http://en.cppreference.com/w/cpp/memory/unique_ptr/make_unique
@@ -20,3 +21,5 @@ std::unique_ptr<T> make_unique( Args&& ...args )
 }
 
 #endif
+    
+}
