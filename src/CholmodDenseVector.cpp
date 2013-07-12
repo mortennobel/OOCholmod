@@ -59,7 +59,7 @@ CholmodDenseVector& CholmodDenseVector::operator=(CholmodDenseVector&& other){
         other.Common = nullptr;
         other.size = 0;
 #ifdef DEBUG
-        magicNumber = 0;
+        other.magicNumber = 0;
 #endif
         
     }
