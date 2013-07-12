@@ -322,6 +322,7 @@ namespace oocholmod{
     
     SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS)
     {
+        assert(LHS.sparse && RHS.sparse);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
         double scale[] = {1.,1.};
         cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, scale, scale, true, true, ConfigSingleton::getCommonPtr());
@@ -347,6 +348,43 @@ namespace oocholmod{
     SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS)
     {
         return std::move(LHS) + RHS;
+    }
+    
+    SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS)
+    {
+        assert(LHS.sparse && RHS.sparse);
+        assert(LHS.ncol == RHS.nrow);
+        cholmod_sparse *sparse = cholmod_ssmult(LHS.sparse, RHS.sparse, ASYMMETRIC, true, true, ConfigSingleton::getCommonPtr());
+        return SparseMatrix(sparse);
+    }
+    
+    SparseMatrix&& operator*(SparseMatrix&& LHS, const SparseMatrix& RHS)
+    {
+        assert(LHS.sparse && RHS.sparse);
+        assert(LHS.ncol == RHS.nrow);
+        cholmod_sparse *sparse = cholmod_ssmult(LHS.sparse, RHS.sparse, ASYMMETRIC, true, true, ConfigSingleton::getCommonPtr());
+        cholmod_free_sparse(&LHS.sparse, ConfigSingleton::getCommonPtr());
+        LHS.sparse = sparse;
+        LHS.ncol = RHS.ncol;
+        LHS.symmetry = ASYMMETRIC;
+        return std::move(LHS);
+    }
+    
+    SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS)
+    {
+        assert(LHS.sparse && RHS.sparse);
+        assert(LHS.ncol == RHS.nrow);
+        cholmod_sparse *sparse = cholmod_ssmult(LHS.sparse, RHS.sparse, ASYMMETRIC, true, true, ConfigSingleton::getCommonPtr());
+        cholmod_free_sparse(&RHS.sparse, ConfigSingleton::getCommonPtr());
+        RHS.sparse = sparse;
+        RHS.ncol = RHS.ncol;
+        RHS.symmetry = ASYMMETRIC;
+        return std::move(RHS);
+    }
+    
+    SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS)
+    {
+        return std::move(LHS) * RHS;
     }
     
 }
