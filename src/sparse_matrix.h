@@ -56,8 +56,8 @@ namespace oocholmod {
         
         void build(bool readOnly = false);
         
-        CholmodFactor *analyzePtr();
-        CholmodFactor analyze();
+        Factor *analyzePtr();
+        Factor analyze();
         
         void zero();
         

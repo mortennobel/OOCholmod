@@ -18,12 +18,12 @@ namespace oocholmod {
     class SparseMatrix; // forward declaration
     class DenseVector;
     
-    class CholmodFactor {
+    class Factor {
     public:
-        CholmodFactor(cholmod_factor *factor);
-        CholmodFactor(CholmodFactor&& move);
-        CholmodFactor& operator=(CholmodFactor&& other);
-        virtual ~CholmodFactor();
+        Factor(cholmod_factor *factor);
+        Factor(Factor&& move);
+        Factor& operator=(Factor&& other);
+        virtual ~Factor();
         
         // returns true if factorization is done
         // Return false if matrix is not positive definite
@@ -37,7 +37,7 @@ namespace oocholmod {
         void solve(DenseVector* b, std::unique_ptr<DenseVector> &res);
         DenseVector solve(DenseVector& b);
     private:
-        CholmodFactor(const CholmodFactor& that) = delete; // prevent copy constructor
+        Factor(const Factor& that) = delete; // prevent copy constructor
         cholmod_factor *factor;
 #ifdef DEBUG
         unsigned long magicNumber;

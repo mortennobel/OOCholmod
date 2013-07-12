@@ -51,7 +51,7 @@ int TestCaseUniquePtr(){
     //b->print("b");
     
     //A->print("A");
-    auto factor = unique_ptr<CholmodFactor>( A->analyzePtr());
+    auto factor = unique_ptr<Factor>( A->analyzePtr());
     bool res = factor->factorize(A.get());
     //cout << "factor->factorize(A) "<<res<<endl;
     auto x = unique_ptr<DenseVector>();
@@ -211,7 +211,7 @@ int SingularTestUniquePtr(){
     //b->print("b");
     
     //A->print("A");
-    auto factor = unique_ptr<CholmodFactor>(A->analyzePtr());
+    auto factor = unique_ptr<Factor>(A->analyzePtr());
     bool res = factor->factorize(A.get());
     TINYTEST_ASSERT(!res);
     unique_ptr<DenseVector> x;

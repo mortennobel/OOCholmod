@@ -217,22 +217,22 @@ namespace oocholmod {
         }
     }
     
-    CholmodFactor *SparseMatrix::analyzePtr(){
+    Factor *SparseMatrix::analyzePtr(){
 #ifdef DEBUG
         assert(sparse != NULL);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_factor *L = cholmod_analyze(sparse, ConfigSingleton::getCommonPtr());
-        return new CholmodFactor(L);
+        return new Factor(L);
     }
     
-    CholmodFactor SparseMatrix::analyze(){
+    Factor SparseMatrix::analyze(){
 #ifdef DEBUG
         assert(sparse != NULL);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_factor *L = cholmod_analyze(sparse, ConfigSingleton::getCommonPtr());
-        return CholmodFactor(L);
+        return Factor(L);
     }
     
     

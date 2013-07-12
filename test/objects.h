@@ -54,7 +54,7 @@ int TestCaseObj(){
     //b->print("b");
     
     //A->print("A");
-    CholmodFactor factor = A.analyze();
+    Factor factor = A.analyze();
     bool res = factor.factorize(A);
     //cout << "factor->factorize(A) "<<res<<endl;
     DenseVector x = factor.solve(b);
@@ -146,7 +146,7 @@ int TestCaseFunctionOperatorObj(){
     //b->print("b");
     
     //A->print("A");
-    CholmodFactor factor = A.analyze();
+    Factor factor = A.analyze();
     bool res = factor.factorize(A);
     //cout << "factor->factorize(A) "<<res<<endl;
     DenseVector x = factor.solve(b);
@@ -300,7 +300,7 @@ int SingularTestObj(){
     //b->print("b");
     
     //A->print("A");
-    CholmodFactor factor = A.analyze();
+    Factor factor = A.analyze();
     bool res = factor.factorize(A);
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;

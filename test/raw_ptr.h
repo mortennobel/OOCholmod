@@ -53,7 +53,7 @@ int TestCase(){
     //b->print("b");
     
     //A->print("A");
-    CholmodFactor *factor = A->analyzePtr();
+    Factor *factor = A->analyzePtr();
     
     bool res = factor->factorize(A);
     //cout << "factor->factorize(A) "<<res<<endl;
@@ -226,7 +226,7 @@ int SingularTest(){
     //b->print("b");
     
     //A->print("A");
-    CholmodFactor *factor = A->analyzePtr();
+    Factor *factor = A->analyzePtr();
     bool res = factor->factorize(A);
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;

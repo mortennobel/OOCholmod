@@ -1,5 +1,5 @@
 //
-//  CholmodFactor.cpp
+//  Factor.cpp
 //  OOCholmod
 //
 //  Created by Morten Nobel-Jørgensen on 1/21/13.
@@ -19,7 +19,7 @@ using namespace std;
 
 namespace oocholmod {
     
-    CholmodFactor::CholmodFactor(cholmod_factor *factor)
+    Factor::Factor(cholmod_factor *factor)
     :factor(factor)
 #ifdef DEBUG
     ,magicNumber(MAGIC_NUMBER)
@@ -27,7 +27,7 @@ namespace oocholmod {
     {
     }
     
-    CholmodFactor::CholmodFactor(CholmodFactor&& move)
+    Factor::Factor(Factor&& move)
     :factor(move.factor)
 #ifdef DEBUG
     , magicNumber(move.magicNumber)
@@ -39,7 +39,7 @@ namespace oocholmod {
 #endif
     }
     
-    CholmodFactor& CholmodFactor::operator=(CholmodFactor&& other){
+    Factor& Factor::operator=(Factor&& other){
         if (this != &other){
             if (factor != nullptr){
                 cholmod_free_factor(&factor, ConfigSingleton::getCommonPtr()) ;
@@ -57,7 +57,7 @@ namespace oocholmod {
         return *this;
     }
     
-    CholmodFactor::~CholmodFactor(){
+    Factor::~Factor(){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         magicNumber = 0;
@@ -65,11 +65,11 @@ namespace oocholmod {
         cholmod_free_factor(&factor, ConfigSingleton::getCommonPtr()) ;
     }
     
-    bool CholmodFactor::factorize(SparseMatrix& sparse){
+    bool Factor::factorize(SparseMatrix& sparse){
         return factorize(&sparse);
     }
     
-    bool CholmodFactor::factorize(SparseMatrix *sparse){
+    bool Factor::factorize(SparseMatrix *sparse){
 #ifdef DEBUG
         assert(sparse->getSymmetry() != ASYMMETRIC);
         assert(magicNumber == MAGIC_NUMBER);
@@ -83,7 +83,7 @@ namespace oocholmod {
         return false;
     }
     
-    void CholmodFactor::solve(DenseVector* b, DenseVector **res){
+    void Factor::solve(DenseVector* b, DenseVector **res){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
@@ -92,7 +92,7 @@ namespace oocholmod {
         *res = new DenseVector(x, b->getSize());
     }
     
-    void CholmodFactor::solve(DenseVector* b, std::unique_ptr<DenseVector> &res){
+    void Factor::solve(DenseVector* b, std::unique_ptr<DenseVector> &res){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
@@ -100,7 +100,7 @@ namespace oocholmod {
         res = make_unique<DenseVector>(x, b->getSize());
     }
     
-    DenseVector CholmodFactor::solve(DenseVector& b){
+    DenseVector Factor::solve(DenseVector& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
