@@ -90,7 +90,7 @@ public:
     /// Print debugging information
     void print(const char* name);
     
-    double& operator()(unsigned int row, unsigned int column) {
+    double& operator()(unsigned int row, unsigned int column = 0) {
         if (sparse != nullptr){
             return getValue(row, column);
         } else {
