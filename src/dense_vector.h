@@ -16,30 +16,30 @@
 
 namespace oocholmod {
     
-    class CholmodDenseVector {
+    class DenseVector {
     public:
-        CholmodDenseVector(unsigned int size);
-        CholmodDenseVector(cholmod_dense *x, unsigned int size);
-        CholmodDenseVector(CholmodDenseVector&& move);
-        CholmodDenseVector& operator=(CholmodDenseVector&& other);
-        virtual ~CholmodDenseVector();
+        DenseVector(unsigned int size);
+        DenseVector(cholmod_dense *x, unsigned int size);
+        DenseVector(DenseVector&& move);
+        DenseVector& operator=(DenseVector&& other);
+        virtual ~DenseVector();
         inline double *getData(){ return (double *)(x->x); };
         inline double *getData() const { return (double *)(x->x); };
         inline int getSize() { return size; }
-        void copyTo(CholmodDenseVector *dest);
-        void copyTo(CholmodDenseVector& dest);
+        void copyTo(DenseVector *dest);
+        void copyTo(DenseVector& dest);
         void zero();
         // computes the L^2 norm of the vector
         double length();
         void scale(double alpha);
         // elementwise division
-        void divideBy(CholmodDenseVector *b);
-        void divideBy(CholmodDenseVector& b);
+        void divideBy(DenseVector *b);
+        void divideBy(DenseVector& b);
         // elementwise multiplication
-        void multiplyWith(CholmodDenseVector *b);
-        void multiplyWith(CholmodDenseVector& b);
-        double dot(CholmodDenseVector *b);
-        double dot(CholmodDenseVector& b);
+        void multiplyWith(DenseVector *b);
+        void multiplyWith(DenseVector& b);
+        double dot(DenseVector *b);
+        double dot(DenseVector& b);
         void fill(double value);
         void set(float *data);
         void set(double *data);
@@ -57,7 +57,7 @@ namespace oocholmod {
         inline cholmod_dense *getHandle() { return x; }
         void print(const char* name);
     private:
-        CholmodDenseVector(const CholmodDenseVector& that) = delete; // prevent copy constructor
+        DenseVector(const DenseVector& that) = delete; // prevent copy constructor
         cholmod_dense *x;
         unsigned int size;
 #ifdef DEBUG

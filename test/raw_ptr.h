@@ -45,7 +45,7 @@ int TestCase(){
     (*A)(1, 2) = 5;
     (*A)(2, 2) = -1;
     
-    CholmodDenseVector * b = new CholmodDenseVector{3};
+    DenseVector * b = new DenseVector{3};
     
     (*b)[0] = 6;
     (*b)[1] = -4;
@@ -57,7 +57,7 @@ int TestCase(){
     
     bool res = factor->factorize(A);
     //cout << "factor->factorize(A) "<<res<<endl;
-    CholmodDenseVector * x = NULL;
+    DenseVector * x = NULL;
     factor->solve(b, &x);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
@@ -94,12 +94,12 @@ int MultiplyTest(){
     (*A)(1, 2) = 5;
     (*A)(2, 2) = -1;
     A->build();
-    CholmodDenseVector *x = new CholmodDenseVector{3};
+    DenseVector *x = new DenseVector{3};
     (*x)[0] = 3;
     (*x)[1] = 7;
     (*x)[2] = 9;
     
-    CholmodDenseVector *res = new CholmodDenseVector{3};
+    DenseVector *res = new DenseVector{3};
     
     A->multiply(x, res);
     
@@ -112,7 +112,7 @@ int MultiplyTest(){
 }
 
 int FillTest(){
-    CholmodDenseVector *res = new CholmodDenseVector{3};
+    DenseVector *res = new DenseVector{3};
     res->fill(123);
     double expected[3] = {123, 123, 123};
     assertEqual(expected, res->getData(), 3);
@@ -123,8 +123,8 @@ int FillTest(){
 }
 
 int DotTest(){
-    CholmodDenseVector *a = new CholmodDenseVector{3};
-    CholmodDenseVector *b = new CholmodDenseVector{3};
+    DenseVector *a = new DenseVector{3};
+    DenseVector *b = new DenseVector{3};
     (*a)[0] = 1;
     (*a)[1] = 2;
     (*a)[2] = 3;
@@ -142,7 +142,7 @@ int DotTest(){
 }
 
 int LengthTest(){
-    CholmodDenseVector *a = new CholmodDenseVector{3};
+    DenseVector *a = new DenseVector{3};
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
@@ -155,12 +155,12 @@ int LengthTest(){
 }
 
 int ScaleTest(){
-    CholmodDenseVector *a = new CholmodDenseVector{3};
+    DenseVector *a = new DenseVector{3};
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    CholmodDenseVector *b = new CholmodDenseVector{3};
+    DenseVector *b = new DenseVector{3};
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -173,12 +173,12 @@ int ScaleTest(){
 
 
 int DivideTest(){
-    CholmodDenseVector *a = new CholmodDenseVector{3};
+    DenseVector *a = new DenseVector{3};
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    CholmodDenseVector *b = new CholmodDenseVector{3};
+    DenseVector *b = new DenseVector{3};
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -193,12 +193,12 @@ int DivideTest(){
 }
 
 int MultiplyVectorTest(){
-    CholmodDenseVector *a = new CholmodDenseVector{3};
+    DenseVector *a = new DenseVector{3};
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    CholmodDenseVector *b = new CholmodDenseVector{3};
+    DenseVector *b = new DenseVector{3};
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -219,7 +219,7 @@ int SingularTest(){
     
     A->build();
     
-    CholmodDenseVector * b = new CholmodDenseVector{3};
+    DenseVector * b = new DenseVector{3};
     (*b)[0] = 0;
     (*b)[1] = 1;
     (*b)[2] = 0;
@@ -230,7 +230,7 @@ int SingularTest(){
     bool res = factor->factorize(A);
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;
-    CholmodDenseVector * x = NULL;
+    DenseVector * x = NULL;
     factor->solve(b, &x);
     delete A;
     delete b;

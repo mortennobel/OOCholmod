@@ -83,29 +83,29 @@ namespace oocholmod {
         return false;
     }
     
-    void CholmodFactor::solve(CholmodDenseVector* b, CholmodDenseVector **res){
+    void CholmodFactor::solve(DenseVector* b, DenseVector **res){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         delete *res;
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b->getHandle(), ConfigSingleton::getCommonPtr());
-        *res = new CholmodDenseVector(x, b->getSize());
+        *res = new DenseVector(x, b->getSize());
     }
     
-    void CholmodFactor::solve(CholmodDenseVector* b, std::unique_ptr<CholmodDenseVector> &res){
+    void CholmodFactor::solve(DenseVector* b, std::unique_ptr<DenseVector> &res){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b->getHandle(), ConfigSingleton::getCommonPtr());
-        res = make_unique<CholmodDenseVector>(x, b->getSize());
+        res = make_unique<DenseVector>(x, b->getSize());
     }
     
-    CholmodDenseVector CholmodFactor::solve(CholmodDenseVector& b){
+    DenseVector CholmodFactor::solve(DenseVector& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b.getHandle(), ConfigSingleton::getCommonPtr());
-        return CholmodDenseVector(x, b.getSize());
+        return DenseVector(x, b.getSize());
     }
     
 }

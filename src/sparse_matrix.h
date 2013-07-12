@@ -15,11 +15,12 @@
 
 #include <cholmod.h>
 #include "factor.h"
+#include "config_singleton.h"
 
 namespace oocholmod {
     
     // forward declaration
-    class CholmodDenseVector;
+    class DenseVector;
     
     enum Symmetry {
         SYMMETRIC_LOWER = -1, // Lower triangular part stored
@@ -67,6 +68,7 @@ namespace oocholmod {
         
         void zero();
         
+        void setSymmetry(Symmetry symmetry);
         Symmetry getSymmetry() { return symmetry; }
         
         int getRows(){ return nrow; }
@@ -85,16 +87,16 @@ namespace oocholmod {
         /// 00001000
         ///     0
         ///
-        void setNullSpace(CholmodDenseVector *N);
-        void setNullSpace(CholmodDenseVector& N);
+        void setNullSpace(DenseVector *N);
+        void setNullSpace(DenseVector& N);
         
         // computes alpha*(A*X) + beta*Y
         // res is result
         // alpha is optional (default 1)
         // beta is optional (default 0)
-        void multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha = 1, double beta = 0);
-        void multiply(CholmodDenseVector& X, CholmodDenseVector& res, double alpha = 1, double beta = 0);
-        CholmodDenseVector multiply(CholmodDenseVector& X, double alpha = 1, double beta = 0);
+        void multiply(DenseVector *X, DenseVector *res, double alpha = 1, double beta = 0);
+        void multiply(DenseVector& X, DenseVector& res, double alpha = 1, double beta = 0);
+        DenseVector multiply(DenseVector& X, double alpha = 1, double beta = 0);
         
         /// Get cholmod_sparse pointer
         inline cholmod_sparse *getHandle() { return sparse; }
@@ -134,6 +136,12 @@ namespace oocholmod {
             return lookupIndex[key(row, column)];
         }
         inline double& initAddValue(unsigned int row, unsigned int column, double value=0) {
+            if (!triplet){
+                triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, this->symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+                values = (double *)triplet->x;
+                iRow = (int *)triplet->i;
+                jColumn = (int *)triplet->j;
+            }
             assertValidInitAddValue(row, column, value);
             long k = key(row, column);
             auto res = lookupIndex.find(k);
@@ -156,9 +164,9 @@ namespace oocholmod {
             return ((double*)sparse->x)[index];
         }
         Symmetry symmetry;
+        int maxTripletElements;
 #ifdef DEBUG
         unsigned long magicNumber;
-        int maxElements;
 #endif
     };
     

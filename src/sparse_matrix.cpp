@@ -17,7 +17,7 @@ using namespace std;
 // bad coffee odd food
 #define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
 
-namespace oocholmod{
+namespace oocholmod {
     
     SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, int maxSize)
     :sparse(nullptr), triplet(nullptr), nrow(nrow), ncol(ncol)
@@ -25,25 +25,19 @@ namespace oocholmod{
     ,magicNumber(MAGIC_NUMBER)
 #endif
     {
-        int elements;
         if (maxSize == 0) {
-            elements = (nrow*(ncol+1))/2; // triangular number
+            maxTripletElements = (nrow*(ncol+1))/2; // triangular number
         } else {
-            elements = maxSize;
+            maxTripletElements = maxSize;
         }
-        triplet = cholmod_allocate_triplet(nrow, ncol, elements, (int)SYMMETRIC_UPPER, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
-        values = (double *)triplet->x;
-        iRow = (int *)triplet->i;
-        jColumn = (int *)triplet->j;
         this->symmetry = SYMMETRIC_UPPER;
 #ifdef DEBUG
         assert(nrow == ncol); // must be square
-        maxElements = elements;
 #endif
     }
     
     SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
-    :sparse(sparse), triplet(nullptr), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol)
+    :sparse(sparse), triplet(nullptr), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol), maxTripletElements(0)
 #ifdef DEBUG
     ,magicNumber(MAGIC_NUMBER)
 #endif
@@ -52,9 +46,9 @@ namespace oocholmod{
     }
     
     SparseMatrix::SparseMatrix(SparseMatrix&& other)
-    :sparse(other.sparse), triplet(other.triplet), nrow(other.nrow), ncol(other.ncol), lookupIndex(std::move(other.lookupIndex)), iRow(other.iRow), jColumn(other.jColumn), symmetry(other.symmetry)
+    :sparse(other.sparse), triplet(other.triplet), nrow(other.nrow), ncol(other.ncol), lookupIndex(std::move(other.lookupIndex)), iRow(other.iRow), jColumn(other.jColumn), symmetry(other.symmetry), maxTripletElements(other.maxTripletElements)
 #ifdef DEBUG
-    ,magicNumber(other.magicNumber), maxElements(other.maxElements)
+    ,magicNumber(other.magicNumber)
 #endif
     {
         other.sparse = nullptr;
@@ -62,9 +56,9 @@ namespace oocholmod{
         other.values = nullptr;
         other.iRow = nullptr;
         other.jColumn = nullptr;
+        other.maxTripletElements = 0;
 #ifdef DEBUG
         other.magicNumber = 0L;
-        other.maxElements = 0;
 #endif
     }
     
@@ -85,18 +79,18 @@ namespace oocholmod{
             iRow = other.iRow;
             jColumn = other.jColumn;
             symmetry = other.symmetry;
+            maxTripletElements = other.maxTripletElements;
 #ifdef DEBUG
             magicNumber = other.magicNumber;
-            maxElements = other.maxElements;
 #endif
             other.sparse = nullptr;
             other.triplet = nullptr;
             other.values = nullptr;
             other.iRow = nullptr;
             other.jColumn = nullptr;
+            other.maxTripletElements = 0;
 #ifdef DEBUG
             other.magicNumber = 0L;
-            other.maxElements = 0;
 #endif
         }
         return *this;
@@ -120,13 +114,21 @@ namespace oocholmod{
         }
     }
     
-    void SparseMatrix::setNullSpace(CholmodDenseVector *N){
+    void SparseMatrix::setSymmetry(Symmetry symmetry){
+#ifdef DEBUG
+        assert(sparse != NULL);
+        assert(triplet != NULL);
+#endif
+        this->symmetry = symmetry;
+    }
+    
+    void SparseMatrix::setNullSpace(DenseVector *N){
 #ifdef DEBUG
         assert(sparse != NULL);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         // naive implementation: Todo run fast
-        CholmodDenseVector &v = *N;
+        DenseVector &v = *N;
         int idx = 0;
         for (int j=0;j<ncol;j++){
             int iFrom = ((int*)sparse->p)[j];
@@ -144,12 +146,12 @@ namespace oocholmod{
         }
     }
     
-    void SparseMatrix::setNullSpace(CholmodDenseVector& N){
+    void SparseMatrix::setNullSpace(DenseVector& N){
         setNullSpace(&N);
     }
     
     // computes this * X and store the result in res
-    void SparseMatrix::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
+    void SparseMatrix::multiply(DenseVector *X, DenseVector *res, double alpha, double beta){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(res != NULL);
@@ -165,13 +167,13 @@ namespace oocholmod{
         cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), ConfigSingleton::getCommonPtr());
     }
     
-    CholmodDenseVector SparseMatrix::multiply(CholmodDenseVector& X, double alpha, double beta){
-        CholmodDenseVector res(X.getSize());
+    DenseVector SparseMatrix::multiply(DenseVector& X, double alpha, double beta){
+        DenseVector res(X.getSize());
         multiply(X, res, alpha, beta);
         return res;
     }
     
-    void SparseMatrix::multiply(CholmodDenseVector& X, CholmodDenseVector& res, double alpha, double beta){
+    void SparseMatrix::multiply(DenseVector& X, DenseVector& res, double alpha, double beta){
         multiply(&X, &res, alpha, beta);
     }
     
@@ -304,7 +306,7 @@ namespace oocholmod{
     void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column, double value){
 #ifdef DEBUG
         assert(sparse == nullptr); // must be called before matrix build
-        assert(triplet->nnz < maxElements);
+        assert(triplet->nnz < maxTripletElements);
         assert(row < nrow);
         assert(column < ncol);
         if (symmetry == SYMMETRIC_UPPER) {
@@ -386,5 +388,4 @@ namespace oocholmod{
     {
         return std::move(LHS) * RHS;
     }
-    
 }
