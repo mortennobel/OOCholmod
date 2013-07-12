@@ -41,6 +41,7 @@ public:
     /// nrow # of rows of A
     /// ncol # of columns of A
     /// maxSize (size allocated before build). 0 means triangular
+    SparseMatrix(unsigned int nrow = 0, unsigned int ncol = 0, int maxSize = 0);
     SparseMatrix(cholmod_sparse *sparse);
     SparseMatrix(SparseMatrix&& move);
     SparseMatrix& operator=(SparseMatrix&& other);
@@ -134,6 +135,7 @@ public:
 
 private:
     SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
+    SparseMatrix operator=(const SparseMatrix& other) = delete;
     void buildLookupIndexFromSparse();
     cholmod_sparse *sparse;
     cholmod_triplet *triplet;
