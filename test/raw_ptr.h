@@ -23,7 +23,7 @@ int TestCase(){
     cholmod_common com;
     cholmod_start(&com);
     //auto A = make_unique<CholmodSparse>(3,3,&com);
-    auto A = new CholmodSparse(3,3,&com);
+    CholmodSparse * A = new CholmodSparse(3,3,&com);
     
     A->initAddValue(0, 0);
     A->initAddValue(0, 1);
@@ -48,18 +48,20 @@ int TestCase(){
     A->setValue(2, 2, -1);
     
     CholmodDenseVector * b = new CholmodDenseVector(3, &com);
+
     (*b)[0] = 6;
     (*b)[1] = -4;
     (*b)[2] = 27;
-    b->print("b");
+    //b->print("b");
     
-    A->print("A");
+    //A->print("A");
     CholmodFactor *factor = A->analyzePtr();
+
     bool res = factor->factorize(A);
-    cout << "factor->factorize(A) "<<res<<endl;
+    //cout << "factor->factorize(A) "<<res<<endl;
     CholmodDenseVector * x = NULL;
     factor->solve(b, &x);
-    x->print("x");
+    //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, &((*x)[0]), 3);
     
@@ -72,19 +74,21 @@ int TestCase(){
     A->setValue(2, 2, -3);
     
     factor->factorize(A);
-    A->print("A");
     
     factor->solve(b,&x);
-    x->print("x");
     
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, &((*x)[0]), 3);
-    // note leaking memory here
+    
+    // clean up
+    delete A;
+    delete b;
+    delete factor;
+    
     return 1;
 }
 
 int MultiplyTest(){
-    cout << "Multiply test"<<endl;
     cholmod_common com;
     cholmod_start(&com);
     CholmodSparse *A = new CholmodSparse(3,3,&com);
@@ -93,9 +97,7 @@ int MultiplyTest(){
     A->initAddValue(0, 2, 1);
     A->initAddValue(1, 2, 5);
     A->initAddValue(2, 2, -1);
-    A->build();
-    A->print("A");
-    
+    A->build();    
     CholmodDenseVector *x = new CholmodDenseVector(3, &com);
     (*x)[0] = 3;
     (*x)[1] = 7;
@@ -104,9 +106,12 @@ int MultiplyTest(){
     CholmodDenseVector *res = new CholmodDenseVector(3, &com);
     
     A->multiply(x, res);
-    res->print("b");
+
     double expected[3] = {19, 48, 29};
     assertEqual(expected, &((*res)[0]), 3);
+    delete A;
+    delete x;
+    delete res;
     return 1;
 }
 
@@ -115,7 +120,11 @@ int FillTest(){
     cholmod_start(&com);
     CholmodDenseVector *res = new CholmodDenseVector(3, &com);
     res->fill(123);
-    res->print("Fill 123 test");
+    double expected[3] = {123, 123, 123};
+    assertEqual(expected, res->getData(), 3);
+    
+    delete res;
+    
     return 1;
 }
 
@@ -134,8 +143,9 @@ int DotTest(){
     
     double res = a->dot(b);
     double expected = 32;
-    cout << "Dot test" << endl;
     assertEqual(&expected, &res, 1);
+    delete a;
+    delete b;
     return 1;
 }
 
@@ -149,8 +159,8 @@ int LengthTest(){
     
     double res = a->length();
     double expected = sqrt(4*4+5*5+6*6);
-    cout << "Length test" << endl;
     assertEqual(&expected, &res, 1);
+    delete a;
     return 1;
 }
 
@@ -167,8 +177,9 @@ int ScaleTest(){
     (*b)[1] = -10;
     (*b)[2] = -12;
     a->scale(-2);
-    cout << "scale test"<<endl;
     assertEqual(&((*a)[0]), &((*b)[0]), 3);
+    delete a;
+    delete b;
     return 1;
 }
 
@@ -186,11 +197,12 @@ int DivideTest(){
     (*b)[1] = -10;
     (*b)[2] = -12;
     a->divideBy(b);
-    cout << "divide test"<<endl;
     
     double expected[] = {-0.5,-0.5,-0.5};
     
     assertEqual(expected, &((*a)[0]), 3);
+    delete a;
+    delete b;
     return 1;
 }
 
@@ -207,11 +219,12 @@ int MultiplyVectorTest(){
     (*b)[1] = -10;
     (*b)[2] = -12;
     a->multiplyWith(b);
-    cout << "multiply test"<<endl;
     
     double expected[] = {4 * -8,5 * -10, 6 * -12};
     
     assertEqual(expected, &((*a)[0]), 3);
+    delete a;
+    delete b;
     return 1;
 }
 
@@ -228,13 +241,17 @@ int SingularTest(){
     (*b)[0] = 0;
     (*b)[1] = 1;
     (*b)[2] = 0;
-    b->print("b");
+    //b->print("b");
     
-    A->print("A");
+    //A->print("A");
     CholmodFactor *factor = A->analyzePtr();
     bool res = factor->factorize(A);
-    cout << "Factorize ok "<< res << endl;
+    TINYTEST_ASSERT(!res);
+    //cout << "Factorize ok "<< res << endl;
     CholmodDenseVector * x = NULL;
     factor->solve(b, &x);
-    return 1;    
+    delete A;
+    delete b;
+    delete factor;
+    return 1;
 }

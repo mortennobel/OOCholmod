@@ -5,13 +5,13 @@
 using namespace std;
 
 #define assertEqual(E, A, L) { \
-    double *expected_ = E; \
-    double *actual_ = A; \
-    int length_ = L; \
+    double *expected_ = (E); \
+    double *actual_ = (A); \
+    int length_ = (L); \
     for (int i=0;i<length_;i++){ \
         if (fabs(expected_[i] - actual_[i]) > 0.01){ \
             stringstream str_;\
-            str_ << ("Vectors are not equal. Element "); \
+            str_ << "Vectors are not equal. Element "; \
             str_ << i; \
             str_ << " was "; \
             str_ << actual_[i]; \
@@ -52,8 +52,20 @@ TINYTEST_ADD_TEST(MultiplyVectorTestUniquePtr);
 TINYTEST_ADD_TEST(SingularTestUniquePtr);
 TINYTEST_END_SUITE();
 
+TINYTEST_START_SUITE(ObjSuite);
+TINYTEST_ADD_TEST(TestCaseObj);
+TINYTEST_ADD_TEST(MultiplyTestObj);
+TINYTEST_ADD_TEST(FillTestObj);
+TINYTEST_ADD_TEST(DotTestObj);
+TINYTEST_ADD_TEST(LengthTestObj);
+TINYTEST_ADD_TEST(ScaleTestObj);
+TINYTEST_ADD_TEST(DivideTestObj);
+TINYTEST_ADD_TEST(MultiplyVectorTestObj);
+TINYTEST_ADD_TEST(SingularTestObj);
+TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();
 TINYTEST_RUN_SUITE(RawPtrSuite);
 TINYTEST_RUN_SUITE(UniquePtrSuite);
+TINYTEST_RUN_SUITE(ObjSuite);
 TINYTEST_END_MAIN();

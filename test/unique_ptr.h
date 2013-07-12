@@ -49,15 +49,15 @@ int TestCaseUniquePtr(){
     (*b)[0] = 6;
     (*b)[1] = -4;
     (*b)[2] = 27;
-    b->print("b");
+    //b->print("b");
     
-    A->print("A");
+    //A->print("A");
     auto factor = unique_ptr<CholmodFactor>( A->analyzePtr());
     bool res = factor->factorize(A.get());
-    cout << "factor->factorize(A) "<<res<<endl;
+    //cout << "factor->factorize(A) "<<res<<endl;
     auto x = unique_ptr<CholmodDenseVector>();
     factor->solve(b.get(), x);
-    x->print("x");
+    //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, &((*x)[0]), 3);
     
@@ -70,10 +70,10 @@ int TestCaseUniquePtr(){
     A->setValue(2, 2, -3);
     
     factor->factorize(A.get());
-    A->print("A");
+    //A->print("A");
     
     factor->solve(b.get(), x);
-    x->print("x");
+    //x->print("x");
     
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, &((*x)[0]), 3);
@@ -81,7 +81,7 @@ int TestCaseUniquePtr(){
 }
 
 int MultiplyTestUniquePtr(){
-    cout << "Multiply test"<<endl;
+    //cout << "Multiply test"<<endl;
     cholmod_common com;
     cholmod_start(&com);
     auto A = make_unique<CholmodSparse>(3,3,&com);
@@ -91,7 +91,7 @@ int MultiplyTestUniquePtr(){
     A->initAddValue(1, 2, 5);
     A->initAddValue(2, 2, -1);
     A->build();
-    A->print("A");
+    //A->print("A");
     
     auto x = make_unique<CholmodDenseVector>(3, &com);
     (*x)[0] = 3;
@@ -101,7 +101,7 @@ int MultiplyTestUniquePtr(){
     auto res = make_unique<CholmodDenseVector>(3, &com);
     
     A->multiply(x.get(), res.get());
-    res->print("b");
+    //res->print("b");
     double expected[3] = {19, 48, 29};
     assertEqual(expected, &((*res)[0]), 3);
     return 1;
@@ -112,7 +112,8 @@ int FillTestUniquePtr(){
     cholmod_start(&com);
     auto res = make_unique<CholmodDenseVector>(3, &com);
     res->fill(123);
-    res->print("Fill 123 test");
+    double expected[3] = {123, 123, 123};
+    assertEqual(expected, res->getData(), 3);
     return 1;
 }
 
@@ -131,7 +132,7 @@ int DotTestUniquePtr(){
     
     double res = a->dot(b.get());
     double expected = 32;
-    cout << "Dot test" << endl;
+    //cout << "Dot test" << endl;
     assertEqual(&expected, &res, 1);
     return 1;
 }
@@ -146,7 +147,7 @@ int LengthTestUniquePtr(){
     
     double res = a->length();
     double expected = sqrt(4*4+5*5+6*6);
-    cout << "Length test" << endl;
+    //cout << "Length test" << endl;
     assertEqual(&expected, &res, 1);
     return 1;
 }
@@ -164,7 +165,7 @@ int ScaleTestUniquePtr(){
     (*b)[1] = -10;
     (*b)[2] = -12;
     a->scale(-2);
-    cout << "scale test"<<endl;
+    //cout << "scale test"<<endl;
     assertEqual(&((*a)[0]), &((*b)[0]), 3);
     return 1;
 }
@@ -183,7 +184,7 @@ int DivideTestUniquePtr(){
     (*b)[1] = -10;
     (*b)[2] = -12;
     a->divideBy(b.get());
-    cout << "divide test"<<endl;
+    //cout << "divide test"<<endl;
     
     double expected[] = {-0.5,-0.5,-0.5};
     
@@ -204,7 +205,7 @@ int MultiplyVectorTestUniquePtr(){
     (*b)[1] = -10;
     (*b)[2] = -12;
     a->multiplyWith(b.get());
-    cout << "multiply test"<<endl;
+    //cout << "multiply test"<<endl;
     
     double expected[] = {4 * -8,5 * -10, 6 * -12};
     
@@ -225,12 +226,12 @@ int SingularTestUniquePtr(){
     (*b)[0] = 0;
     (*b)[1] = 1;
     (*b)[2] = 0;
-    b->print("b");
+    //b->print("b");
     
-    A->print("A");
+    //A->print("A");
     auto factor = unique_ptr<CholmodFactor>(A->analyzePtr());
     bool res = factor->factorize(A.get());
-    cout << "Factorize ok "<< res << endl;
+    TINYTEST_ASSERT(!res);
     unique_ptr<CholmodDenseVector> x;
     factor->solve(b.get(), x);
     return 1;
