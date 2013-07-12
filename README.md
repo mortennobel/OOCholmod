@@ -7,7 +7,7 @@ The library also has a wrapper for dense vectors (which is accelerated by BLAS).
 
 Usage:
 ======
-See test/object.h or unique_ptr.h (raw pointers is disencourage)
+See test/object.h or unique_ptr.h (raw pointers is disencouraged)
 
 
 License:
