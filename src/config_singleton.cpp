@@ -10,8 +10,8 @@
 
 
 namespace oocholmod {
-
-std::unique_ptr<cholmod_common> ConfigSingleton::common;
+    
+    std::unique_ptr<cholmod_common> ConfigSingleton::common;
     cholmod_common *ConfigSingleton::getCommonPtr(){
         if (common.get() == nullptr){
             common = std::unique_ptr<cholmod_common>(new cholmod_common());
