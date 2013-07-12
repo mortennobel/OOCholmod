@@ -151,7 +151,7 @@ int MultiplyTestObj(){
     A(1, 2) = 5;
     A(2, 2) = -1;
     A.build();
-    A.print("A");
+    //A.print("A");
     
     CholmodDenseVector x{3};
     x[0] = 3;
