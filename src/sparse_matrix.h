@@ -130,7 +130,7 @@ public:
     inline cholmod_sparse *getHandle() { return sparse; }
     
     /// Print debugging information
-    void print(const char* name);
+    void print(const char* name = "");
 
 private:
     SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
