@@ -20,7 +20,7 @@ using namespace std;
 namespace oocholmod{
 
 SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, int maxSize)
-:sparse(NULL), nrow(nrow), ncol(ncol)
+:sparse(nullptr), triplet(nullptr), nrow(nrow), ncol(ncol)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
 #endif
@@ -43,7 +43,7 @@ SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, int maxSize)
 }
 
 SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
-:sparse(sparse), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol)
+:sparse(sparse), triplet(nullptr), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol)
 #ifdef DEBUG
 ,magicNumber(MAGIC_NUMBER)
 #endif
