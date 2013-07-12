@@ -310,4 +310,23 @@ void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column
 #endif
 }
     
+    
+    SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS)
+    {
+        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+        double scale[] = {1.,1.};
+        cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, scale, scale, true, true, ConfigSingleton::getCommonPtr());
+        return SparseMatrix(sparse);
+    }
+    
+    SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS)
+    {
+        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+        double scale[] = {1.,1.};
+        cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, scale, scale, true, true, ConfigSingleton::getCommonPtr());
+        cholmod_free_sparse(&LHS.sparse, ConfigSingleton::getCommonPtr());
+        LHS.sparse = sparse;
+        return std::move(LHS);
+    }
+    
 }

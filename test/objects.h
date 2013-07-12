@@ -82,6 +82,29 @@ int TestCaseObj(){
     return 1;
 }
 
+int AddTestObj()
+{
+    SparseMatrix A(3,3);
+    A.initAddValue(0, 0, 1);
+    A.initAddValue(0, 1, 1);
+    A.initAddValue(0, 2, 1);
+    A.initAddValue(1, 2, 5);
+    A.initAddValue(2, 2, -1);
+    A.build();
+    
+    SparseMatrix B(3,3);
+    B.initAddValue(0, 0, 2);
+    B.initAddValue(0, 1, -1);
+    B.initAddValue(0, 2, 3);
+    B.initAddValue(1, 2, -5);
+    B.initAddValue(2, 2, -1);
+    B.build();
+    
+    SparseMatrix res = A + B;
+    res.print("res");
+    return 1;
+}
+
 int MultiplyTestObj(){
     SparseMatrix A(3,3);
     A.initAddValue(0, 0, 1);

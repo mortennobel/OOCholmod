@@ -48,6 +48,10 @@ public:
     
     virtual ~SparseMatrix();
     
+    
+    friend SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
+    friend SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
+    
     void build(bool readOnly = false);
     
     CholmodFactor *analyzePtr();
@@ -156,6 +160,10 @@ private:
     int maxElements;
 #endif
 };
+    
+    
+    SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
+    SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
     
 }
 
