@@ -78,7 +78,7 @@ int TestCaseObj(){
     
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, x.getData(), 3);
-
+    
     return 1;
 }
 

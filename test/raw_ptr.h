@@ -46,7 +46,7 @@ int TestCase(){
     (*A)(2, 2) = -1;
     
     CholmodDenseVector * b = new CholmodDenseVector{3};
-
+    
     (*b)[0] = 6;
     (*b)[1] = -4;
     (*b)[2] = 27;
@@ -54,7 +54,7 @@ int TestCase(){
     
     //A->print("A");
     CholmodFactor *factor = A->analyzePtr();
-
+    
     bool res = factor->factorize(A);
     //cout << "factor->factorize(A) "<<res<<endl;
     CholmodDenseVector * x = NULL;
@@ -93,7 +93,7 @@ int MultiplyTest(){
     (*A)(0, 2) = 1;
     (*A)(1, 2) = 5;
     (*A)(2, 2) = -1;
-    A->build();    
+    A->build();
     CholmodDenseVector *x = new CholmodDenseVector{3};
     (*x)[0] = 3;
     (*x)[1] = 7;
@@ -102,7 +102,7 @@ int MultiplyTest(){
     CholmodDenseVector *res = new CholmodDenseVector{3};
     
     A->multiply(x, res);
-
+    
     double expected[3] = {19, 48, 29};
     assertEqual(expected, &((*res)[0]), 3);
     delete A;
