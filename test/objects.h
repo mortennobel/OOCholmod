@@ -47,7 +47,7 @@ int TestCaseObj(){
     A(1, 2) = 5;
     A(2, 2) = -1;
     
-    CholmodDenseVector b{3};
+    DenseVector b{3};
     b[0] = 6;
     b[1] = -4;
     b[2] = 27;
@@ -57,7 +57,7 @@ int TestCaseObj(){
     CholmodFactor factor = A.analyze();
     bool res = factor.factorize(A);
     //cout << "factor->factorize(A) "<<res<<endl;
-    CholmodDenseVector x = factor.solve(b);
+    DenseVector x = factor.solve(b);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, x.getData(), 3);
@@ -139,7 +139,7 @@ int TestCaseFunctionOperatorObj(){
     A(1, 2) = 5;
     A(2, 2) = -1;
     
-    CholmodDenseVector b{3};
+    DenseVector b{3};
     b[0] = 6;
     b[1] = -4;
     b[2] = 27;
@@ -149,7 +149,7 @@ int TestCaseFunctionOperatorObj(){
     CholmodFactor factor = A.analyze();
     bool res = factor.factorize(A);
     //cout << "factor->factorize(A) "<<res<<endl;
-    CholmodDenseVector x = factor.solve(b);
+    DenseVector x = factor.solve(b);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, x.getData(), 3);
@@ -184,12 +184,12 @@ int MultiplyTestObj(){
     A.build();
     //A.print("A");
     
-    CholmodDenseVector x{3};
+    DenseVector x{3};
     x[0] = 3;
     x[1] = 7;
     x[2] = 9;
     
-    CholmodDenseVector res = A.multiply(x);
+    DenseVector res = A.multiply(x);
     //res->print("b");
     double expected[3] = {19, 48, 29};
     assertEqual(expected, res.getData(), 3);
@@ -197,7 +197,7 @@ int MultiplyTestObj(){
 }
 
 int FillTestObj(){
-    CholmodDenseVector res(3);
+    DenseVector res(3);
     res.fill(123);
     //res->print("Fill 123 test");
     double expected[3] = {123, 123, 123};
@@ -206,8 +206,8 @@ int FillTestObj(){
 }
 
 int DotTestObj(){
-    CholmodDenseVector a{3};
-    CholmodDenseVector b{3};
+    DenseVector a{3};
+    DenseVector b{3};
     a[0] = 1;
     a[1] = 2;
     a[2] = 3;
@@ -223,7 +223,7 @@ int DotTestObj(){
 }
 
 int LengthTestObj(){
-    CholmodDenseVector a{3};
+    DenseVector a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
@@ -235,12 +235,12 @@ int LengthTestObj(){
 }
 
 int ScaleTestObj(){
-    CholmodDenseVector a{3};
+    DenseVector a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    CholmodDenseVector b{3};
+    DenseVector b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -251,12 +251,12 @@ int ScaleTestObj(){
 
 
 int DivideTestObj(){
-    CholmodDenseVector a{3};
+    DenseVector a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    CholmodDenseVector b{3};
+    DenseVector b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -269,12 +269,12 @@ int DivideTestObj(){
 }
 
 int MultiplyVectorTestObj(){
-    CholmodDenseVector a{3};
+    DenseVector a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    CholmodDenseVector b{3};
+    DenseVector b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -293,7 +293,7 @@ int SingularTestObj(){
     
     A.build();
     
-    CholmodDenseVector b{3};
+    DenseVector b{3};
     b[0] = 0;
     b[1] = 1;
     b[2] = 0;
@@ -304,6 +304,6 @@ int SingularTestObj(){
     bool res = factor.factorize(A);
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;
-    CholmodDenseVector x = factor.solve(b);
+    DenseVector x = factor.solve(b);
     return 1;
 }

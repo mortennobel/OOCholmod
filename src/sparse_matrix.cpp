@@ -114,13 +114,21 @@ namespace oocholmod {
         }
     }
     
-    void SparseMatrix::setNullSpace(CholmodDenseVector *N){
+    void SparseMatrix::setSymmetry(Symmetry symmetry){
+#ifdef DEBUG
+        assert(sparse != NULL);
+        assert(triplet != NULL);
+#endif
+        this->symmetry = symmetry;
+    }
+    
+    void SparseMatrix::setNullSpace(DenseVector *N){
 #ifdef DEBUG
         assert(sparse != NULL);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         // naive implementation: Todo run fast
-        CholmodDenseVector &v = *N;
+        DenseVector &v = *N;
         int idx = 0;
         for (int j=0;j<ncol;j++){
             int iFrom = ((int*)sparse->p)[j];
@@ -138,12 +146,12 @@ namespace oocholmod {
         }
     }
     
-    void SparseMatrix::setNullSpace(CholmodDenseVector& N){
+    void SparseMatrix::setNullSpace(DenseVector& N){
         setNullSpace(&N);
     }
     
     // computes this * X and store the result in res
-    void SparseMatrix::multiply(CholmodDenseVector *X, CholmodDenseVector *res, double alpha, double beta){
+    void SparseMatrix::multiply(DenseVector *X, DenseVector *res, double alpha, double beta){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(res != NULL);
@@ -159,13 +167,13 @@ namespace oocholmod {
         cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), ConfigSingleton::getCommonPtr());
     }
     
-    CholmodDenseVector SparseMatrix::multiply(CholmodDenseVector& X, double alpha, double beta){
-        CholmodDenseVector res(X.getSize());
+    DenseVector SparseMatrix::multiply(DenseVector& X, double alpha, double beta){
+        DenseVector res(X.getSize());
         multiply(X, res, alpha, beta);
         return res;
     }
     
-    void SparseMatrix::multiply(CholmodDenseVector& X, CholmodDenseVector& res, double alpha, double beta){
+    void SparseMatrix::multiply(DenseVector& X, DenseVector& res, double alpha, double beta){
         multiply(&X, &res, alpha, beta);
     }
     

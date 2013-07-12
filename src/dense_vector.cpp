@@ -1,5 +1,5 @@
 //
-//  CholmodDenseVector.cpp
+//  DenseVector.cpp
 //  OOCholmod
 //  Created by Morten Nobel-Jørgensen on 1/21/13.
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
@@ -15,7 +15,7 @@ namespace oocholmod {
     // bad coffee odd food
 #define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
     
-    CholmodDenseVector::CholmodDenseVector(unsigned int size)
+    DenseVector::DenseVector(unsigned int size)
     :size(size)
 #ifdef DEBUG
     ,magicNumber(MAGIC_NUMBER)
@@ -24,7 +24,7 @@ namespace oocholmod {
         x = cholmod_allocate_dense(size, 1, size /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
     }
     
-    CholmodDenseVector::CholmodDenseVector(cholmod_dense *x, unsigned int size)
+    DenseVector::DenseVector(cholmod_dense *x, unsigned int size)
     :x(x), size(size)
 #ifdef DEBUG
     ,magicNumber(MAGIC_NUMBER)
@@ -32,7 +32,7 @@ namespace oocholmod {
     {
     }
     
-    CholmodDenseVector::CholmodDenseVector(CholmodDenseVector&& move)
+    DenseVector::DenseVector(DenseVector&& move)
     :x(move.x), size(move.size)
 #ifdef DEBUG
     ,magicNumber(move.magicNumber)
@@ -45,7 +45,7 @@ namespace oocholmod {
 #endif
     }
     
-    CholmodDenseVector& CholmodDenseVector::operator=(CholmodDenseVector&& other){
+    DenseVector& DenseVector::operator=(DenseVector&& other){
         if (this != &other){
             if (x != nullptr){
                 cholmod_free_dense(&x, ConfigSingleton::getCommonPtr());
@@ -66,7 +66,7 @@ namespace oocholmod {
         return *this;
     }
     
-    CholmodDenseVector::~CholmodDenseVector(){
+    DenseVector::~DenseVector(){
         if (x != nullptr){
 #ifdef DEBUG
             assert(magicNumber == MAGIC_NUMBER);
@@ -77,7 +77,7 @@ namespace oocholmod {
         }
     }
     
-    void CholmodDenseVector::zero(){
+    void DenseVector::zero(){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(x != NULL);
@@ -85,18 +85,18 @@ namespace oocholmod {
         memset(x->x, 0, size * sizeof(double));
     }
     
-    double CholmodDenseVector::dot(CholmodDenseVector *b){
+    double DenseVector::dot(DenseVector *b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         return cblas_ddot(getSize(), getData(), 1, b->getData(), 1);
     }
     
-    double CholmodDenseVector::dot(CholmodDenseVector& b){
+    double DenseVector::dot(DenseVector& b){
         return dot(&b);
     }
     
-    void CholmodDenseVector::fill(double value){
+    void DenseVector::fill(double value){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
@@ -106,21 +106,21 @@ namespace oocholmod {
         }
     }
     
-    double CholmodDenseVector::length(){
+    double DenseVector::length(){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         return cblas_dnrm2(getSize(), getData(), 1);
     }
     
-    void CholmodDenseVector::scale(double alpha){
+    void DenseVector::scale(double alpha){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cblas_dscal (getSize(), alpha, getData(), 1);
     }
     
-    void CholmodDenseVector::divideBy(CholmodDenseVector *b){
+    void DenseVector::divideBy(DenseVector *b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
@@ -132,11 +132,11 @@ namespace oocholmod {
         }
     }
     
-    void CholmodDenseVector::divideBy(CholmodDenseVector& b){
+    void DenseVector::divideBy(DenseVector& b){
         divideBy(&b);
     }
     
-    void CholmodDenseVector::multiplyWith(CholmodDenseVector *b){
+    void DenseVector::multiplyWith(DenseVector *b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(b->getSize() >= getSize());
@@ -148,11 +148,11 @@ namespace oocholmod {
         }
     }
     
-    void CholmodDenseVector::multiplyWith(CholmodDenseVector& b){
+    void DenseVector::multiplyWith(DenseVector& b){
         multiplyWith(&b);
     }
     
-    void CholmodDenseVector::copyTo(CholmodDenseVector *dest){
+    void DenseVector::copyTo(DenseVector *dest){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(dest->getSize() >= getSize());
@@ -162,12 +162,12 @@ namespace oocholmod {
         memcpy(destPtr, srcPtr, sizeof(double) * getSize());
     }
     
-    void CholmodDenseVector::copyTo(CholmodDenseVector& dest){
+    void DenseVector::copyTo(DenseVector& dest){
         copyTo(&dest);
     }
     
     
-    void CholmodDenseVector::set(float *inData){
+    void DenseVector::set(float *inData){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(x != NULL);
@@ -178,7 +178,7 @@ namespace oocholmod {
         }
     }
     
-    void CholmodDenseVector::set(double *data){
+    void DenseVector::set(double *data){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(x != NULL);
@@ -186,7 +186,7 @@ namespace oocholmod {
         memcpy(x->x, data, sizeof(double)*size);
     }
     
-    void CholmodDenseVector::get(double *outData){
+    void DenseVector::get(double *outData){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(x != NULL);
@@ -194,7 +194,7 @@ namespace oocholmod {
         memcpy(outData, x->x, sizeof(double)*size);
     }
     
-    void CholmodDenseVector::get(float *outData){
+    void DenseVector::get(float *outData){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
@@ -204,7 +204,7 @@ namespace oocholmod {
         }
     }
     
-    void CholmodDenseVector::print(const char* name){
+    void DenseVector::print(const char* name){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif

@@ -16,7 +16,7 @@ namespace oocholmod {
     
     
     class SparseMatrix; // forward declaration
-    class CholmodDenseVector;
+    class DenseVector;
     
     class CholmodFactor {
     public:
@@ -33,9 +33,9 @@ namespace oocholmod {
         cholmod_factor *getFactorHandle() { return factor; };
         
         // solves Ax=b
-        void solve(CholmodDenseVector* b, CholmodDenseVector** res);
-        void solve(CholmodDenseVector* b, std::unique_ptr<CholmodDenseVector> &res);
-        CholmodDenseVector solve(CholmodDenseVector& b);
+        void solve(DenseVector* b, DenseVector** res);
+        void solve(DenseVector* b, std::unique_ptr<DenseVector> &res);
+        DenseVector solve(DenseVector& b);
     private:
         CholmodFactor(const CholmodFactor& that) = delete; // prevent copy constructor
         cholmod_factor *factor;
