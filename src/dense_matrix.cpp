@@ -271,14 +271,26 @@ namespace oocholmod {
     
     DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS)
     {
+#ifdef DEBUG
         assert(LHS.dense && RHS.dense);
         assert(LHS.ncol == RHS.nrow);
+#endif
         DenseMatrix res(LHS.nrow, RHS.ncol);
         cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, LHS.nrow, RHS.ncol, LHS.ncol, 1., LHS.getData(), LHS.nrow, RHS.getData(), RHS.nrow, 0., res.getData(), res.nrow);
         return res;
     }
     
-    DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS)
+    {
+#ifdef DEBUG
+        assert(LHS.dense && RHS.dense);
+        assert(LHS.ncol == RHS.nrow);
+#endif
+        cholmod_dense *lhs = cholmod_copy_dense(LHS.dense, ConfigSingleton::getCommonPtr()); // PROBLEM: LHS.dense has to be resized!!!
+        cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, LHS.nrow, RHS.ncol, LHS.ncol, 1., (double*)lhs->x, LHS.nrow, RHS.getData(), RHS.nrow, 0., LHS.getData(), LHS.nrow);
+        return std::move(LHS);
+    }
+    
     DenseMatrix&& operator*(const DenseMatrix& LHS, DenseMatrix&& RHS);
     DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
     
