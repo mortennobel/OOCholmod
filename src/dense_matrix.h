@@ -28,6 +28,30 @@ namespace oocholmod {
         
         ~DenseMatrix();
         
+        // OPERATORS
+        
+        // Addition
+        friend DenseMatrix operator+(const DenseMatrix& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator+(DenseMatrix&& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS);
+        friend DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS);
+        
+        // Multiplication
+        friend DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS);
+        friend DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS);
+        friend DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
+        
+        friend DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator*(const DenseMatrix& LHS, DenseMatrix&& RHS);
+        friend DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
+        
+        // Transpose
+        friend DenseMatrix transposed(const DenseMatrix& M);
+        friend DenseMatrix&& transposed(DenseMatrix&& M);
+        
+        
         inline double *getData(){ return (double *)(x->x); };
         inline double *getData() const { return (double *)(x->x); };
         
@@ -75,6 +99,27 @@ namespace oocholmod {
         unsigned long magicNumber;
 #endif
     };
+    
+    // Addition
+    DenseMatrix operator+(const DenseMatrix& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator+(DenseMatrix&& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS);
+    DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS);
+    
+    // Multiplication
+    DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS);
+    DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
+    
+    DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(const DenseMatrix& LHS, DenseMatrix&& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
+    
+    // Transpose
+    DenseMatrix transposed(const DenseMatrix& M);
+    DenseMatrix&& transposed(DenseMatrix&& M);
     
 }
 
