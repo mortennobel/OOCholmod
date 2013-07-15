@@ -382,7 +382,17 @@ namespace oocholmod {
     
     DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS)
     {
-        
+#ifdef DEBUG
+        assert(LHS.x && RHS.sparse);
+        assert(LHS.magicNumber == MAGIC_NUMBER);
+        assert(RHS.magicNumber == MAGIC_NUMBER);
+        assert(LHS.ncol == RHS.nrow);
+#endif
+        double alpha[2] = {1.,1.};
+        double beta[2] = {0.,0.};
+        DenseMatrix res(RHS.ncol, LHS.nrow);
+        cholmod_sdmult(RHS.sparse, true, alpha, beta, transposed(LHS).x, res.x, ConfigSingleton::getCommonPtr());
+        return transposed(res);
     }
     
     DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS)
@@ -395,9 +405,9 @@ namespace oocholmod {
 #endif
         double alpha[2] = {1.,1.};
         double beta[2] = {0.,0.};
-        cholmod_dense *dense = cholmod_copy_dense(RHS.x, ConfigSingleton::getCommonPtr());
-        cholmod_sdmult(LHS.sparse, false, alpha, beta, RHS.x, dense, ConfigSingleton::getCommonPtr());
-        return DenseMatrix(dense);
+        DenseMatrix res(LHS.nrow, RHS.ncol);
+        cholmod_sdmult(LHS.sparse, false, alpha, beta, RHS.x, res.x, ConfigSingleton::getCommonPtr());
+        return res;
     }
     
     DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);

@@ -262,6 +262,10 @@ int MultiplyTestObj(){
     DenseMatrix res = A*x;
     double expected[3] = {19, 48, 29};
     assertEqual(expected, res.getData(), 3);
+    
+    x.transpose();
+    DenseMatrix res2 = x*A;
+    assertEqual(expected, res2.getData(), 3);
     return 1;
 }
 
