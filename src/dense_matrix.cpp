@@ -258,7 +258,35 @@ namespace oocholmod {
     DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
     
     // Transpose
-    DenseMatrix transposed(const DenseMatrix& M);
-    DenseMatrix&& transposed(DenseMatrix&& M);
+    void DenseMatrix::transpose()
+    {
+        double *data = getData();
+        cholmod_dense *dense = cholmod_allocate_dense(ncol, nrow, ncol, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        double *outData = (double*)dense->x;
+        for (int c = 0; c < ncol; c++){
+            for (int r = 0; r < nrow; r++){
+                outData[r*ncol + c] = data[c*nrow + r];
+            }
+        }
+        cholmod_free_dense(&x, ConfigSingleton::getCommonPtr());
+        x = dense;
+        
+        int temp = nrow;
+        nrow = ncol;
+        ncol = temp;
+    }
+    
+    DenseMatrix transposed(const DenseMatrix& M)
+    {
+        DenseMatrix res(M.ncol, M.nrow);
+        res.transpose();
+        return res;
+    }
+    
+    DenseMatrix&& transposed(DenseMatrix&& M)
+    {
+        M.transpose();
+        return std::move(M);
+    }
     
 }

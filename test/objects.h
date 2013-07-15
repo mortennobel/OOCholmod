@@ -115,6 +115,13 @@ int AddTestObj()
 
 int TransposeTestObj()
 {
+    DenseMatrix b{3};
+    b[0] = 6;
+    b[1] = -4;
+    b[2] = 27;
+    
+    b.transpose();
+    
     // Cannot do before asymmetric matrices are supported.
     return 1;
 }

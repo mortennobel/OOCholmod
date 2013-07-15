@@ -60,6 +60,7 @@ namespace oocholmod {
         friend DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
         
         // Transpose
+        void transpose();
         friend DenseMatrix transposed(const DenseMatrix& M);
         friend DenseMatrix&& transposed(DenseMatrix&& M);
         
