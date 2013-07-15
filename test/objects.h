@@ -116,6 +116,19 @@ int AddTestObj()
 
 int TransposeTestObj()
 {
+    DenseMatrix b{3};
+    b[0] = 6;
+    b[1] = -4;
+    b[2] = 27;
+    
+    b.transpose();
+    
+    DenseMatrix c = transposed(b);
+    
+    DenseMatrix d = transposed(std::move(c));
+    
+    assertEqual(b.getData(), d.getData(), 3)
+    
     // Cannot do before asymmetric matrices are supported.
     return 1;
 }
@@ -250,6 +263,10 @@ int MultiplyTestObj(){
     DenseMatrix res = A*x;
     double expected[3] = {19, 48, 29};
     assertEqual(expected, res.getData(), 3);
+    
+    x.transpose();
+    DenseMatrix res2 = x*A;
+    assertEqual(expected, res2.getData(), 3);
     return 1;
 }
 

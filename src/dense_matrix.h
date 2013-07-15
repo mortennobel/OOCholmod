@@ -60,18 +60,19 @@ namespace oocholmod {
         friend DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
         
         // Transpose
+        void transpose();
         friend DenseMatrix transposed(const DenseMatrix& M);
         friend DenseMatrix&& transposed(DenseMatrix&& M);
         
         
-        inline double *getData(){ return (double *)(x->x); };
-        inline double *getData() const { return (double *)(x->x); };
+        inline double *getData(){ return (double *)(dense->x); };
+        inline double *getData() const { return (double *)(dense->x); };
         
         int getRows() const{ return nrow; }
         
         int getColumns() const{ return ncol; }
         
-        DenseMatrix copy();
+        DenseMatrix copy() const;
         void zero();
         // computes the L^2 norm of the vector
         double length();
@@ -104,12 +105,12 @@ namespace oocholmod {
         inline double & operator [](int i) {return getData()[i];}
         
         void swap(DenseMatrix& other);
-        inline cholmod_dense *getHandle() const { return x; }
+        inline cholmod_dense *getHandle() const { return dense; }
         void print(const char* name = "") const;
     private:
         DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor
         DenseMatrix operator=(const DenseMatrix& other) = delete; // prevent copy assignment operator
-        cholmod_dense *x;
+        cholmod_dense *dense;
         unsigned int nrow;
         unsigned int ncol;
 #ifdef DEBUG

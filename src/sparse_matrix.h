@@ -198,6 +198,7 @@ namespace oocholmod {
     SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
     SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
     
+    // DenseMatrix times SparseMatrix (Note that SparseMatrix times DenseMatrix may be faster).
     DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
     DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
     DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
