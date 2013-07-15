@@ -284,15 +284,35 @@ int MultiplyDenseDenseTestObj(){
     x(1,1) = 7;
     x(2,0) = 9;
     
-    DenseMatrix y{1,3};
-    y(0,0) = 3;
+    DenseMatrix y{2,3};
+    y.fill(1);
+    y(0,0) = -3;
     y(0,1) = 7;
-    y(0,2) = 9;
+    y(1,1) = 2;
     
     DenseMatrix res = y*x;
-    
-    double expected[3] = {19, 48, 29};
+    double expected[4] = {13, 12, 41, 18};
     assertEqual(expected, res.getData(), 3);
+    
+    DenseMatrix v{3,1};
+    v(0) = 3;
+    v(1) = 7;
+    v(2) = 9;
+    
+    DenseMatrix w{1,3};
+    w(0,0) = -3;
+    w(0,1) = 7;
+    w(0,2) = 2;
+    
+    DenseMatrix res2 = w*v;
+    assert(58 == res2(0,0));
+    
+    DenseMatrix res3 = v*w;
+    assert(-9 == res3(0,0));
+    
+    DenseMatrix res4 = w*x;
+    double expected2[2] = {22, 42};
+    assertEqual(expected2, res4.getData(), 2);
     return 1;
 }
 
