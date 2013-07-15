@@ -95,12 +95,10 @@ int MultiplyTestUniquePtr(){
     (*x)[1] = 7;
     (*x)[2] = 9;
     
-    auto res = make_unique<DenseMatrix>(3);
-    
-    A->multiply(*x, *res);
+    auto res = (*A)*(*x);
     //res->print("b");
     double expected[3] = {19, 48, 29};
-    assertEqual(expected, &((*res)[0]), 3);
+    assertEqual(expected, &(res[0]), 3);
     return 1;
 }
 
@@ -170,7 +168,7 @@ int DivideTestUniquePtr(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->divideBy(*b);
+    a->elem_divide(*b);
     //cout << "divide test"<<endl;
     
     double expected[] = {-0.5,-0.5,-0.5};
@@ -189,7 +187,7 @@ int MultiplyVectorTestUniquePtr(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->multiplyWith(*b);
+    a->elem_multiply(*b);
     //cout << "multiply test"<<endl;
     
     double expected[] = {4 * -8,5 * -10, 6 * -12};

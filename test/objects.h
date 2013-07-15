@@ -240,15 +240,13 @@ int MultiplyTestObj(){
     A(1, 2) = 5;
     A(2, 2) = -1;
     A.build();
-    //A.print("A");
     
     DenseMatrix x{3};
     x[0] = 3;
     x[1] = 7;
     x[2] = 9;
     
-    DenseMatrix res = A.multiply(x);
-    //res->print("b");
+    DenseMatrix res = A*x;
     double expected[3] = {19, 48, 29};
     assertEqual(expected, res.getData(), 3);
     return 1;
@@ -318,7 +316,7 @@ int DivideTestObj(){
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
-    a.divideBy(b);
+    a.elem_divide(b);
     
     double expected[] = {-0.5,-0.5,-0.5};
     
@@ -336,8 +334,7 @@ int MultiplyVectorTestObj(){
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
-    a.multiplyWith(b);
-    
+    a.elem_multiply(b);
     double expected[] = {4 * -8,5 * -10, 6 * -12};
     
     assertEqual(expected, a.getData(), 3);

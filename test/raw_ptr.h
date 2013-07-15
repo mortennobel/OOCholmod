@@ -97,16 +97,13 @@ int MultiplyTest(){
     (*x)[0] = 3;
     (*x)[1] = 7;
     (*x)[2] = 9;
-    
-    DenseMatrix *res = new DenseMatrix{3};
-    
-    A->multiply(*x, *res);
+        
+    DenseMatrix res = (*A)*(*x);
     
     double expected[3] = {19, 48, 29};
-    assertEqual(expected, &((*res)[0]), 3);
+    assertEqual(expected, &(res[0]), 3);
     delete A;
     delete x;
-    delete res;
     return 1;
 }
 
@@ -181,7 +178,7 @@ int DivideTest(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->divideBy(*b);
+    a->elem_divide(*b);
     
     double expected[] = {-0.5,-0.5,-0.5};
     
@@ -201,7 +198,7 @@ int MultiplyVectorTest(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->multiplyWith(*b);
+    a->elem_multiply(*b);
     
     double expected[] = {4 * -8,5 * -10, 6 * -12};
     
