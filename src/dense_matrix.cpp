@@ -42,7 +42,7 @@ namespace oocholmod {
         move.nrow = 0;
         move.ncol = 0;
 #ifdef DEBUG
-        magicNumber = 0;
+        move.magicNumber = 0;
 #endif
     }
     
