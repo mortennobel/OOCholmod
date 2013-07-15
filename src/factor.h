@@ -35,6 +35,8 @@ namespace oocholmod {
         // solves Ax=b
 
         DenseMatrix solve(DenseMatrix& b);
+        
+        bool isInitialized();
     private:
         Factor(const Factor& that) = delete; // prevent copy constructor
         cholmod_factor *factor;

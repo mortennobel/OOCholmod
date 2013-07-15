@@ -47,6 +47,10 @@ namespace oocholmod {
 #endif
     }
     
+    bool Factor::isInitialized(){
+        return factor != nullptr;
+    }
+    
     Factor& Factor::operator=(Factor&& other){
         if (this != &other){
             if (factor != nullptr){
