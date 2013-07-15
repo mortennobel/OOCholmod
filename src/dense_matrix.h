@@ -31,6 +31,25 @@ namespace oocholmod {
         
         ~DenseMatrix();
         
+        
+        double& operator()(unsigned int row, unsigned int col = 0)
+        {
+#ifdef DEBUG
+            assert(dense);
+            assert(row < nrow && col < ncol);
+#endif
+            return ((double*)dense->x)[col*nrow + row];
+        }
+        
+        double operator()(unsigned int row, unsigned int col = 0) const
+        {
+#ifdef DEBUG
+            assert(dense);
+            assert(row < nrow && col < ncol);
+#endif
+            return ((double*)dense->x)[col*nrow + row];
+        }
+        
         // OPERATORS
         
         // Addition
@@ -94,15 +113,6 @@ namespace oocholmod {
         void set(double *data);
         void get(double *outData) const;
         void get(float *outData) const;
-        inline void add(unsigned int row, unsigned int col, double value) {
-#ifdef DEBUG
-            assert(row < nrow && col < ncol);
-#endif
-            getData()[col*nrow + row] += value;
-        };
-        
-        inline double operator [](int i) const    {return getData()[i];}
-        inline double & operator [](int i) {return getData()[i];}
         
         void swap(DenseMatrix& other);
         inline cholmod_dense *getHandle() const { return dense; }

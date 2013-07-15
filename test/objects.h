@@ -49,9 +49,9 @@ int TestCaseObj(){
     A(2, 2) = -1;
     
     DenseMatrix b{3};
-    b[0] = 6;
-    b[1] = -4;
-    b[2] = 27;
+    b(0) = 6;
+    b(1) = -4;
+    b(2) = 27;
     //b->print("b");
     
     //A->print("A");
@@ -117,9 +117,9 @@ int AddTestObj()
 int TransposeTestObj()
 {
     DenseMatrix b{3};
-    b[0] = 6;
-    b[1] = -4;
-    b[2] = 27;
+    b(0) = 6;
+    b(1) = -4;
+    b(2) = 27;
     
     b.transpose();
     
@@ -160,9 +160,9 @@ int TestCaseFunctionOperatorObj(){
     A(2, 2) = -1;
     
     DenseMatrix b{3};
-    b[0] = 6;
-    b[1] = -4;
-    b[2] = 27;
+    b(0) = 6;
+    b(1) = -4;
+    b(2) = 27;
     //b->print("b");
     
     //A->print("A");
@@ -255,34 +255,39 @@ int MultiplyTestObj(){
     A(2, 2) = -1;
     A.build();
     
-    DenseMatrix x{3};
-    x[0] = 3;
-    x[1] = 7;
-    x[2] = 9;
+    DenseMatrix x{3,2};
+    x.fill(1);
+    x(0,1) = 3;
+    x(1,1) = 7;
+    x(2,0) = 9;
+    
+    DenseMatrix y{1,3};
+    y(0,0) = 3;
+    y(0,1) = 7;
+    y(0,2) = 9;
     
     DenseMatrix res = A*x;
-    double expected[3] = {19, 48, 29};
-    assertEqual(expected, res.getData(), 3);
+    double expected[6] = {11, 46, -3, 11, 8, 37};
+    assertEqual(expected, res.getData(), 6);
     
-    x.transpose();
-    DenseMatrix res2 = x*A;
-    assertEqual(expected, res2.getData(), 3);
+    DenseMatrix res2 = y*A;
+    double expected2[3] = {19, 48, 29};
+    assertEqual(expected2, res2.getData(), 3);
     return 1;
 }
 
 int MultiplyDenseDenseTestObj(){
     
-    DenseMatrix x{3};
-    x[0] = 1;
-    x[1] = 2;
-    x[2] = -9;
+    DenseMatrix x{3,2};
+    x.fill(1);
+    x(0,1) = 3;
+    x(1,1) = 7;
+    x(2,0) = 9;
     
-    DenseMatrix y{3};
-    y[0] = 3;
-    y[1] = 7;
-    y[2] = 9;
-    
-    y.transpose();
+    DenseMatrix y{1,3};
+    y(0,0) = 3;
+    y(0,1) = 7;
+    y(0,2) = 9;
     
     DenseMatrix res = y*x;
     
@@ -303,13 +308,13 @@ int FillTestObj(){
 int DotTestObj(){
     DenseMatrix a{3};
     DenseMatrix b{3};
-    a[0] = 1;
-    a[1] = 2;
-    a[2] = 3;
+    a(0) = 1;
+    a(1) = 2;
+    a(2) = 3;
     
-    b[0] = 4;
-    b[1] = 5;
-    b[2] = 6;
+    b(0) = 4;
+    b(1) = 5;
+    b(2) = 6;
     
     double res = a.dot(b);
     double expected = 32;
@@ -319,9 +324,9 @@ int DotTestObj(){
 
 int LengthTestObj(){
     DenseMatrix a{3};
-    a[0] = 4;
-    a[1] = 5;
-    a[2] = 6;
+    a(0) = 4;
+    a(1) = 5;
+    a(2) = 6;
     
     double res = a.length();
     double expected = sqrt(4*4+5*5+6*6);
@@ -331,14 +336,14 @@ int LengthTestObj(){
 
 int ScaleTestObj(){
     DenseMatrix a{3};
-    a[0] = 4;
-    a[1] = 5;
-    a[2] = 6;
+    a(0) = 4;
+    a(1) = 5;
+    a(2) = 6;
     
     DenseMatrix b{3};
-    b[0] = -8;
-    b[1] = -10;
-    b[2] = -12;
+    b(0) = -8;
+    b(1) = -10;
+    b(2) = -12;
     a.scale(-2);
     assertEqual(a.getData(), b.getData(), 3);
     return 1;
@@ -347,14 +352,14 @@ int ScaleTestObj(){
 
 int DivideTestObj(){
     DenseMatrix a{3};
-    a[0] = 4;
-    a[1] = 5;
-    a[2] = 6;
+    a(0) = 4;
+    a(1) = 5;
+    a(2) = 6;
     
     DenseMatrix b{3};
-    b[0] = -8;
-    b[1] = -10;
-    b[2] = -12;
+    b(0) = -8;
+    b(1) = -10;
+    b(2) = -12;
     a.elemDivide(b);
     
     double expected[] = {-0.5,-0.5,-0.5};
@@ -365,14 +370,14 @@ int DivideTestObj(){
 
 int MultiplyVectorTestObj(){
     DenseMatrix a{3};
-    a[0] = 4;
-    a[1] = 5;
-    a[2] = 6;
+    a(0) = 4;
+    a(1) = 5;
+    a(2) = 6;
     
     DenseMatrix b{3};
-    b[0] = -8;
-    b[1] = -10;
-    b[2] = -12;
+    b(0) = -8;
+    b(1) = -10;
+    b(2) = -12;
     a.elemMultiply(b);
     double expected[] = {4 * -8,5 * -10, 6 * -12};
     
@@ -388,9 +393,9 @@ int SingularTestObj(){
     A.build();
     
     DenseMatrix b{3};
-    b[0] = 0;
-    b[1] = 1;
-    b[2] = 0;
+    b(0) = 0;
+    b(1) = 1;
+    b(2) = 0;
     //b->print("b");
     
     //A->print("A");
@@ -404,12 +409,12 @@ int SingularTestObj(){
 
 int SwapTest(){
     DenseMatrix AD{1,1};
-    AD[0] = 1;
+    AD(0) = 1;
     DenseMatrix BD{1,1};
-    BD[0] = 2;
+    BD(0) = 2;
     swap(AD, BD);
-    TINYTEST_ASSERT(AD[0] == 2);
-    TINYTEST_ASSERT(BD[0] == 1);
+    TINYTEST_ASSERT(AD(0) == 2);
+    TINYTEST_ASSERT(BD(0) == 1);
     
     SparseMatrix A{1,1};
     A(0,0) = 1;
