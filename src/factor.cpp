@@ -56,10 +56,12 @@ namespace oocholmod {
             if (factor != nullptr){
                 cholmod_free_factor(&factor, ConfigSingleton::getCommonPtr()) ;
             }
+            // copy
+            factor = other.factor;
 #ifdef DEBUG
             magicNumber = other.magicNumber;
 #endif
-            
+            // clean up
             other.factor = nullptr;
 #ifdef DEBUG
             other.magicNumber = 0;
