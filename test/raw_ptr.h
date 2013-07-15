@@ -13,7 +13,7 @@
 
 #include "sparse_matrix.h"
 #include "factor.h"
-#include "dense_vector.h"
+#include "dense_matrix.h"
 #include "cpp14.h"
 
 using namespace std;
@@ -45,7 +45,7 @@ int TestCase(){
     (*A)(1, 2) = 5;
     (*A)(2, 2) = -1;
     
-    DenseVector * b = new DenseVector{3};
+    DenseMatrix * b = new DenseMatrix{3};
     
     (*b)[0] = 6;
     (*b)[1] = -4;
@@ -57,7 +57,7 @@ int TestCase(){
     
     bool res = factor.factorize(*A);
     //cout << "factor->factorize(A) "<<res<<endl;
-    DenseVector * x = new DenseVector{3};
+    DenseMatrix * x = new DenseMatrix{3};
     *x = factor.solve(*b);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
@@ -93,12 +93,12 @@ int MultiplyTest(){
     (*A)(1, 2) = 5;
     (*A)(2, 2) = -1;
     A->build();
-    DenseVector *x = new DenseVector{3};
+    DenseMatrix *x = new DenseMatrix{3};
     (*x)[0] = 3;
     (*x)[1] = 7;
     (*x)[2] = 9;
     
-    DenseVector *res = new DenseVector{3};
+    DenseMatrix *res = new DenseMatrix{3};
     
     A->multiply(*x, *res);
     
@@ -111,7 +111,7 @@ int MultiplyTest(){
 }
 
 int FillTest(){
-    DenseVector *res = new DenseVector{3};
+    DenseMatrix *res = new DenseMatrix{3};
     res->fill(123);
     double expected[3] = {123, 123, 123};
     assertEqual(expected, res->getData(), 3);
@@ -122,8 +122,8 @@ int FillTest(){
 }
 
 int DotTest(){
-    DenseVector *a = new DenseVector{3};
-    DenseVector *b = new DenseVector{3};
+    DenseMatrix *a = new DenseMatrix{3};
+    DenseMatrix *b = new DenseMatrix{3};
     (*a)[0] = 1;
     (*a)[1] = 2;
     (*a)[2] = 3;
@@ -141,7 +141,7 @@ int DotTest(){
 }
 
 int LengthTest(){
-    DenseVector *a = new DenseVector{3};
+    DenseMatrix *a = new DenseMatrix{3};
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
@@ -154,12 +154,12 @@ int LengthTest(){
 }
 
 int ScaleTest(){
-    DenseVector *a = new DenseVector{3};
+    DenseMatrix *a = new DenseMatrix{3};
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    DenseVector *b = new DenseVector{3};
+    DenseMatrix *b = new DenseMatrix{3};
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -172,12 +172,12 @@ int ScaleTest(){
 
 
 int DivideTest(){
-    DenseVector *a = new DenseVector{3};
+    DenseMatrix *a = new DenseMatrix{3};
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    DenseVector *b = new DenseVector{3};
+    DenseMatrix *b = new DenseMatrix{3};
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -192,12 +192,12 @@ int DivideTest(){
 }
 
 int MultiplyVectorTest(){
-    DenseVector *a = new DenseVector{3};
+    DenseMatrix *a = new DenseMatrix{3};
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    DenseVector *b = new DenseVector{3};
+    DenseMatrix *b = new DenseMatrix{3};
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -218,7 +218,7 @@ int SingularTest(){
     
     A->build();
     
-    DenseVector * b = new DenseVector{3};
+    DenseMatrix * b = new DenseMatrix{3};
     (*b)[0] = 0;
     (*b)[1] = 1;
     (*b)[2] = 0;
@@ -229,7 +229,7 @@ int SingularTest(){
     bool res = factor.factorize(*A);
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;
-    DenseVector * x =  new DenseVector{3};
+    DenseMatrix * x =  new DenseMatrix{3};
     *x = factor.solve(*b);
     delete A;
     delete b;

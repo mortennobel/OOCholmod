@@ -8,7 +8,7 @@
 
 #include "factor.h"
 #include "sparse_matrix.h"
-#include "dense_vector.h"
+#include "dense_matrix.h"
 #include "cpp14.h"
 #include "config_singleton.h"
 
@@ -79,12 +79,12 @@ namespace oocholmod {
         return false;
     }
     
-    DenseVector Factor::solve(DenseVector& b){
+    DenseMatrix Factor::solve(DenseMatrix& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b.getHandle(), ConfigSingleton::getCommonPtr());
-        return DenseVector(x, b.getSize());
+        return DenseMatrix(x, b.getSize());
     }
     
 }

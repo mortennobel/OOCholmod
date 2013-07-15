@@ -9,7 +9,7 @@
 #include "sparse_matrix.h"
 #include <cassert>
 
-#include "dense_vector.h"
+#include "dense_matrix.h"
 #include "config_singleton.h"
 
 using namespace std;
@@ -122,7 +122,7 @@ namespace oocholmod {
         this->symmetry = symmetry;
     }
     
-    void SparseMatrix::setNullSpace(const DenseVector& v){
+    void SparseMatrix::setNullSpace(const DenseMatrix& v){
 #ifdef DEBUG
         assert(sparse != NULL);
         assert(magicNumber == MAGIC_NUMBER);
@@ -145,14 +145,13 @@ namespace oocholmod {
         }
     }
     
-    
-    DenseVector SparseMatrix::multiply(const DenseVector& X, double alpha, double beta){
-        DenseVector res(X.getSize());
+    DenseMatrix SparseMatrix::multiply(const DenseMatrix& X, double alpha, double beta){
+        DenseMatrix res(X.getSize());
         multiply(X, res, alpha, beta);
         return res;
     }
     
-    void SparseMatrix::multiply(const DenseVector& X, DenseVector& res, double alpha, double beta){
+    void SparseMatrix::multiply(const DenseMatrix& X, DenseMatrix& res, double alpha, double beta){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(X.getSize() == res.getSize());
