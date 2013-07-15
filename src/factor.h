@@ -20,6 +20,7 @@ namespace oocholmod {
     
     class Factor {
     public:
+        Factor();
         Factor(cholmod_factor *factor);
         Factor(Factor&& move);
         Factor& operator=(Factor&& other);

@@ -19,6 +19,14 @@ using namespace std;
 
 namespace oocholmod {
     
+    Factor::Factor()
+    :factor(nullptr)
+#ifdef DEBUG
+    ,magicNumber(MAGIC_NUMBER)
+#endif
+    {
+    }
+    
     Factor::Factor(cholmod_factor *factor)
     :factor(factor)
 #ifdef DEBUG
@@ -62,13 +70,16 @@ namespace oocholmod {
         assert(magicNumber == MAGIC_NUMBER);
         magicNumber = 0;
 #endif
-        cholmod_free_factor(&factor, ConfigSingleton::getCommonPtr()) ;
+        if (factor){
+            cholmod_free_factor(&factor, ConfigSingleton::getCommonPtr()) ;
+        }
     }
     
     bool Factor::factorize(SparseMatrix& sparse){
 #ifdef DEBUG
         assert(sparse.getSymmetry() != ASYMMETRIC);
         assert(magicNumber == MAGIC_NUMBER);
+        assert(factor);
 #endif
         auto Common = ConfigSingleton::getCommonPtr();
         cholmod_factorize(sparse.getHandle(), factor, Common) ; /* factorize */
@@ -82,6 +93,7 @@ namespace oocholmod {
     DenseMatrix Factor::solve(DenseMatrix& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
+        assert(factor);
 #endif
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b.getHandle(), ConfigSingleton::getCommonPtr());
         return DenseMatrix(x, b.getSize());
