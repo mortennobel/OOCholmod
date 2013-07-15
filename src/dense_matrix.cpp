@@ -90,7 +90,7 @@ namespace oocholmod {
         memset(x->x, 0, nrow * ncol * sizeof(double));
     }
     
-    double DenseMatrix::dot(const DenseMatrix& b){
+    double DenseMatrix::dot(const DenseMatrix& b) const{
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
@@ -124,7 +124,7 @@ namespace oocholmod {
         cblas_dscal (nrow*ncol, alpha, getData(), 1);
     }
     
-    void DenseMatrix::elemDivide(const DenseMatrix& b){
+    void DenseMatrix::elemDivide(const DenseMatrix& b, DenseMatrix& dest) const{
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(nrow == b.getRows() && ncol == b.getColumns());
@@ -138,12 +138,20 @@ namespace oocholmod {
         }
     }
     
+    void DenseMatrix::elemDivide(const DenseMatrix& b){
+        elemDivide(b, *this);
+    }
+    
     void DenseMatrix::elemMultiply(const DenseMatrix& b){
+        elemMultiply(b, *this);
+    }
+
+    void DenseMatrix::elemMultiply(const DenseMatrix& b, DenseMatrix& dest) const {
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(nrow == b.getRows() && ncol == b.getColumns());
 #endif
-        double *thisData = getData();
+        double *thisData = dest.getData();
         double *bData = b.getData();
         for (int c = 0; c < ncol; c++){
             for (int r = 0; r < nrow; r++){
@@ -162,7 +170,6 @@ namespace oocholmod {
         memcpy(destPtr, srcPtr, nrow*ncol*sizeof(double));
         return dest;
     }
-    
     
     void DenseMatrix::set(float *inData){
 #ifdef DEBUG
@@ -185,7 +192,7 @@ namespace oocholmod {
         memcpy(x->x, data, nrow*ncol*sizeof(double));
     }
     
-    void DenseMatrix::get(double *outData){
+    void DenseMatrix::get(double *outData) const {
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(x != NULL);
@@ -193,7 +200,7 @@ namespace oocholmod {
         memcpy(outData, x->x, nrow*ncol*sizeof(double));
     }
     
-    void DenseMatrix::get(float *outData){
+    void DenseMatrix::get(float *outData) const {
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif

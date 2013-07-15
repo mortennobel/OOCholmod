@@ -80,16 +80,19 @@ namespace oocholmod {
         
         // elementwise division
         void elemDivide(const DenseMatrix& b);
+        void elemDivide(const DenseMatrix& b, DenseMatrix& dest) const;
         
         // elementwise multiplication
         void elemMultiply(const DenseMatrix& b);
+        void elemMultiply(const DenseMatrix& b , DenseMatrix& dest) const;
         
-        double dot(const DenseMatrix& b);
+        
+        double dot(const DenseMatrix& b) const;
         void fill(double value);
         void set(float *data);
         void set(double *data);
-        void get(double *outData);
-        void get(float *outData);
+        void get(double *outData) const;
+        void get(float *outData) const;
         inline void add(unsigned int row, unsigned int col, double value) {
 #ifdef DEBUG
             assert(row < nrow && col < ncol);
