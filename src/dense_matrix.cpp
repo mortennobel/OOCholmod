@@ -147,7 +147,7 @@ namespace oocholmod {
         double *bData = b.getData();
         for (int c = 0; c < ncol; c++){
             for (int r = 0; r < nrow; r++){
-                thisData[c*nrow + r] /= bData[c*nrow + r];
+                thisData[c*nrow + r] *= bData[c*nrow + r];
             }
         }
     }
@@ -205,7 +205,7 @@ namespace oocholmod {
         }
     }
     
-    void DenseMatrix::print(const char* name){
+    void DenseMatrix::print(const char* name) const{
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif

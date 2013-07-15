@@ -88,7 +88,7 @@ namespace oocholmod {
         inline double operator [](int i) const    {return getData()[i];}
         inline double & operator [](int i) {return getData()[i];}
         inline cholmod_dense *getHandle() const { return x; }
-        void print(const char* name = "");
+        void print(const char* name = "") const;
     private:
         DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor
         DenseMatrix operator=(const DenseMatrix& other) = delete; // prevent copy assignment operator
