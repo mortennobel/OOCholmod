@@ -79,23 +79,6 @@ namespace oocholmod {
         return false;
     }
     
-    void Factor::solve(DenseVector* b, DenseVector **res){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
-        delete *res;
-        cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b->getHandle(), ConfigSingleton::getCommonPtr());
-        *res = new DenseVector(x, b->getSize());
-    }
-    
-    void Factor::solve(DenseVector* b, std::unique_ptr<DenseVector> &res){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
-        cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b->getHandle(), ConfigSingleton::getCommonPtr());
-        res = make_unique<DenseVector>(x, b->getSize());
-    }
-    
     DenseVector Factor::solve(DenseVector& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);

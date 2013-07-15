@@ -122,30 +122,6 @@ namespace oocholmod {
         this->symmetry = symmetry;
     }
     
-    void SparseMatrix::setNullSpace(DenseVector *N){
-#ifdef DEBUG
-        assert(sparse != NULL);
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
-        // naive implementation: Todo run fast
-        DenseVector &v = *N;
-        int idx = 0;
-        for (int j=0;j<ncol;j++){
-            int iFrom = ((int*)sparse->p)[j];
-            int iTo = ((int*)sparse->p)[j+1]-1;
-            for (int i=iFrom;i<=iTo;i++){
-                int row = ((int*)sparse->i)[i];
-                ((double*)sparse->x)[idx] *= v[row]*v[j];
-                idx++;
-            }
-        }
-        for (int i=0;i<v.getSize();i++){
-            if (v[i] == 0){
-                (*this)(i,i) = 1;
-            }
-        }
-    }
-    
     void SparseMatrix::setNullSpace(const DenseVector& v){
 #ifdef DEBUG
         assert(sparse != NULL);
@@ -169,31 +145,26 @@ namespace oocholmod {
         }
     }
     
-    // computes this * X and store the result in res
-    void SparseMatrix::multiply(DenseVector *X, DenseVector *res, double alpha, double beta){
+    
+    DenseVector SparseMatrix::multiply(const DenseVector& X, double alpha, double beta){
+        DenseVector res(X.getSize());
+        multiply(X, res, alpha, beta);
+        return res;
+    }
+    
+    void SparseMatrix::multiply(const DenseVector& X, DenseVector& res, double alpha, double beta){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
-        assert(res != NULL);
-        assert(X->getSize() == res->getSize());
-        assert(X != res);
-        assert(nrow == X->getSize());
+        assert(X.getSize() == res.getSize());
+        assert(&X != &res);
+        assert(nrow == X.getSize());
 #endif
         
         // alpha*(A*X) + beta*Y
         double _alpha[2] = {alpha,alpha};
         double _beta[2] = {beta,beta};
         // int cholmod_sdmult(cholmod_sparse *A, ￼￼int transpose, double alpha [2], double beta [2], cholmod_dense *X, cholmod_dense *Y, cholmod_common *Common );
-        cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), ConfigSingleton::getCommonPtr());
-    }
-    
-    DenseVector SparseMatrix::multiply(DenseVector& X, double alpha, double beta){
-        DenseVector res(X.getSize());
-        multiply(X, res, alpha, beta);
-        return res;
-    }
-    
-    void SparseMatrix::multiply(DenseVector& X, DenseVector& res, double alpha, double beta){
-        multiply(&X, &res, alpha, beta);
+        cholmod_sdmult(sparse, false, _alpha, _beta, X.getHandle(), res.getHandle(), ConfigSingleton::getCommonPtr());
     }
     
     void SparseMatrix::build(bool readOnly){

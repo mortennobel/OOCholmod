@@ -51,7 +51,7 @@ namespace oocholmod {
         
         inline double operator [](int i) const    {return getData()[i];}
         inline double & operator [](int i) {return getData()[i];}
-        inline cholmod_dense *getHandle() { return x; }
+        inline cholmod_dense *getHandle() const { return x; }
         void print(const char* name);
     private:
         DenseVector(const DenseVector& that) = delete; // prevent copy constructor

@@ -54,8 +54,8 @@ int TestCaseUniquePtr(){
     Factor factor =  A->analyze();
     bool res = factor.factorize(*A);
     //cout << "factor->factorize(A) "<<res<<endl;
-    auto x = unique_ptr<DenseVector>();
-    factor.solve(b.get(), x);
+    auto x = make_unique<DenseVector>(3);
+    *x = factor.solve(*b);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, &((*x)[0]), 3);
@@ -71,7 +71,7 @@ int TestCaseUniquePtr(){
     factor.factorize(*A);
     //A->print("A");
     
-    factor.solve(b.get(), x);
+    *x = factor.solve(*b);
     //x->print("x");
     
     double expected2[] = {1.0935,1.76937,-1.73019};
@@ -96,7 +96,7 @@ int MultiplyTestUniquePtr(){
     
     auto res = make_unique<DenseVector>(3);
     
-    A->multiply(x.get(), res.get());
+    A->multiply(*x, *res);
     //res->print("b");
     double expected[3] = {19, 48, 29};
     assertEqual(expected, &((*res)[0]), 3);
@@ -214,7 +214,7 @@ int SingularTestUniquePtr(){
     Factor factor = A->analyze();
     bool res = factor.factorize(*A);
     TINYTEST_ASSERT(!res);
-    unique_ptr<DenseVector> x;
-    factor.solve(b.get(), x);
+    auto x = make_unique<DenseVector>(3);
+    *x = factor.solve(*b);
     return 1;
 }

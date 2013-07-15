@@ -96,19 +96,17 @@ namespace oocholmod {
         /// 00001000
         ///     0
         ///
-        void setNullSpace(DenseVector *N);
         void setNullSpace(const DenseVector& N);
         
         // computes alpha*(A*X) + beta*Y
         // res is result
         // alpha is optional (default 1)
         // beta is optional (default 0)
-        void multiply(DenseVector *X, DenseVector *res, double alpha = 1, double beta = 0);
-        void multiply(DenseVector& X, DenseVector& res, double alpha = 1, double beta = 0);
-        DenseVector multiply(DenseVector& X, double alpha = 1, double beta = 0);
+        void multiply(const DenseVector& X, DenseVector& res, double alpha = 1, double beta = 0);
+        DenseVector multiply(const DenseVector& X, double alpha = 1, double beta = 0);
         
         /// Get cholmod_sparse pointer
-        inline cholmod_sparse *getHandle() { return sparse; }
+        inline cholmod_sparse *getHandle() const { return sparse; }
         
         /// Print debugging information
         void print(const char* name = "");

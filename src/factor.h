@@ -32,8 +32,6 @@ namespace oocholmod {
         cholmod_factor *getFactorHandle() { return factor; };
         
         // solves Ax=b
-        void solve(DenseVector* b, DenseVector** res);
-        void solve(DenseVector* b, std::unique_ptr<DenseVector> &res);
         DenseVector solve(DenseVector& b);
     private:
         Factor(const Factor& that) = delete; // prevent copy constructor
