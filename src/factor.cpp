@@ -70,11 +70,11 @@ namespace oocholmod {
     }
     
     Factor::~Factor(){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-        magicNumber = 0;
-#endif
         if (factor){
+#ifdef DEBUG
+            assert(magicNumber == MAGIC_NUMBER);
+            magicNumber = 0;
+#endif
             cholmod_free_factor(&factor, ConfigSingleton::getCommonPtr()) ;
         }
     }
