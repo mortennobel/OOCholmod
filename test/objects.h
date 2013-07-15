@@ -25,18 +25,18 @@ int TestCaseObj(){
     
     SparseMatrix A{3,3};
     
-    A(0, 0);
-    A(0, 1);
-    A(0, 2);
-    A(1, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
+    A(0, 0) = 0;
+    A(0, 1) = 0;
+    A(0, 2) = 0;
+    A(1, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
     
     A.build();
     
@@ -124,17 +124,17 @@ int TestCaseFunctionOperatorObj(){
     SparseMatrix A{3,3};
     
     A(0, 0) = 0;
-    A(0, 1);
-    A(0, 2);
-    A(1, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
-    A(2, 2);
+    A(0, 1) = 0;
+    A(0, 2) = 0;
+    A(1, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
+    A(2, 2) = 0;
     
     A.build();
     
@@ -154,6 +154,7 @@ int TestCaseFunctionOperatorObj(){
     //A->print("A");
     Factor factor = A.analyze();
     bool res = factor.factorize(A);
+    TINYTEST_ASSERT(res);
     //cout << "factor->factorize(A) "<<res<<endl;
     DenseVector x = factor.solve(b);
     //x->print("x");
@@ -223,7 +224,7 @@ int MultiplyScalarMatrixTestObj(){
     SparseMatrix C = -13.4*(A*B);
     
     A = 0.3 * A;
-    A.print();
+//    A.print();
 //    assert(C(2,2) == 281.4);
 //    assert(C(0,2) == 40.2);
     
