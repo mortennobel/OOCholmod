@@ -210,4 +210,35 @@ namespace oocholmod {
         std::cout << std::endl;
     }
     
+    // Addition
+    DenseMatrix operator+(const DenseMatrix& LHS, const DenseMatrix& RHS)
+    {
+        assert(LHS.x && RHS.x);
+        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+    }
+    
+    DenseMatrix&& operator+(DenseMatrix&& LHS, const DenseMatrix& RHS)
+    {
+        assert(LHS.x && RHS.x);
+        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+    }
+    
+    DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS);
+    DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS);
+    
+    // Multiplication
+    DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS);
+    DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
+    
+    DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(const DenseMatrix& LHS, DenseMatrix&& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
+    
+    // Transpose
+    DenseMatrix transposed(const DenseMatrix& M);
+    DenseMatrix&& transposed(DenseMatrix&& M);
+    
 }
