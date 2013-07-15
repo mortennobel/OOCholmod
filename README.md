@@ -9,6 +9,10 @@ Usage:
 ======
 See test/object.h or unique_ptr.h (raw pointers is disencouraged)
 
+API documentation:
+==================
+http://mortennobel.github.io/OOCholmod/
+
 
 License:
 ========
