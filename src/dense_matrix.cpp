@@ -160,7 +160,7 @@ namespace oocholmod {
         }
     }
     
-    DenseMatrix DenseMatrix::copy(){
+    DenseMatrix DenseMatrix::copy() const{
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif

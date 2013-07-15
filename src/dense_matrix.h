@@ -72,7 +72,7 @@ namespace oocholmod {
         
         int getColumns() const{ return ncol; }
         
-        DenseMatrix copy();
+        DenseMatrix copy() const;
         void zero();
         // computes the L^2 norm of the vector
         double length();
