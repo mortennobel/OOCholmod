@@ -21,11 +21,11 @@ namespace oocholmod {
     ,magicNumber(MAGIC_NUMBER)
 #endif
     {
-        x = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
     }
     
-    DenseMatrix::DenseMatrix(cholmod_dense *x)
-    :x(x), nrow(static_cast<unsigned int>(x->nrow)), ncol(static_cast<unsigned int>(x->ncol))
+    DenseMatrix::DenseMatrix(cholmod_dense *dense_)
+    :dense(dense_), nrow(static_cast<unsigned int>(dense_->nrow)), ncol(static_cast<unsigned int>(dense_->ncol))
 #ifdef DEBUG
     ,magicNumber(MAGIC_NUMBER)
 #endif
@@ -33,12 +33,12 @@ namespace oocholmod {
     }
     
     DenseMatrix::DenseMatrix(DenseMatrix&& move)
-    :x(move.x), nrow(move.nrow), ncol(move.ncol)
+    :dense(move.dense), nrow(move.nrow), ncol(move.ncol)
 #ifdef DEBUG
     ,magicNumber(move.magicNumber)
 #endif
     {
-        move.x = nullptr;
+        move.dense = nullptr;
         move.nrow = 0;
         move.ncol = 0;
 #ifdef DEBUG
@@ -50,17 +50,17 @@ namespace oocholmod {
     {
         if (this != &other)
         {
-            if (x != nullptr){
-                cholmod_free_dense(&x, ConfigSingleton::getCommonPtr());
+            if (dense){
+                cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
             }
-            x = other.x;
+            dense = other.dense;
             nrow = other.nrow;
             ncol = other.ncol;
 #ifdef DEBUG
             magicNumber = other.magicNumber;
 #endif
             
-            other.x = nullptr;
+            other.dense = nullptr;
             other.nrow = 0;
             other.ncol = 0;
 #ifdef DEBUG
@@ -71,23 +71,24 @@ namespace oocholmod {
         return *this;
     }
     
-    DenseMatrix::~DenseMatrix(){
-        if (x != nullptr){
+    DenseMatrix::~DenseMatrix()
+    {
+        if (dense){
 #ifdef DEBUG
             assert(magicNumber == MAGIC_NUMBER);
             magicNumber = 0;
 #endif
-            cholmod_free_dense(&x, ConfigSingleton::getCommonPtr());
-            x = NULL;
+            cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
+            dense = nullptr;
         }
     }
     
     void DenseMatrix::zero(){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
-        assert(x);
+        assert(dense);
 #endif
-        memset(x->x, 0, nrow * ncol * sizeof(double));
+        memset(dense->x, 0, nrow * ncol * sizeof(double));
     }
     
     double DenseMatrix::dot(const DenseMatrix& b) const{
@@ -174,7 +175,7 @@ namespace oocholmod {
     void DenseMatrix::set(float *inData){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
-        assert(x);
+        assert(dense);
 #endif
         double *data = getData();
         for (int c = 0; c < ncol; c++){
@@ -187,17 +188,17 @@ namespace oocholmod {
     void DenseMatrix::set(double *data){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
-        assert(x != NULL);
+        assert(dense);
 #endif
-        memcpy(x->x, data, nrow*ncol*sizeof(double));
+        memcpy(dense->x, data, nrow*ncol*sizeof(double));
     }
     
     void DenseMatrix::get(double *outData) const {
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
-        assert(x != NULL);
+        assert(dense);
 #endif
-        memcpy(outData, x->x, nrow*ncol*sizeof(double));
+        memcpy(outData, dense->x, nrow*ncol*sizeof(double));
     }
     
     void DenseMatrix::get(float *outData) const {
@@ -216,14 +217,14 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
-        cholmod_print_dense(x, name, ConfigSingleton::getCommonPtr());
-        int n_rows = (int)x->nrow;
-        int n_cols = (int)x->ncol;
+        cholmod_print_dense(dense, name, ConfigSingleton::getCommonPtr());
+        int n_rows = (int)dense->nrow;
+        int n_cols = (int)dense->ncol;
         for (int r = 0; r  < n_rows; r++)
         {
             for (int c = 0; c  < n_cols; c++)
             {
-                std::cout << ((double*)x->x)[c*n_rows + r] << " ";
+                std::cout << ((double*)dense->x)[c*n_rows + r] << " ";
             }
             std::cout << std::endl;
         }
@@ -233,13 +234,15 @@ namespace oocholmod {
     // Addition
     DenseMatrix operator+(const DenseMatrix& LHS, const DenseMatrix& RHS)
     {
-        assert(LHS.x && RHS.x);
+        assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+        
+        
     }
     
     DenseMatrix&& operator+(DenseMatrix&& LHS, const DenseMatrix& RHS)
     {
-        assert(LHS.x && RHS.x);
+        assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
     }
     
@@ -252,7 +255,13 @@ namespace oocholmod {
     DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS);
     DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
     
-    DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS);
+    DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS)
+    {
+        assert(LHS.dense && RHS.dense);
+        assert(LHS.ncol == RHS.nrow);
+        
+    }
+    
     DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
     DenseMatrix&& operator*(const DenseMatrix& LHS, DenseMatrix&& RHS);
     DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
@@ -261,15 +270,15 @@ namespace oocholmod {
     void DenseMatrix::transpose()
     {
         double *data = getData();
-        cholmod_dense *dense = cholmod_allocate_dense(ncol, nrow, ncol, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
-        double *outData = (double*)dense->x;
+        cholmod_dense *d = cholmod_allocate_dense(ncol, nrow, ncol, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        double *outData = (double*)d->x;
         for (int c = 0; c < ncol; c++){
             for (int r = 0; r < nrow; r++){
                 outData[r*ncol + c] = data[c*nrow + r];
             }
         }
-        cholmod_free_dense(&x, ConfigSingleton::getCommonPtr());
-        x = dense;
+        cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
+        dense = d;
         
         int temp = nrow;
         nrow = ncol;

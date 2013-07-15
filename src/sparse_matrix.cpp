@@ -383,7 +383,7 @@ namespace oocholmod {
     DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS)
     {
 #ifdef DEBUG
-        assert(LHS.x && RHS.sparse);
+        assert(LHS.dense && RHS.sparse);
         assert(LHS.magicNumber == MAGIC_NUMBER);
         assert(RHS.magicNumber == MAGIC_NUMBER);
         assert(LHS.ncol == RHS.nrow);
@@ -391,14 +391,14 @@ namespace oocholmod {
         double alpha[2] = {1.,1.};
         double beta[2] = {0.,0.};
         DenseMatrix res(RHS.ncol, LHS.nrow);
-        cholmod_sdmult(RHS.sparse, true, alpha, beta, transposed(LHS).x, res.x, ConfigSingleton::getCommonPtr());
+        cholmod_sdmult(RHS.sparse, true, alpha, beta, transposed(LHS).dense, res.dense, ConfigSingleton::getCommonPtr());
         return transposed(res);
     }
     
     DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS)
     {
 #ifdef DEBUG
-        assert(LHS.sparse && RHS.x);
+        assert(LHS.sparse && RHS.dense);
         assert(LHS.magicNumber == MAGIC_NUMBER);
         assert(RHS.magicNumber == MAGIC_NUMBER);
         assert(LHS.ncol == RHS.nrow);
@@ -406,7 +406,7 @@ namespace oocholmod {
         double alpha[2] = {1.,1.};
         double beta[2] = {0.,0.};
         DenseMatrix res(LHS.nrow, RHS.ncol);
-        cholmod_sdmult(LHS.sparse, false, alpha, beta, RHS.x, res.x, ConfigSingleton::getCommonPtr());
+        cholmod_sdmult(LHS.sparse, false, alpha, beta, RHS.dense, res.dense, ConfigSingleton::getCommonPtr());
         return res;
     }
     

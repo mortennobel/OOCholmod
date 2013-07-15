@@ -65,8 +65,8 @@ namespace oocholmod {
         friend DenseMatrix&& transposed(DenseMatrix&& M);
         
         
-        inline double *getData(){ return (double *)(x->x); };
-        inline double *getData() const { return (double *)(x->x); };
+        inline double *getData(){ return (double *)(dense->x); };
+        inline double *getData() const { return (double *)(dense->x); };
         
         int getRows() const{ return nrow; }
         
@@ -103,12 +103,12 @@ namespace oocholmod {
         
         inline double operator [](int i) const    {return getData()[i];}
         inline double & operator [](int i) {return getData()[i];}
-        inline cholmod_dense *getHandle() const { return x; }
+        inline cholmod_dense *getHandle() const { return dense; }
         void print(const char* name = "") const;
     private:
         DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor
         DenseMatrix operator=(const DenseMatrix& other) = delete; // prevent copy assignment operator
-        cholmod_dense *x;
+        cholmod_dense *dense;
         unsigned int nrow;
         unsigned int ncol;
 #ifdef DEBUG
