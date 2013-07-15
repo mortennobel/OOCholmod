@@ -124,7 +124,7 @@ namespace oocholmod {
         cblas_dscal (nrow*ncol, alpha, getData(), 1);
     }
     
-    void DenseMatrix::elem_divide(const DenseMatrix& b){
+    void DenseMatrix::elemDivide(const DenseMatrix& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(nrow == b.getRows() && ncol == b.getColumns());
@@ -138,7 +138,7 @@ namespace oocholmod {
         }
     }
     
-    void DenseMatrix::elem_multiply(const DenseMatrix& b){
+    void DenseMatrix::elemMultiply(const DenseMatrix& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(nrow == b.getRows() && ncol == b.getColumns());

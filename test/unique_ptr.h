@@ -168,7 +168,7 @@ int DivideTestUniquePtr(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->elem_divide(*b);
+    a->elemDivide(*b);
     //cout << "divide test"<<endl;
     
     double expected[] = {-0.5,-0.5,-0.5};
@@ -187,7 +187,7 @@ int MultiplyVectorTestUniquePtr(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->elem_multiply(*b);
+    a->elemMultiply(*b);
     //cout << "multiply test"<<endl;
     
     double expected[] = {4 * -8,5 * -10, 6 * -12};

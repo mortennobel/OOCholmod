@@ -178,7 +178,7 @@ int DivideTest(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->elem_divide(*b);
+    a->elemDivide(*b);
     
     double expected[] = {-0.5,-0.5,-0.5};
     
@@ -198,7 +198,7 @@ int MultiplyVectorTest(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->elem_multiply(*b);
+    a->elemMultiply(*b);
     
     double expected[] = {4 * -8,5 * -10, 6 * -12};
     

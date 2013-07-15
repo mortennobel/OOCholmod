@@ -79,10 +79,10 @@ namespace oocholmod {
         void scale(double alpha);
         
         // elementwise division
-        void elem_divide(const DenseMatrix& b);
+        void elemDivide(const DenseMatrix& b);
         
         // elementwise multiplication
-        void elem_multiply(const DenseMatrix& b);
+        void elemMultiply(const DenseMatrix& b);
         
         double dot(const DenseMatrix& b);
         void fill(double value);
