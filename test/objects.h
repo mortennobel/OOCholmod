@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 #include "sparse_matrix.h"
 #include "factor.h"
@@ -360,5 +361,27 @@ int SingularTestObj(){
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;
     DenseMatrix x = factor.solve(b);
+    return 1;
+}
+
+int SwapTest(){
+    DenseMatrix AD{1,1};
+    AD[0] = 1;
+    DenseMatrix BD{1,1};
+    BD[0] = 2;
+    swap(AD, BD);
+    TINYTEST_ASSERT(AD[0] == 2);
+    TINYTEST_ASSERT(BD[0] == 1);
+    
+    SparseMatrix A{1,1};
+    A(0,0) = 1;
+    A.build();
+    SparseMatrix B{1,1};
+    B(0,0) = 2;
+    B.build();
+    std::swap(A, B);
+    TINYTEST_ASSERT(A(0,0) == 2);
+    TINYTEST_ASSERT(B(0,0) == 1);
+    
     return 1;
 }

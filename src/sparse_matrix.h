@@ -113,6 +113,8 @@ namespace oocholmod {
         /// Print debugging information
         void print(const char* name = "");
         
+        void swap(SparseMatrix& other);
+        
         double& operator()(unsigned int row, unsigned int column = 0) {
             if (sparse != nullptr){
                 return getValue(row, column);
@@ -125,14 +127,6 @@ namespace oocholmod {
         SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
         SparseMatrix operator=(const SparseMatrix& other) = delete;
         void buildLookupIndexFromSparse();
-        cholmod_sparse *sparse;
-        cholmod_triplet *triplet;
-        unsigned int nrow;
-        unsigned int ncol;
-        double *values;
-        std::map<unsigned long, unsigned int> lookupIndex;
-        int *iRow;
-        int *jColumn;
         inline long key(unsigned int row, unsigned int column){
             int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
             return (((long)row)<<shiftBits)+column;
@@ -172,6 +166,14 @@ namespace oocholmod {
             int index = getIndex(row, column);
             return ((double*)sparse->x)[index];
         }
+        cholmod_sparse *sparse;
+        cholmod_triplet *triplet;
+        unsigned int nrow;
+        unsigned int ncol;
+        double *values;
+        std::map<unsigned long, unsigned int> lookupIndex;
+        int *iRow;
+        int *jColumn;
         Symmetry symmetry;
         int maxTripletElements;
 #ifdef DEBUG
@@ -208,6 +210,8 @@ namespace oocholmod {
     // Transpose
     SparseMatrix transposed(const SparseMatrix& M);
     SparseMatrix&& transposed(SparseMatrix&& M);
+    
+    void swap(SparseMatrix& v1, SparseMatrix& v2);
     
 }
 

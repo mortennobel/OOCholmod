@@ -7,6 +7,7 @@
 
 #include "dense_matrix.h"
 #include <cassert>
+#include <algorithm>
 #include <vecLib/cblas.h>
 #include "config_singleton.h"
 
@@ -228,6 +229,19 @@ namespace oocholmod {
             std::cout << std::endl;
         }
         std::cout << std::endl;
+    }
+    
+    void DenseMatrix::swap(DenseMatrix& other){
+        std::swap(x, other.x);
+        std::swap(nrow, other.nrow);
+        std::swap(ncol, other.ncol);
+#ifdef DEBUG        
+        std::swap(magicNumber, other.magicNumber);
+#endif
+    }
+    
+    void swap(DenseMatrix& v1, DenseMatrix& v2) {
+        v1.swap(v2);
     }
     
     // Addition

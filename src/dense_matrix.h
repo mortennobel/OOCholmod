@@ -102,6 +102,8 @@ namespace oocholmod {
         
         inline double operator [](int i) const    {return getData()[i];}
         inline double & operator [](int i) {return getData()[i];}
+        
+        void swap(DenseMatrix& other);
         inline cholmod_dense *getHandle() const { return x; }
         void print(const char* name = "") const;
     private:
@@ -136,5 +138,9 @@ namespace oocholmod {
     DenseMatrix transposed(const DenseMatrix& M);
     DenseMatrix&& transposed(DenseMatrix&& M);
     
+    void swap(DenseMatrix& v1, DenseMatrix& v2);
 }
+
+
+
 

@@ -167,6 +167,26 @@ namespace oocholmod {
         }
     }
     
+    void SparseMatrix::swap(SparseMatrix& other){
+        std::swap(sparse, other.sparse);
+        std::swap(triplet, other.triplet);
+        std::swap(nrow, other.nrow);
+        std::swap(ncol, other.ncol);
+        std::swap(values, other.values);
+        std::swap(lookupIndex, other.lookupIndex);
+        std::swap(iRow, other.iRow);
+        std::swap(jColumn, other.jColumn);
+        std::swap(symmetry, other.symmetry);
+        std::swap(maxTripletElements, other.maxTripletElements);
+#ifdef DEBUG
+        std::swap(magicNumber, other.magicNumber);
+#endif
+    }
+    
+    void swap(SparseMatrix& v1, SparseMatrix& v2) {
+        v1.swap(v2);
+    }
+    
     void SparseMatrix::buildLookupIndexFromSparse(){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
