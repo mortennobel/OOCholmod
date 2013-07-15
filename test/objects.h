@@ -270,6 +270,27 @@ int MultiplyTestObj(){
     return 1;
 }
 
+int MultiplyDenseDenseTestObj(){
+    
+    DenseMatrix x{3};
+    x[0] = 1;
+    x[1] = 2;
+    x[2] = -9;
+    
+    DenseMatrix y{3};
+    y[0] = 3;
+    y[1] = 7;
+    y[2] = 9;
+    
+    y.transpose();
+    
+    DenseMatrix res = y*x;
+    
+    double expected[3] = {19, 48, 29};
+    assertEqual(expected, res.getData(), 3);
+    return 1;
+}
+
 int FillTestObj(){
     DenseMatrix res(3);
     res.fill(123);

@@ -273,7 +273,11 @@ namespace oocholmod {
     {
         assert(LHS.dense && RHS.dense);
         assert(LHS.ncol == RHS.nrow);
-        
+        double alpha = 1.;
+        double beta = 0.;
+        DenseMatrix res(LHS.nrow, RHS.ncol);
+        cblas_cgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, LHS.nrow, RHS.ncol, LHS.ncol, &alpha, LHS.dense, LHS.nrow, RHS.dense, RHS.nrow, &beta, res.dense, LHS.nrow);
+        return res;
     }
     
     DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
