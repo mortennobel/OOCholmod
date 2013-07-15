@@ -51,11 +51,11 @@ int TestCaseUniquePtr(){
     //b->print("b");
     
     //A->print("A");
-    auto factor = unique_ptr<Factor>( A->analyzePtr());
-    bool res = factor->factorize(A.get());
+    Factor factor =  A->analyze();
+    bool res = factor.factorize(*A);
     //cout << "factor->factorize(A) "<<res<<endl;
     auto x = unique_ptr<DenseVector>();
-    factor->solve(b.get(), x);
+    factor.solve(b.get(), x);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, &((*x)[0]), 3);
@@ -68,10 +68,10 @@ int TestCaseUniquePtr(){
     (*A)(1, 2) = 8;
     (*A)(2, 2) = -3;
     
-    factor->factorize(A.get());
+    factor.factorize(*A);
     //A->print("A");
     
-    factor->solve(b.get(), x);
+    factor.solve(b.get(), x);
     //x->print("x");
     
     double expected2[] = {1.0935,1.76937,-1.73019};
@@ -122,7 +122,7 @@ int DotTestUniquePtr(){
     (*b)[1] = 5;
     (*b)[2] = 6;
     
-    double res = a->dot(b.get());
+    double res = a->dot(*b);
     double expected = 32;
     //cout << "Dot test" << endl;
     assertEqual(&expected, &res, 1);
@@ -169,7 +169,7 @@ int DivideTestUniquePtr(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->divideBy(b.get());
+    a->divideBy(*b);
     //cout << "divide test"<<endl;
     
     double expected[] = {-0.5,-0.5,-0.5};
@@ -188,7 +188,7 @@ int MultiplyVectorTestUniquePtr(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->multiplyWith(b.get());
+    a->multiplyWith(*b);
     //cout << "multiply test"<<endl;
     
     double expected[] = {4 * -8,5 * -10, 6 * -12};
@@ -211,10 +211,10 @@ int SingularTestUniquePtr(){
     //b->print("b");
     
     //A->print("A");
-    auto factor = unique_ptr<Factor>(A->analyzePtr());
-    bool res = factor->factorize(A.get());
+    Factor factor = A->analyze();
+    bool res = factor.factorize(*A);
     TINYTEST_ASSERT(!res);
     unique_ptr<DenseVector> x;
-    factor->solve(b.get(), x);
+    factor.solve(b.get(), x);
     return 1;
 }

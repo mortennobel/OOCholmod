@@ -25,7 +25,7 @@ namespace oocholmod {
         virtual ~DenseVector();
         inline double *getData(){ return (double *)(x->x); };
         inline double *getData() const { return (double *)(x->x); };
-        inline int getSize() { return size; }
+        inline int getSize() const { return size; }
         void copyTo(DenseVector *dest);
         void copyTo(DenseVector& dest);
         void zero();
@@ -33,13 +33,10 @@ namespace oocholmod {
         double length();
         void scale(double alpha);
         // elementwise division
-        void divideBy(DenseVector *b);
-        void divideBy(DenseVector& b);
+        void divideBy(const DenseVector& b);
         // elementwise multiplication
-        void multiplyWith(DenseVector *b);
-        void multiplyWith(DenseVector& b);
-        double dot(DenseVector *b);
-        double dot(DenseVector& b);
+        void multiplyWith(const DenseVector& b);
+        double dot(const DenseVector& b);
         void fill(double value);
         void set(float *data);
         void set(double *data);

@@ -53,12 +53,12 @@ int TestCase(){
     //b->print("b");
     
     //A->print("A");
-    Factor *factor = A->analyzePtr();
+    Factor factor = A->analyze();
     
-    bool res = factor->factorize(A);
+    bool res = factor.factorize(*A);
     //cout << "factor->factorize(A) "<<res<<endl;
     DenseVector * x = NULL;
-    factor->solve(b, &x);
+    factor.solve(b, &x);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, &((*x)[0]), 3);
@@ -71,9 +71,9 @@ int TestCase(){
     (*A)(1, 2) = 8;
     (*A)(2, 2) = -3;
     
-    factor->factorize(A);
+    factor.factorize(*A);
     
-    factor->solve(b,&x);
+    factor.solve(b,&x);
     
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, &((*x)[0]), 3);
@@ -81,7 +81,6 @@ int TestCase(){
     // clean up
     delete A;
     delete b;
-    delete factor;
     
     return 1;
 }
@@ -133,7 +132,7 @@ int DotTest(){
     (*b)[1] = 5;
     (*b)[2] = 6;
     
-    double res = a->dot(b);
+    double res = a->dot(*b);
     double expected = 32;
     assertEqual(&expected, &res, 1);
     delete a;
@@ -182,7 +181,7 @@ int DivideTest(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->divideBy(b);
+    a->divideBy(*b);
     
     double expected[] = {-0.5,-0.5,-0.5};
     
@@ -202,7 +201,7 @@ int MultiplyVectorTest(){
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
-    a->multiplyWith(b);
+    a->multiplyWith(*b);
     
     double expected[] = {4 * -8,5 * -10, 6 * -12};
     
@@ -226,14 +225,14 @@ int SingularTest(){
     //b->print("b");
     
     //A->print("A");
-    Factor *factor = A->analyzePtr();
-    bool res = factor->factorize(A);
+    Factor factor = A->analyze();
+    bool res = factor.factorize(*A);
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;
     DenseVector * x = NULL;
-    factor->solve(b, &x);
+    factor.solve(b, &x);
     delete A;
     delete b;
-    delete factor;
+
     return 1;
 }

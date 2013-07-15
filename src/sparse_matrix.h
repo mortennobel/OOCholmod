@@ -73,7 +73,6 @@ namespace oocholmod {
         
         void build(bool readOnly = false);
         
-        Factor *analyzePtr();
         Factor analyze();
         
         void zero();
@@ -98,7 +97,7 @@ namespace oocholmod {
         ///     0
         ///
         void setNullSpace(DenseVector *N);
-        void setNullSpace(DenseVector& N);
+        void setNullSpace(const DenseVector& N);
         
         // computes alpha*(A*X) + beta*Y
         // res is result

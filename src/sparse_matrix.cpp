@@ -146,8 +146,27 @@ namespace oocholmod {
         }
     }
     
-    void SparseMatrix::setNullSpace(DenseVector& N){
-        setNullSpace(&N);
+    void SparseMatrix::setNullSpace(const DenseVector& v){
+#ifdef DEBUG
+        assert(sparse != NULL);
+        assert(magicNumber == MAGIC_NUMBER);
+#endif
+        // naive implementation: Todo run fast
+        int idx = 0;
+        for (int j=0;j<ncol;j++){
+            int iFrom = ((int*)sparse->p)[j];
+            int iTo = ((int*)sparse->p)[j+1]-1;
+            for (int i=iFrom;i<=iTo;i++){
+                int row = ((int*)sparse->i)[i];
+                ((double*)sparse->x)[idx] *= v[row]*v[j];
+                idx++;
+            }
+        }
+        for (int i=0;i<v.getSize();i++){
+            if (v[i] == 0){
+                (*this)(i,i) = 1;
+            }
+        }
     }
     
     // computes this * X and store the result in res
@@ -215,15 +234,6 @@ namespace oocholmod {
                 idx++;
             }
         }
-    }
-    
-    Factor *SparseMatrix::analyzePtr(){
-#ifdef DEBUG
-        assert(sparse != NULL);
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
-        cholmod_factor *L = cholmod_analyze(sparse, ConfigSingleton::getCommonPtr());
-        return new Factor(L);
     }
     
     Factor SparseMatrix::analyze(){

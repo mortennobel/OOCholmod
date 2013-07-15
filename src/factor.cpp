@@ -66,16 +66,12 @@ namespace oocholmod {
     }
     
     bool Factor::factorize(SparseMatrix& sparse){
-        return factorize(&sparse);
-    }
-    
-    bool Factor::factorize(SparseMatrix *sparse){
 #ifdef DEBUG
-        assert(sparse->getSymmetry() != ASYMMETRIC);
+        assert(sparse.getSymmetry() != ASYMMETRIC);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         auto Common = ConfigSingleton::getCommonPtr();
-        cholmod_factorize(sparse->getHandle(), factor, Common) ; /* factorize */
+        cholmod_factorize(sparse.getHandle(), factor, Common) ; /* factorize */
         if (Common->status == CHOLMOD_OK){
             return true;
         }

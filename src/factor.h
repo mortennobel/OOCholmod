@@ -27,7 +27,6 @@ namespace oocholmod {
         
         // returns true if factorization is done
         // Return false if matrix is not positive definite
-        bool factorize(SparseMatrix *sparse);
         bool factorize(SparseMatrix& sparse);
         
         cholmod_factor *getFactorHandle() { return factor; };

@@ -85,15 +85,11 @@ namespace oocholmod {
         memset(x->x, 0, size * sizeof(double));
     }
     
-    double DenseVector::dot(DenseVector *b){
+    double DenseVector::dot(const DenseVector& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
-        return cblas_ddot(getSize(), getData(), 1, b->getData(), 1);
-    }
-    
-    double DenseVector::dot(DenseVector& b){
-        return dot(&b);
+        return cblas_ddot(getSize(), getData(), 1, b.getData(), 1);
     }
     
     void DenseVector::fill(double value){
@@ -120,36 +116,28 @@ namespace oocholmod {
         cblas_dscal (getSize(), alpha, getData(), 1);
     }
     
-    void DenseVector::divideBy(DenseVector *b){
+    void DenseVector::divideBy(const DenseVector& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
-        assert(b->getSize() >= getSize());
+        assert(b.getSize() >= getSize());
         double *thisData = getData();
-        double *bData = b->getData();
+        double *bData = b.getData();
         for (int i=0;i<getSize();i++){
             thisData[i] /= bData[i];
         }
     }
     
-    void DenseVector::divideBy(DenseVector& b){
-        divideBy(&b);
-    }
-    
-    void DenseVector::multiplyWith(DenseVector *b){
+    void DenseVector::multiplyWith(const DenseVector& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
-        assert(b->getSize() >= getSize());
+        assert(b.getSize() >= getSize());
 #endif
         double *thisData = getData();
-        double *bData = b->getData();
-        for (int i=0;i<getSize();i++){
+        double *bData = b.getData();
+        for (int i = 0;i < getSize(); i++) {
             thisData[i] *= bData[i];
         }
-    }
-    
-    void DenseVector::multiplyWith(DenseVector& b){
-        multiplyWith(&b);
     }
     
     void DenseVector::copyTo(DenseVector *dest){
