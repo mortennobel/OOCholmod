@@ -279,7 +279,13 @@ namespace oocholmod {
     DenseMatrix transposed(const DenseMatrix& M)
     {
         DenseMatrix res(M.ncol, M.nrow);
-        res.transpose();
+        double *data = M.getData();
+        double *outData = res.getData();
+        for (int c = 0; c < M.ncol; c++){
+            for (int r = 0; r < M.nrow; r++){
+                outData[r*M.ncol + c] = data[c*M.nrow + r];
+            }
+        }
         return res;
     }
     

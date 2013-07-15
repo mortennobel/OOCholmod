@@ -122,6 +122,12 @@ int TransposeTestObj()
     
     b.transpose();
     
+    DenseMatrix c = transposed(b);
+    
+    DenseMatrix d = transposed(std::move(c));
+    
+    assertEqual(b.getData(), d.getData(), 3)
+    
     // Cannot do before asymmetric matrices are supported.
     return 1;
 }
