@@ -19,13 +19,24 @@ namespace oocholmod {
     class DenseMatrix {
     public:
         DenseMatrix(unsigned int size);
+        
         DenseMatrix(cholmod_dense *x, unsigned int size);
+        
         DenseMatrix(DenseMatrix&& move);
+        
         DenseMatrix& operator=(DenseMatrix&& other);
-        virtual ~DenseMatrix();
+        
+        ~DenseMatrix();
+        
         inline double *getData(){ return (double *)(x->x); };
         inline double *getData() const { return (double *)(x->x); };
-        inline int getSize() const { return size; }
+        
+        int getRows() const{ return nrow; }
+        
+        int getColumns() const{ return ncol; }
+        
+        int getSize() const { return size; }
+        
         void copyTo(DenseMatrix *dest);
         void copyTo(DenseMatrix& dest);
         void zero();
@@ -52,11 +63,14 @@ namespace oocholmod {
         inline double operator [](int i) const    {return getData()[i];}
         inline double & operator [](int i) {return getData()[i];}
         inline cholmod_dense *getHandle() { return x; }
-        void print(const char* name);
+        void print(const char* name = "");
     private:
         DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor
+        DenseMatrix operator=(const DenseMatrix& other) = delete; // prevent copy assignment operator
         cholmod_dense *x;
         unsigned int size;
+        unsigned int nrow;
+        unsigned int ncol;
 #ifdef DEBUG
         unsigned long magicNumber;
 #endif
