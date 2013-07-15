@@ -16,27 +16,27 @@
 
 namespace oocholmod {
     
-    class DenseVector {
+    class DenseMatrix {
     public:
-        DenseVector(unsigned int size);
-        DenseVector(cholmod_dense *x, unsigned int size);
-        DenseVector(DenseVector&& move);
-        DenseVector& operator=(DenseVector&& other);
-        virtual ~DenseVector();
+        DenseMatrix(unsigned int size);
+        DenseMatrix(cholmod_dense *x, unsigned int size);
+        DenseMatrix(DenseMatrix&& move);
+        DenseMatrix& operator=(DenseMatrix&& other);
+        virtual ~DenseMatrix();
         inline double *getData(){ return (double *)(x->x); };
         inline double *getData() const { return (double *)(x->x); };
         inline int getSize() const { return size; }
-        void copyTo(DenseVector *dest);
-        void copyTo(DenseVector& dest);
+        void copyTo(DenseMatrix *dest);
+        void copyTo(DenseMatrix& dest);
         void zero();
         // computes the L^2 norm of the vector
         double length();
         void scale(double alpha);
         // elementwise division
-        void divideBy(const DenseVector& b);
+        void divideBy(const DenseMatrix& b);
         // elementwise multiplication
-        void multiplyWith(const DenseVector& b);
-        double dot(const DenseVector& b);
+        void multiplyWith(const DenseMatrix& b);
+        double dot(const DenseMatrix& b);
         void fill(double value);
         void set(float *data);
         void set(double *data);
@@ -54,7 +54,7 @@ namespace oocholmod {
         inline cholmod_dense *getHandle() { return x; }
         void print(const char* name);
     private:
-        DenseVector(const DenseVector& that) = delete; // prevent copy constructor
+        DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor
         cholmod_dense *x;
         unsigned int size;
 #ifdef DEBUG

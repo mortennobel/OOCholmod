@@ -9,7 +9,7 @@
 #include "sparse_matrix.h"
 #include <cassert>
 
-#include "dense_vector.h"
+#include "dense_matrix.h"
 #include "config_singleton.h"
 
 using namespace std;
@@ -122,13 +122,13 @@ namespace oocholmod {
         this->symmetry = symmetry;
     }
     
-    void SparseMatrix::setNullSpace(DenseVector *N){
+    void SparseMatrix::setNullSpace(DenseMatrix *N){
 #ifdef DEBUG
         assert(sparse != NULL);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         // naive implementation: Todo run fast
-        DenseVector &v = *N;
+        DenseMatrix &v = *N;
         int idx = 0;
         for (int j=0;j<ncol;j++){
             int iFrom = ((int*)sparse->p)[j];
@@ -146,7 +146,7 @@ namespace oocholmod {
         }
     }
     
-    void SparseMatrix::setNullSpace(const DenseVector& v){
+    void SparseMatrix::setNullSpace(const DenseMatrix& v){
 #ifdef DEBUG
         assert(sparse != NULL);
         assert(magicNumber == MAGIC_NUMBER);
@@ -170,7 +170,7 @@ namespace oocholmod {
     }
     
     // computes this * X and store the result in res
-    void SparseMatrix::multiply(DenseVector *X, DenseVector *res, double alpha, double beta){
+    void SparseMatrix::multiply(DenseMatrix *X, DenseMatrix *res, double alpha, double beta){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
         assert(res != NULL);
@@ -186,13 +186,13 @@ namespace oocholmod {
         cholmod_sdmult(sparse, false, _alpha, _beta, X->getHandle(), res->getHandle(), ConfigSingleton::getCommonPtr());
     }
     
-    DenseVector SparseMatrix::multiply(DenseVector& X, double alpha, double beta){
-        DenseVector res(X.getSize());
+    DenseMatrix SparseMatrix::multiply(DenseMatrix& X, double alpha, double beta){
+        DenseMatrix res(X.getSize());
         multiply(X, res, alpha, beta);
         return res;
     }
     
-    void SparseMatrix::multiply(DenseVector& X, DenseVector& res, double alpha, double beta){
+    void SparseMatrix::multiply(DenseMatrix& X, DenseMatrix& res, double alpha, double beta){
         multiply(&X, &res, alpha, beta);
     }
     

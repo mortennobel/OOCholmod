@@ -14,7 +14,7 @@
 
 #include "sparse_matrix.h"
 #include "factor.h"
-#include "dense_vector.h"
+#include "dense_matrix.h"
 #include "cpp14.h"
 
 
@@ -47,7 +47,7 @@ int TestCaseObj(){
     A(1, 2) = 5;
     A(2, 2) = -1;
     
-    DenseVector b{3};
+    DenseMatrix b{3};
     b[0] = 6;
     b[1] = -4;
     b[2] = 27;
@@ -57,7 +57,7 @@ int TestCaseObj(){
     Factor factor = A.analyze();
     bool res = factor.factorize(A);
     //cout << "factor->factorize(A) "<<res<<endl;
-    DenseVector x = factor.solve(b);
+    DenseMatrix x = factor.solve(b);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, x.getData(), 3);
@@ -145,7 +145,7 @@ int TestCaseFunctionOperatorObj(){
     A(1, 2) = 5;
     A(2, 2) = -1;
     
-    DenseVector b{3};
+    DenseMatrix b{3};
     b[0] = 6;
     b[1] = -4;
     b[2] = 27;
@@ -156,7 +156,7 @@ int TestCaseFunctionOperatorObj(){
     bool res = factor.factorize(A);
     TINYTEST_ASSERT(res);
     //cout << "factor->factorize(A) "<<res<<endl;
-    DenseVector x = factor.solve(b);
+    DenseMatrix x = factor.solve(b);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, x.getData(), 3);
@@ -242,12 +242,12 @@ int MultiplyTestObj(){
     A.build();
     //A.print("A");
     
-    DenseVector x{3};
+    DenseMatrix x{3};
     x[0] = 3;
     x[1] = 7;
     x[2] = 9;
     
-    DenseVector res = A.multiply(x);
+    DenseMatrix res = A.multiply(x);
     //res->print("b");
     double expected[3] = {19, 48, 29};
     assertEqual(expected, res.getData(), 3);
@@ -255,7 +255,7 @@ int MultiplyTestObj(){
 }
 
 int FillTestObj(){
-    DenseVector res(3);
+    DenseMatrix res(3);
     res.fill(123);
     //res->print("Fill 123 test");
     double expected[3] = {123, 123, 123};
@@ -264,8 +264,8 @@ int FillTestObj(){
 }
 
 int DotTestObj(){
-    DenseVector a{3};
-    DenseVector b{3};
+    DenseMatrix a{3};
+    DenseMatrix b{3};
     a[0] = 1;
     a[1] = 2;
     a[2] = 3;
@@ -281,7 +281,7 @@ int DotTestObj(){
 }
 
 int LengthTestObj(){
-    DenseVector a{3};
+    DenseMatrix a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
@@ -293,12 +293,12 @@ int LengthTestObj(){
 }
 
 int ScaleTestObj(){
-    DenseVector a{3};
+    DenseMatrix a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    DenseVector b{3};
+    DenseMatrix b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -309,12 +309,12 @@ int ScaleTestObj(){
 
 
 int DivideTestObj(){
-    DenseVector a{3};
+    DenseMatrix a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    DenseVector b{3};
+    DenseMatrix b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -327,12 +327,12 @@ int DivideTestObj(){
 }
 
 int MultiplyVectorTestObj(){
-    DenseVector a{3};
+    DenseMatrix a{3};
     a[0] = 4;
     a[1] = 5;
     a[2] = 6;
     
-    DenseVector b{3};
+    DenseMatrix b{3};
     b[0] = -8;
     b[1] = -10;
     b[2] = -12;
@@ -351,7 +351,7 @@ int SingularTestObj(){
     
     A.build();
     
-    DenseVector b{3};
+    DenseMatrix b{3};
     b[0] = 0;
     b[1] = 1;
     b[2] = 0;
@@ -362,6 +362,6 @@ int SingularTestObj(){
     bool res = factor.factorize(A);
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;
-    DenseVector x = factor.solve(b);
+    DenseMatrix x = factor.solve(b);
     return 1;
 }

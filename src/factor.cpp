@@ -8,7 +8,7 @@
 
 #include "factor.h"
 #include "sparse_matrix.h"
-#include "dense_vector.h"
+#include "dense_matrix.h"
 #include "cpp14.h"
 #include "config_singleton.h"
 
@@ -79,29 +79,29 @@ namespace oocholmod {
         return false;
     }
     
-    void Factor::solve(DenseVector* b, DenseVector **res){
+    void Factor::solve(DenseMatrix* b, DenseMatrix **res){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         delete *res;
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b->getHandle(), ConfigSingleton::getCommonPtr());
-        *res = new DenseVector(x, b->getSize());
+        *res = new DenseMatrix(x, b->getSize());
     }
     
-    void Factor::solve(DenseVector* b, std::unique_ptr<DenseVector> &res){
+    void Factor::solve(DenseMatrix* b, std::unique_ptr<DenseMatrix> &res){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b->getHandle(), ConfigSingleton::getCommonPtr());
-        res = make_unique<DenseVector>(x, b->getSize());
+        res = make_unique<DenseMatrix>(x, b->getSize());
     }
     
-    DenseVector Factor::solve(DenseVector& b){
+    DenseMatrix Factor::solve(DenseMatrix& b){
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b.getHandle(), ConfigSingleton::getCommonPtr());
-        return DenseVector(x, b.getSize());
+        return DenseMatrix(x, b.getSize());
     }
     
 }

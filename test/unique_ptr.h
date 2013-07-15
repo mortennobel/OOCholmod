@@ -12,7 +12,7 @@
 
 #include "sparse_matrix.h"
 #include "factor.h"
-#include "dense_vector.h"
+#include "dense_matrix.h"
 #include "cpp14.h"
 
 using namespace std;
@@ -44,7 +44,7 @@ int TestCaseUniquePtr(){
     (*A)(1, 2) = 5;
     (*A)(2, 2) = -1;
     
-    auto b = make_unique<DenseVector>(3);
+    auto b = make_unique<DenseMatrix>(3);
     (*b)[0] = 6;
     (*b)[1] = -4;
     (*b)[2] = 27;
@@ -54,7 +54,7 @@ int TestCaseUniquePtr(){
     Factor factor =  A->analyze();
     bool res = factor.factorize(*A);
     //cout << "factor->factorize(A) "<<res<<endl;
-    auto x = unique_ptr<DenseVector>();
+    auto x = unique_ptr<DenseMatrix>();
     factor.solve(b.get(), x);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
@@ -89,12 +89,12 @@ int MultiplyTestUniquePtr(){
     A->build();
     //A->print("A");
     
-    auto x = make_unique<DenseVector>(3);
+    auto x = make_unique<DenseMatrix>(3);
     (*x)[0] = 3;
     (*x)[1] = 7;
     (*x)[2] = 9;
     
-    auto res = make_unique<DenseVector>(3);
+    auto res = make_unique<DenseMatrix>(3);
     
     A->multiply(x.get(), res.get());
     //res->print("b");
@@ -104,7 +104,7 @@ int MultiplyTestUniquePtr(){
 }
 
 int FillTestUniquePtr(){
-    auto res = make_unique<DenseVector>(3);
+    auto res = make_unique<DenseMatrix>(3);
     res->fill(123);
     double expected[3] = {123, 123, 123};
     assertEqual(expected, res->getData(), 3);
@@ -112,8 +112,8 @@ int FillTestUniquePtr(){
 }
 
 int DotTestUniquePtr(){
-    auto a = make_unique<DenseVector>(3);
-    auto b = make_unique<DenseVector>(3);
+    auto a = make_unique<DenseMatrix>(3);
+    auto b = make_unique<DenseMatrix>(3);
     (*a)[0] = 1;
     (*a)[1] = 2;
     (*a)[2] = 3;
@@ -130,7 +130,7 @@ int DotTestUniquePtr(){
 }
 
 int LengthTestUniquePtr(){
-    auto a = make_unique<DenseVector>(3);
+    auto a = make_unique<DenseMatrix>(3);
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
@@ -143,12 +143,12 @@ int LengthTestUniquePtr(){
 }
 
 int ScaleTestUniquePtr(){
-    auto a = make_unique<DenseVector>(3);
+    auto a = make_unique<DenseMatrix>(3);
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    auto b = make_unique<DenseVector>(3);
+    auto b = make_unique<DenseMatrix>(3);
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -160,12 +160,12 @@ int ScaleTestUniquePtr(){
 
 
 int DivideTestUniquePtr(){
-    auto a = make_unique<DenseVector>(3);
+    auto a = make_unique<DenseMatrix>(3);
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    auto b = make_unique<DenseVector>(3);
+    auto b = make_unique<DenseMatrix>(3);
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -179,12 +179,12 @@ int DivideTestUniquePtr(){
 }
 
 int MultiplyVectorTestUniquePtr(){
-    auto a = make_unique<DenseVector>(3);
+    auto a = make_unique<DenseMatrix>(3);
     (*a)[0] = 4;
     (*a)[1] = 5;
     (*a)[2] = 6;
     
-    auto b = make_unique<DenseVector>(3);
+    auto b = make_unique<DenseMatrix>(3);
     (*b)[0] = -8;
     (*b)[1] = -10;
     (*b)[2] = -12;
@@ -204,7 +204,7 @@ int SingularTestUniquePtr(){
     
     A->build();
     
-    auto b = make_unique<DenseVector>(3);
+    auto b = make_unique<DenseMatrix>(3);
     (*b)[0] = 0;
     (*b)[1] = 1;
     (*b)[2] = 0;
@@ -214,7 +214,7 @@ int SingularTestUniquePtr(){
     Factor factor = A->analyze();
     bool res = factor.factorize(*A);
     TINYTEST_ASSERT(!res);
-    unique_ptr<DenseVector> x;
+    unique_ptr<DenseMatrix> x;
     factor.solve(b.get(), x);
     return 1;
 }
