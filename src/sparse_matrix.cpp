@@ -145,27 +145,6 @@ namespace oocholmod {
         }
     }
     
-    DenseMatrix SparseMatrix::multiply(const DenseMatrix& X, double alpha, double beta){
-        DenseMatrix res(X.getSize());
-        multiply(X, res, alpha, beta);
-        return res;
-    }
-    
-    void SparseMatrix::multiply(const DenseMatrix& X, DenseMatrix& res, double alpha, double beta){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-        assert(X.getSize() == res.getSize());
-        assert(&X != &res);
-        assert(nrow == X.getSize());
-#endif
-        
-        // alpha*(A*X) + beta*Y
-        double _alpha[2] = {alpha,alpha};
-        double _beta[2] = {beta,beta};
-        // int cholmod_sdmult(cholmod_sparse *A, ￼￼int transpose, double alpha [2], double beta [2], cholmod_dense *X, cholmod_dense *Y, cholmod_common *Common );
-        cholmod_sdmult(sparse, false, _alpha, _beta, X.getHandle(), res.getHandle(), ConfigSingleton::getCommonPtr());
-    }
-    
     void SparseMatrix::build(bool readOnly){
 #ifdef DEBUG
         assert(sparse == NULL);
@@ -306,7 +285,7 @@ namespace oocholmod {
     {
         assert(LHS.sparse && RHS.sparse);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
-        double scale[] = {1.,1.};
+        double scale[2] = {1.,1.};
         cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, scale, scale, true, true, ConfigSingleton::getCommonPtr());
         return SparseMatrix(sparse);
     }
@@ -315,7 +294,7 @@ namespace oocholmod {
     {
         assert(LHS.sparse && RHS.sparse);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
-        double scale[] = {1.,1.};
+        double scale[2] = {1.,1.};
         cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, scale, scale, true, true, ConfigSingleton::getCommonPtr());
         cholmod_free_sparse(&LHS.sparse, ConfigSingleton::getCommonPtr());
         LHS.sparse = sparse;
@@ -399,6 +378,35 @@ namespace oocholmod {
     {
         return std::move(RHS) * LHS;
     }
+    
+    
+    DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS)
+    {
+        
+    }
+    
+    DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS)
+    {
+#ifdef DEBUG
+        assert(LHS.sparse && RHS.x);
+        assert(LHS.magicNumber == MAGIC_NUMBER);
+        assert(RHS.magicNumber == MAGIC_NUMBER);
+        assert(LHS.ncol == RHS.nrow);
+#endif
+        double alpha[2] = {1.,1.};
+        double beta[2] = {0.,0.};
+        cholmod_dense *dense = cholmod_copy_dense(RHS.x, ConfigSingleton::getCommonPtr());
+        cholmod_sdmult(LHS.sparse, false, alpha, beta, RHS.x, dense, ConfigSingleton::getCommonPtr());
+        return DenseMatrix(dense);
+    }
+    
+    DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
+    DenseMatrix operator*(SparseMatrix&& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(const SparseMatrix& LHS, DenseMatrix&& RHS);
+    DenseMatrix operator*(const DenseMatrix& LHS, SparseMatrix&& RHS);
+    DenseMatrix&& operator*(SparseMatrix&& LHS, DenseMatrix&& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
+    
     
     void SparseMatrix::transpose()
     {

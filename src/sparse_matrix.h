@@ -66,6 +66,15 @@ namespace oocholmod {
         friend SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
         friend SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
         
+        friend DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
+        friend DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
+        friend DenseMatrix operator*(SparseMatrix&& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator*(const SparseMatrix& LHS, DenseMatrix&& RHS);
+        friend DenseMatrix operator*(const DenseMatrix& LHS, SparseMatrix&& RHS);
+        friend DenseMatrix&& operator*(SparseMatrix&& LHS, DenseMatrix&& RHS);
+        friend DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
+        
         // Transpose
         void transpose();
         friend SparseMatrix transposed(const SparseMatrix& M);
@@ -97,13 +106,6 @@ namespace oocholmod {
         ///     0
         ///
         void setNullSpace(const DenseMatrix& N);
-        
-        // computes alpha*(A*X) + beta*Y
-        // res is result
-        // alpha is optional (default 1)
-        // beta is optional (default 0)
-        void multiply(const DenseMatrix& X, DenseMatrix& res, double alpha = 1, double beta = 0);
-        DenseMatrix multiply(const DenseMatrix& X, double alpha = 1, double beta = 0);
 
         /// Get cholmod_sparse pointer
         inline cholmod_sparse *getHandle() const { return sparse; }
@@ -193,6 +195,15 @@ namespace oocholmod {
     SparseMatrix&& operator*(SparseMatrix&& LHS, const SparseMatrix& RHS);
     SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
     SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
+    
+    DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
+    DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
+    DenseMatrix operator*(SparseMatrix&& LHS, const DenseMatrix& RHS);
+    DenseMatrix&& operator*(const SparseMatrix& LHS, DenseMatrix&& RHS);
+    DenseMatrix operator*(const DenseMatrix& LHS, SparseMatrix&& RHS);
+    DenseMatrix&& operator*(SparseMatrix&& LHS, DenseMatrix&& RHS);
+    DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
     
     // Transpose
     SparseMatrix transposed(const SparseMatrix& M);

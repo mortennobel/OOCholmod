@@ -16,6 +16,9 @@
 
 namespace oocholmod {
     
+    // forward declaration
+    class SparseMatrix;
+    
     class DenseMatrix {
     public:
         DenseMatrix(unsigned int rows, unsigned int cols = 1);
@@ -46,6 +49,15 @@ namespace oocholmod {
         friend DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
         friend DenseMatrix&& operator*(const DenseMatrix& LHS, DenseMatrix&& RHS);
         friend DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
+        
+        friend DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
+        friend DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
+        friend DenseMatrix operator*(SparseMatrix&& LHS, const DenseMatrix& RHS);
+        friend DenseMatrix&& operator*(const SparseMatrix& LHS, DenseMatrix&& RHS);
+        friend DenseMatrix operator*(const DenseMatrix& LHS, SparseMatrix&& RHS);
+        friend DenseMatrix&& operator*(SparseMatrix&& LHS, DenseMatrix&& RHS);
+        friend DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
         
         // Transpose
         friend DenseMatrix transposed(const DenseMatrix& M);
