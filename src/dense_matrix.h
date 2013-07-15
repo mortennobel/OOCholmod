@@ -18,9 +18,9 @@ namespace oocholmod {
     
     class DenseMatrix {
     public:
-        DenseMatrix(unsigned int size);
+        DenseMatrix(unsigned int rows, unsigned int cols = 1);
         
-        DenseMatrix(cholmod_dense *x, unsigned int size);
+        DenseMatrix(cholmod_dense *x);
         
         DenseMatrix(DenseMatrix&& move);
         
@@ -59,29 +59,30 @@ namespace oocholmod {
         
         int getColumns() const{ return ncol; }
         
-        int getSize() const { return size; }
-        
-        void copyTo(DenseMatrix *dest);
-        void copyTo(DenseMatrix& dest);
+        DenseMatrix copy();
         void zero();
         // computes the L^2 norm of the vector
         double length();
+        
         void scale(double alpha);
+        
         // elementwise division
-        void divideBy(const DenseMatrix& b);
+        void elem_divide(const DenseMatrix& b);
+        
         // elementwise multiplication
-        void multiplyWith(const DenseMatrix& b);
+        void elem_multiply(const DenseMatrix& b);
+        
         double dot(const DenseMatrix& b);
         void fill(double value);
         void set(float *data);
         void set(double *data);
         void get(double *outData);
         void get(float *outData);
-        inline void add(unsigned int index, double value) {
+        inline void add(unsigned int row, unsigned int col, double value) {
 #ifdef DEBUG
-            assert(index < size);
+            assert(row < nrow && col < ncol);
 #endif
-            getData()[index] += value;
+            getData()[col*nrow + row] += value;
         };
         
         inline double operator [](int i) const    {return getData()[i];}
@@ -92,7 +93,6 @@ namespace oocholmod {
         DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor
         DenseMatrix operator=(const DenseMatrix& other) = delete; // prevent copy assignment operator
         cholmod_dense *x;
-        unsigned int size;
         unsigned int nrow;
         unsigned int ncol;
 #ifdef DEBUG
