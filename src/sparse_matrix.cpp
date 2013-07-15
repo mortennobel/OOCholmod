@@ -124,7 +124,7 @@ namespace oocholmod {
     
     void SparseMatrix::setNullSpace(const DenseMatrix& v){
 #ifdef DEBUG
-        assert(sparse != NULL);
+        assert(sparse);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         // naive implementation: Todo run fast
@@ -138,7 +138,7 @@ namespace oocholmod {
                 idx++;
             }
         }
-        for (int i=0;i<v.getSize();i++){
+        for (int i = 0; i < v.getRows(); i++){
             if (v[i] == 0){
                 (*this)(i,i) = 1;
             }

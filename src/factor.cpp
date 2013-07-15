@@ -100,7 +100,7 @@ namespace oocholmod {
         assert(factor);
 #endif
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b.getHandle(), ConfigSingleton::getCommonPtr());
-        return DenseMatrix(x, b.getSize());
+        return DenseMatrix(x);
     }
     
 }
