@@ -62,7 +62,7 @@ namespace oocholmod {
             
             other.factor = nullptr;
 #ifdef DEBUG
-            magicNumber = 0;
+            other.magicNumber = 0;
 #endif
         }
         
