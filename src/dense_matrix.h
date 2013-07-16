@@ -141,9 +141,6 @@ namespace oocholmod {
     DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
     
     DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator*(const DenseMatrix& LHS, DenseMatrix&& RHS);
-    DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
     
     // Transpose
     DenseMatrix transposed(const DenseMatrix& M);
