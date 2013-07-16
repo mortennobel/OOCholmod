@@ -25,8 +25,9 @@ using namespace std;
 #include "objects.h"
 
 TINYTEST_START_SUITE(ObjSuite);
-TINYTEST_ADD_TEST(TestCaseObj);
 TINYTEST_ADD_TEST(TestCaseFunctionOperatorObj);
+TINYTEST_ADD_TEST(SolveSparseDenseTestObj);
+TINYTEST_ADD_TEST(SolveSparseDenseFactorTestObj);
 TINYTEST_ADD_TEST(AddSparseSparseTestObj);
 TINYTEST_ADD_TEST(AddDenseDenseTestObj);
 TINYTEST_ADD_TEST(TransposeDenseTestObj);

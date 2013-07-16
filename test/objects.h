@@ -22,44 +22,47 @@
 using namespace std;
 using namespace oocholmod;
 
-int TestCaseObj(){
-    
+int SolveSparseDenseTestObj()
+{    
     SparseMatrix A{3,3};
-    
-    A(0, 0) = 0;
-    A(0, 1) = 0;
-    A(0, 2) = 0;
-    A(1, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    
-    A.build();
-    
-    // Ax = b
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
     A(1, 2) = 5;
     A(2, 2) = -1;
+    A.build();
     
     DenseMatrix b{3};
     b(0) = 6;
     b(1) = -4;
     b(2) = 27;
-    //b->print("b");
     
-    //A->print("A");
-    Factor factor = A.analyze();
-    bool res = factor.factorize(A);
-    //cout << "factor->factorize(A) "<<res<<endl;
-    DenseMatrix x = factor.solve(b);
-    //x->print("x");
+    // Ax = b
+    DenseMatrix x = solve(A, b);
+    double expected[] = {2.78571f,4.57143f,-1.35714f};
+    assertEqual(expected, x.getData(), 3);
+    return 1;
+}
+
+int SolveSparseDenseFactorTestObj()
+{    
+    SparseMatrix A{3,3};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
+    A.build();
+    
+    DenseMatrix b{3};
+    b(0) = 6;
+    b(1) = -4;
+    b(2) = 27;
+    
+    Factor F;
+    F = A.analyze();
+    bool res = F.factorize(A);
+    DenseMatrix x = solve(F, b);
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, x.getData(), 3);
     
@@ -71,12 +74,8 @@ int TestCaseObj(){
     A(1, 2) = 8;
     A(2, 2) = -3;
     
-    factor.factorize(A);
-    //A->print("A");
-    
-    x = factor.solve(b);
-    //x->print("x");
-    
+    F.factorize(A);
+    x = solve(F, b);
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, x.getData(), 3);
     
@@ -196,7 +195,7 @@ int TestCaseFunctionOperatorObj(){
     bool res = factor.factorize(A);
     TINYTEST_ASSERT(res);
     //cout << "factor->factorize(A) "<<res<<endl;
-    DenseMatrix x = factor.solve(b);
+    DenseMatrix x = solve(factor, b);
     //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, x.getData(), 3);
@@ -212,7 +211,7 @@ int TestCaseFunctionOperatorObj(){
     factor.factorize(A);
     //A->print("A");
     
-    x = factor.solve(b);
+    x = solve(factor, b);
     //x->print("x");
     
     double expected2[] = {1.0935,1.76937,-1.73019};
@@ -449,7 +448,7 @@ int SingularTestObj(){
     bool res = factor.factorize(A);
     TINYTEST_ASSERT(!res);
     //cout << "Factorize ok "<< res << endl;
-    DenseMatrix x = factor.solve(b);
+    DenseMatrix x = solve(factor, b);
     return 1;
 }
 
