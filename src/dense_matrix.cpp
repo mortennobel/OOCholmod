@@ -16,13 +16,16 @@ namespace oocholmod {
     // bad coffee odd food
 #define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
     
-    DenseMatrix::DenseMatrix(unsigned int rows, unsigned int cols)
-    :nrow(rows), ncol(cols)
+    DenseMatrix::DenseMatrix(unsigned int rows, unsigned int cols, double value)
+        :nrow(rows), ncol(cols)
 #ifdef DEBUG
-    ,magicNumber(MAGIC_NUMBER)
+        ,magicNumber(MAGIC_NUMBER)
 #endif
     {
         dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        if (!isnan(value)) {
+            fill(value);
+        }
     }
     
     DenseMatrix::DenseMatrix(cholmod_dense *dense_)

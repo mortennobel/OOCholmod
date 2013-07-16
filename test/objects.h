@@ -116,16 +116,14 @@ int AddSparseSparseTestObj()
 
 int AddDenseDenseTestObj()
 {
-    DenseMatrix A(3,3);
-    A.fill(0.);
+    DenseMatrix A(3, 3, 0.);
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
     A(1, 2) = 5;
     A(2, 2) = -1;
     
-    DenseMatrix B(3,3);
-    B.fill(1.);
+    DenseMatrix B(3, 3, 1.);
     B(0, 0) = 2;
     B(0, 1) = -1;
     B(0, 2) = 3;
@@ -283,8 +281,7 @@ int MultiplySparseDenseTestObj(){
     A(2, 2) = -1;
     A.build();
     
-    DenseMatrix x{3,2};
-    x.fill(1);
+    DenseMatrix x{3,2, 1.};
     x(0,1) = 3;
     x(1,1) = 7;
     x(2,0) = 9;
@@ -306,8 +303,7 @@ int MultiplySparseDenseTestObj(){
 
 int MultiplyScalarDenseTestObj()
 {
-    DenseMatrix x{3,2};
-    x.fill(1);
+    DenseMatrix x{3,2,1.};
     x(0,1) = -3;
     x(1,1) = 7;
     x(2,0) = 9;
@@ -324,14 +320,12 @@ int MultiplyScalarDenseTestObj()
 
 int MultiplyDenseDenseTestObj(){
     
-    DenseMatrix x{3,2};
-    x.fill(1);
+    DenseMatrix x{3, 2, 1.};
     x(0,1) = 3;
     x(1,1) = 7;
     x(2,0) = 9;
     
-    DenseMatrix y{2,3};
-    y.fill(1);
+    DenseMatrix y{2, 3, 1.};
     y(0,0) = -3;
     y(0,1) = 7;
     y(1,1) = 2;
@@ -365,9 +359,11 @@ int MultiplyDenseDenseTestObj(){
 int FillTestObj(){
     DenseMatrix res(3);
     res.fill(123);
-    //res->print("Fill 123 test");
     double expected[3] = {123, 123, 123};
     assertEqual(expected, res.getData(), 3);
+    
+    DenseMatrix res2(3, 1, 123);
+    assertEqual(expected, res2.getData(), 3);
     return 1;
 }
 

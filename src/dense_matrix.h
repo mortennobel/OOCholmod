@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <cassert>
-
+#include <cmath>
 
 #include <cholmod.h>
 
@@ -21,7 +21,7 @@ namespace oocholmod {
     
     class DenseMatrix {
     public:
-        DenseMatrix(unsigned int rows, unsigned int cols = 1);
+        DenseMatrix(unsigned int rows = 0, unsigned int cols = 1, double value = NAN);
         
         DenseMatrix(cholmod_dense *x);
         
