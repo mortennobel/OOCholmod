@@ -22,6 +22,27 @@
 using namespace std;
 using namespace oocholmod;
 
+int SolveDenseDenseTestObj()
+{
+    DenseMatrix A{3,3, 1.};
+    A(0, 0) = -1;
+    A(0, 1) = 5;
+    A(0, 2) = -3;
+    A(1, 2) = 5;
+    A(2, 0) = -1;
+    
+    DenseMatrix b{3, 2, 1.};
+    b(0) = 6;
+    b(1) = -4;
+    b(2) = 27;
+    
+    // Ax = b
+    DenseMatrix x = solve(A, b);
+    double expected[6] = {-23.8750, -1.0625, 4.1875, -0.5, 0.25, 0.25};
+    assertEqual(expected, x.getData(), 6);
+    return 1;
+}
+
 int SolveSparseDenseTestObj()
 {    
     SparseMatrix A{3,3, true};
@@ -62,10 +83,7 @@ int SolveSparseSparseTestObj()
     b.build();
     
     // Ax = b
-    A.print();
-    b.print();
     SparseMatrix x = solve(A, b);
-    x.print();
     double expected[6] = {10.7143, -2.5714, -2.1429, -15.9286, 9.1429, 2.7857};
     assert(std::abs(expected[0] - x(0,0)) < 0.0001);
     assert(std::abs(expected[2] - x(2,0)) < 0.0001);

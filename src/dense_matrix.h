@@ -85,6 +85,7 @@ namespace oocholmod {
         friend DenseMatrix&& transposed(DenseMatrix&& M);
         
         // Solve
+        friend DenseMatrix solve(DenseMatrix& A, DenseMatrix& b);
         friend DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
         friend DenseMatrix solve(Factor& F, DenseMatrix& b);
         
@@ -148,6 +149,8 @@ namespace oocholmod {
     DenseMatrix&& transposed(DenseMatrix&& M);
     
     void swap(DenseMatrix& v1, DenseMatrix& v2);
+    
+    DenseMatrix solve(DenseMatrix& A, DenseMatrix& b);
 }
 
 

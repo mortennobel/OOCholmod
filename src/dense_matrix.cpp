@@ -9,6 +9,7 @@
 #include <cassert>
 #include <algorithm>
 #include <vecLib/cblas.h>
+#include <vecLib/clapack.h>
 #include "config_singleton.h"
 
 namespace oocholmod {
@@ -359,6 +360,27 @@ namespace oocholmod {
     {
         M.transpose();
         return std::move(M);
+    }
+    
+    DenseMatrix solve(DenseMatrix& A, DenseMatrix& b)
+    {
+#ifdef DEBUG
+        assert(A.dense && b.dense);
+        assert(A.nrow == A.ncol);
+        assert(A.nrow == b.nrow);
+#endif
+        int N = b.nrow;
+        int nrhs = b.ncol;
+        int lda = A.nrow;
+        int ldb = b.nrow;
+        int ipiv[N];
+        int info;
+        
+        cholmod_dense *a = cholmod_copy_dense(A.dense, ConfigSingleton::getCommonPtr());
+        cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
+        
+        dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, (double*)res->x, &ldb, &info);
+        return DenseMatrix(res);
     }
     
 }
