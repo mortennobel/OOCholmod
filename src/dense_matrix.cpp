@@ -95,16 +95,11 @@ namespace oocholmod {
         memset(dense->x, 0, nrow * ncol * sizeof(double));
     }
     
-    double DenseMatrix::dot(const DenseMatrix& b) const{
+    void DenseMatrix::fill(double value)
+    {
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
-#endif
-        return cblas_ddot(nrow*ncol, getData(), 1, b.getData(), 1);
-    }
-    
-    void DenseMatrix::fill(double value){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
+        assert(dense);
 #endif
         double *data = getData();
         for (int c = 0; c < ncol; c++){
@@ -112,6 +107,15 @@ namespace oocholmod {
                 data[c*nrow + r] = value;
             }
         }
+    }
+    
+    double DenseMatrix::dot(const DenseMatrix& b) const{
+#ifdef DEBUG
+        assert(magicNumber == MAGIC_NUMBER);
+        assert(ncol == 1 || nrow == 1);
+        assert(b.ncol == ncol && b.nrow == nrow);
+#endif
+        return cblas_ddot(nrow*ncol, getData(), 1, b.getData(), 1);
     }
     
     double DenseMatrix::length(){
