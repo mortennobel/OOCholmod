@@ -83,7 +83,7 @@ int TestCaseObj(){
     return 1;
 }
 
-int AddTestObj()
+int AddSparseSparseTestObj()
 {
     SparseMatrix A(3,3);
     A(0, 0) = 1;
@@ -142,7 +142,7 @@ int AddDenseDenseTestObj()
     return 1;
 }
 
-int TransposeTestObj()
+int TransposeDenseTestObj()
 {
     DenseMatrix b{3};
     b(0) = 6;
@@ -223,7 +223,7 @@ int TestCaseFunctionOperatorObj(){
     return 1;
 }
 
-int MultiplyMatrixMatrixTestObj(){
+int MultiplySparseSparseTestObj(){
     SparseMatrix A(3,3);
     A(0, 0) = 1;
     A(0, 1) = 1;
@@ -253,7 +253,7 @@ int MultiplyMatrixMatrixTestObj(){
     return 1;
 }
 
-int MultiplyScalarMatrixTestObj(){
+int MultiplyScalarSparseTestObj(){
     SparseMatrix A(3,3);
     A(0, 0) = 1;
     A(0, 1) = 1;
@@ -274,7 +274,7 @@ int MultiplyScalarMatrixTestObj(){
 }
 
 
-int MultiplyTestObj(){
+int MultiplySparseDenseTestObj(){
     SparseMatrix A{3,3};
     A(0, 0) = 1;
     A(0, 1) = 1;
@@ -416,7 +416,7 @@ int ScaleTestObj(){
 }
 
 
-int DivideTestObj(){
+int ElemDivideTestObj(){
     DenseMatrix a{3};
     a(0) = 4;
     a(1) = 5;
@@ -434,7 +434,7 @@ int DivideTestObj(){
     return 1;
 }
 
-int MultiplyVectorTestObj(){
+int ElemMultiplyTestObj(){
     DenseMatrix a{3};
     a(0) = 4;
     a(1) = 5;
