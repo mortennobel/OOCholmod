@@ -38,7 +38,6 @@ TINYTEST_ADD_TEST(MultiplySparseDenseTestObj);
 TINYTEST_ADD_TEST(FillTestObj);
 TINYTEST_ADD_TEST(DotTestObj);
 TINYTEST_ADD_TEST(LengthTestObj);
-TINYTEST_ADD_TEST(ScaleTestObj);
 TINYTEST_ADD_TEST(ElemDivideTestObj);
 TINYTEST_ADD_TEST(ElemMultiplyTestObj);
 TINYTEST_ADD_TEST(SingularTestObj);

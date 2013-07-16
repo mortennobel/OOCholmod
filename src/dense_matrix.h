@@ -96,8 +96,6 @@ namespace oocholmod {
         // computes the L^2 norm of the vector
         double length();
         
-        void scale(double alpha);
-        
         // elementwise division
         void elemDivide(const DenseMatrix& b);
         void elemDivide(const DenseMatrix& b, DenseMatrix& dest) const;

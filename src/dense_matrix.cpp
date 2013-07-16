@@ -119,13 +119,6 @@ namespace oocholmod {
         return cblas_dnrm2(ncol*nrow, getData(), 1);
     }
     
-    void DenseMatrix::scale(double alpha){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
-        cblas_dscal (nrow*ncol, alpha, getData(), 1);
-    }
-    
     void DenseMatrix::elemDivide(const DenseMatrix& b, DenseMatrix& dest) const{
 #ifdef DEBUG
         assert(magicNumber == MAGIC_NUMBER);
