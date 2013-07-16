@@ -117,7 +117,6 @@ namespace oocholmod {
         void get(float *outData) const;
         
         void swap(DenseMatrix& other);
-        inline cholmod_dense *getHandle() const { return dense; }
         void print(const char* name = "") const;
     private:
         DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor

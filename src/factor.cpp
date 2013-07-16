@@ -81,14 +81,14 @@ namespace oocholmod {
         }
     }
     
-    bool Factor::factorize(SparseMatrix& sparse){
+    bool Factor::factorize(SparseMatrix& A){
 #ifdef DEBUG
-        assert(sparse.getSymmetry() != ASYMMETRIC);
+        assert(A.getSymmetry() != ASYMMETRIC);
         assert(magicNumber == MAGIC_NUMBER);
         assert(factor);
 #endif
         auto Common = ConfigSingleton::getCommonPtr();
-        cholmod_factorize(sparse.getHandle(), factor, Common) ; /* factorize */
+        cholmod_factorize(A.sparse, factor, Common) ; /* factorize */
         if (Common->status == CHOLMOD_OK){
             return true;
         }

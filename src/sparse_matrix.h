@@ -110,9 +110,6 @@ namespace oocholmod {
         ///     0
         ///
         void setNullSpace(const DenseMatrix& N);
-
-        /// Get cholmod_sparse pointer
-        inline cholmod_sparse *getHandle() const { return sparse; }
         
         /// Print debugging information
         void print(const char* name = "");

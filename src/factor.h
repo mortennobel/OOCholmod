@@ -31,8 +31,6 @@ namespace oocholmod {
         // Return false if matrix is not positive definite
         bool factorize(SparseMatrix& sparse);
         
-        cholmod_factor *getFactorHandle() { return factor; };
-        
         friend DenseMatrix solve(Factor& F, DenseMatrix& b);
         
         bool isInitialized();

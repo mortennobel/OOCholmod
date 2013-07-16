@@ -207,7 +207,7 @@ namespace oocholmod {
     
     Factor SparseMatrix::analyze(){
 #ifdef DEBUG
-        assert(sparse != NULL);
+        assert(sparse);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_factor *L = cholmod_analyze(sparse, ConfigSingleton::getCommonPtr());
@@ -217,7 +217,7 @@ namespace oocholmod {
     
     void SparseMatrix::zero(){
 #ifdef DEBUG
-        assert(sparse != NULL);
+        assert(sparse);
         assert(magicNumber == MAGIC_NUMBER);
 #endif
         memset(sparse->x, 0, sparse->nzmax * sizeof(double));
