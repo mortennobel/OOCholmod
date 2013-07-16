@@ -43,7 +43,7 @@ namespace oocholmod {
         /// nrow # of rows of A
         /// ncol # of columns of A
         /// maxSize (size allocated before build). 0 means triangular
-        SparseMatrix(unsigned int nrow = 0, unsigned int ncol = 0, int maxSize = 0);
+        SparseMatrix(unsigned int nrow = 0, unsigned int ncol = 1, bool symmetric = false, int maxSize = 0);
         SparseMatrix(cholmod_sparse *sparse);
         SparseMatrix(SparseMatrix&& move);
         SparseMatrix& operator=(SparseMatrix&& other);
@@ -128,7 +128,7 @@ namespace oocholmod {
         }
     private:
         SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
-        SparseMatrix operator=(const SparseMatrix& other) = delete;
+        SparseMatrix operator=(const SparseMatrix& other) = delete; // prevent copy assignment operator
         void buildLookupIndexFromSparse();
         inline long key(unsigned int row, unsigned int column){
             int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
@@ -141,9 +141,11 @@ namespace oocholmod {
             assertValidIndex(row, column);
             return lookupIndex[key(row, column)];
         }
-        inline double& initAddValue(unsigned int row, unsigned int column, double value=0) {
+        
+        double& initAddValue(unsigned int row, unsigned int column, double value=0)
+        {
             if (!triplet){
-                triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, this->symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+                triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
                 values = (double *)triplet->x;
                 iRow = (int *)triplet->i;
                 jColumn = (int *)triplet->j;
@@ -164,11 +166,13 @@ namespace oocholmod {
             triplet->nnz++;
             return values[triplet->nnz - 1];
         }
-        inline double& getValue(unsigned int row, unsigned int column){
+        
+        double& getValue(unsigned int row, unsigned int column){
             assertHasSparse();
             int index = getIndex(row, column);
             return ((double*)sparse->x)[index];
         }
+        
         cholmod_sparse *sparse;
         cholmod_triplet *triplet;
         unsigned int nrow;

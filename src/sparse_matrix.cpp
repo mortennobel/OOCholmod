@@ -19,21 +19,28 @@ using namespace std;
 
 namespace oocholmod {
     
-    SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, int maxSize)
+    SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, bool symmetric, int maxSize)
     :sparse(nullptr), triplet(nullptr), nrow(nrow), ncol(ncol)
 #ifdef DEBUG
     ,magicNumber(MAGIC_NUMBER)
 #endif
     {
-        if (maxSize == 0) {
+        if (symmetric && nrow == ncol) {
+            symmetry = SYMMETRIC_UPPER;
+        }
+        else {
+            symmetry = ASYMMETRIC;
+        }
+        
+        if (maxSize == 0 && symmetric) {
             maxTripletElements = (nrow*(ncol+1))/2; // triangular number
-        } else {
+        }
+        else if (maxSize == 0 && !symmetric) {
+            maxTripletElements = nrow*ncol; // triangular number
+        }
+        else {
             maxTripletElements = maxSize;
         }
-        this->symmetry = SYMMETRIC_UPPER;
-#ifdef DEBUG
-        assert(nrow == ncol); // must be square
-#endif
     }
     
     SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
@@ -264,7 +271,6 @@ namespace oocholmod {
     
     void SparseMatrix::assertValidIndex(unsigned int row, unsigned int column){
 #ifdef DEBUG
-        assert(symmetry == SYMMETRIC_UPPER);
         assert(row < nrow);
         assert(column < ncol);
         if (symmetry == SYMMETRIC_UPPER) {
@@ -272,7 +278,6 @@ namespace oocholmod {
         } else if (symmetry == SYMMETRIC_LOWER) {
             assert(row >= column);
         }
-        
 #endif
     }
     
