@@ -369,7 +369,7 @@ namespace oocholmod {
         return std::move(M);
     }
     
-    DenseMatrix solve(DenseMatrix& A, DenseMatrix& b)
+    DenseMatrix solve(const DenseMatrix& A, const DenseMatrix& b)
     {
 #ifdef DEBUG
         assert(A.dense && b.dense);
@@ -387,7 +387,75 @@ namespace oocholmod {
         cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
         
         dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, (double*)res->x, &ldb, &info);
+#ifdef DEBUG
+        assert(info == 0);
+#endif
         return DenseMatrix(res);
+    }
+    
+    DenseMatrix solve(DenseMatrix&& A, const DenseMatrix& b)
+    {
+#ifdef DEBUG
+        assert(A.dense && b.dense);
+        assert(A.nrow == A.ncol);
+        assert(A.nrow == b.nrow);
+#endif
+        int N = b.nrow;
+        int nrhs = b.ncol;
+        int lda = A.nrow;
+        int ldb = b.nrow;
+        int ipiv[N];
+        int info;
+        
+        cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
+        dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, (double*)res->x, &ldb, &info);
+#ifdef DEBUG
+        assert(info == 0);
+#endif
+        return DenseMatrix(res);
+    }
+    
+    DenseMatrix&& solve(const DenseMatrix& A, DenseMatrix&& b)
+    {
+#ifdef DEBUG
+        assert(A.dense && b.dense);
+        assert(A.nrow == A.ncol);
+        assert(A.nrow == b.nrow);
+#endif
+        int N = b.nrow;
+        int nrhs = b.ncol;
+        int lda = A.nrow;
+        int ldb = b.nrow;
+        int ipiv[N];
+        int info;
+        
+        cholmod_dense *a = cholmod_copy_dense(A.dense, ConfigSingleton::getCommonPtr());
+        dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, b.getData(), &ldb, &info);
+#ifdef DEBUG
+        assert(info == 0);
+#endif
+        return std::move(b);
+    }
+    
+    DenseMatrix&& solve(DenseMatrix&& A, DenseMatrix&& b)
+    {
+#ifdef DEBUG
+        assert(A.dense && b.dense);
+        assert(A.nrow == A.ncol);
+        assert(A.nrow == b.nrow);
+#endif
+        int N = b.nrow;
+        int nrhs = b.ncol;
+        int lda = A.nrow;
+        int ldb = b.nrow;
+        int ipiv[N];
+        int info;
+        
+        dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, b.getData(), &ldb, &info);
+#ifdef DEBUG
+        assert(info == 0);
+#endif
+        return std::move(b);
     }
     
 }

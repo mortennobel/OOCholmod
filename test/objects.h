@@ -40,6 +40,9 @@ int SolveDenseDenseTestObj()
     DenseMatrix x = solve(A, b);
     double expected[6] = {-23.8750, -1.0625, 4.1875, -0.5, 0.25, 0.25};
     assertEqual(expected, x.getData(), 6);
+    
+    DenseMatrix x2 = solve(std::move(A), std::move(b));
+    assertEqual(expected, x2.getData(), 6);
     return 1;
 }
 
