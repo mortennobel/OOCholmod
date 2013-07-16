@@ -83,6 +83,8 @@ namespace oocholmod {
         
         // Solve
         friend DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
+        friend SparseMatrix solve(SparseMatrix& A, SparseMatrix& b);
+        friend SparseMatrix solve(Factor& F, SparseMatrix& b);
         
         void build(bool readOnly = false);
         
@@ -216,5 +218,6 @@ namespace oocholmod {
     void swap(SparseMatrix& v1, SparseMatrix& v2);
     
     DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
+    SparseMatrix solve(SparseMatrix& A, SparseMatrix& b);
 }
 

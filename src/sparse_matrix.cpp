@@ -468,7 +468,21 @@ namespace oocholmod {
     {
 #ifdef DEBUG
         assert(A.magicNumber == MAGIC_NUMBER);
+        assert(b.magicNumber == MAGIC_NUMBER);
         assert(A.sparse && b.dense);
+        assert(A.nrow == b.nrow);
+#endif
+        Factor F = A.analyze();
+        F.factorize(A);
+        return solve(F, b);
+    }
+    
+    SparseMatrix solve(SparseMatrix& A, SparseMatrix& b)
+    {
+#ifdef DEBUG
+        assert(A.magicNumber == MAGIC_NUMBER);
+        assert(b.magicNumber == MAGIC_NUMBER);
+        assert(A.sparse && b.sparse);
         assert(A.nrow == b.nrow);
 #endif
         Factor F = A.analyze();

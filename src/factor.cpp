@@ -108,4 +108,16 @@ namespace oocholmod {
         return DenseMatrix(x);
     }
     
+    SparseMatrix solve(Factor& F, SparseMatrix& b)
+    {
+#ifdef DEBUG
+        assert(F.magicNumber == MAGIC_NUMBER);
+        assert(F.factor);
+        assert(b.magicNumber == MAGIC_NUMBER);
+        assert(b.sparse);
+#endif
+        cholmod_sparse *x = cholmod_spsolve(CHOLMOD_A, F.factor, b.sparse, ConfigSingleton::getCommonPtr());
+        return SparseMatrix(x);
+    }
+    
 }

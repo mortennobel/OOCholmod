@@ -32,6 +32,7 @@ namespace oocholmod {
         bool factorize(SparseMatrix& sparse);
         
         friend DenseMatrix solve(Factor& F, DenseMatrix& b);
+        friend SparseMatrix solve(Factor& F, SparseMatrix& b);
         
         bool isInitialized();
     private:
@@ -43,5 +44,6 @@ namespace oocholmod {
     };
     
     DenseMatrix solve(Factor& F, DenseMatrix& b);
+    SparseMatrix solve(Factor& F, SparseMatrix& b);
 }
 
