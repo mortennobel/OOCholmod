@@ -19,9 +19,10 @@ namespace oocholmod {
     class DenseMatrix;
     
     class Factor {
+        friend class SparseMatrix;
+        Factor(cholmod_factor *factor);
     public:
         Factor();
-        Factor(cholmod_factor *factor);
         Factor(Factor&& move);
         Factor& operator=(Factor&& other);
         virtual ~Factor();
@@ -32,9 +33,7 @@ namespace oocholmod {
         
         cholmod_factor *getFactorHandle() { return factor; };
         
-        // solves Ax=b
-
-        DenseMatrix solve(DenseMatrix& b);
+        friend DenseMatrix solve(Factor& F, DenseMatrix& b);
         
         bool isInitialized();
     private:
@@ -45,5 +44,6 @@ namespace oocholmod {
 #endif
     };
     
+    DenseMatrix solve(Factor& F, DenseMatrix& b);
 }
 

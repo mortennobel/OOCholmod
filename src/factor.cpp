@@ -96,12 +96,15 @@ namespace oocholmod {
         return false;
     }
     
-    DenseMatrix Factor::solve(DenseMatrix& b){
+    DenseMatrix solve(Factor& F, DenseMatrix& b)
+    {
 #ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-        assert(factor);
+        assert(F.magicNumber == MAGIC_NUMBER);
+        assert(F.factor);
+        assert(b.magicNumber == MAGIC_NUMBER);
+        assert(b.dense);
 #endif
-        cholmod_dense *x = cholmod_solve(CHOLMOD_A, factor, b.getHandle(), ConfigSingleton::getCommonPtr());
+        cholmod_dense *x = cholmod_solve(CHOLMOD_A, F.factor, b.dense, ConfigSingleton::getCommonPtr());
         return DenseMatrix(x);
     }
     

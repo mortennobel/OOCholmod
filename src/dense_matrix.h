@@ -18,6 +18,7 @@ namespace oocholmod {
     
     // forward declaration
     class SparseMatrix;
+    class Factor;
     
     class DenseMatrix {
     public:
@@ -83,6 +84,9 @@ namespace oocholmod {
         friend DenseMatrix transposed(const DenseMatrix& M);
         friend DenseMatrix&& transposed(DenseMatrix&& M);
         
+        // Solve
+        friend DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
+        friend DenseMatrix solve(Factor& F, DenseMatrix& b);
         
         inline double *getData(){ return (double *)(dense->x); };
         inline double *getData() const { return (double *)(dense->x); };

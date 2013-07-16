@@ -463,4 +463,16 @@ namespace oocholmod {
         M.ncol = static_cast<int>(sparse->ncol);
         return std::move(M);
     }
+    
+    DenseMatrix solve(SparseMatrix& A, DenseMatrix& b)
+    {
+#ifdef DEBUG
+        assert(A.magicNumber == MAGIC_NUMBER);
+        assert(A.sparse && b.dense);
+        assert(A.nrow == b.nrow);
+#endif
+        Factor F = A.analyze();
+        F.factorize(A);
+        return solve(F, b);
+    }
 }

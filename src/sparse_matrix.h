@@ -38,6 +38,7 @@ namespace oocholmod {
     ///
     /// At any point after the matrix has been build, you can call
     class SparseMatrix {
+        friend class Factor;
     public:
         /// nrow # of rows of A
         /// ncol # of columns of A
@@ -79,6 +80,9 @@ namespace oocholmod {
         void transpose();
         friend SparseMatrix transposed(const SparseMatrix& M);
         friend SparseMatrix&& transposed(SparseMatrix&& M);
+        
+        // Solve
+        friend DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
         
         void build(bool readOnly = false);
         
@@ -214,5 +218,6 @@ namespace oocholmod {
     
     void swap(SparseMatrix& v1, SparseMatrix& v2);
     
+    DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
 }
 
