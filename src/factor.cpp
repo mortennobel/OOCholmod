@@ -81,9 +81,11 @@ namespace oocholmod {
         }
     }
     
-    bool Factor::factorize(SparseMatrix& A){
+    bool Factor::factorize(const SparseMatrix& A){
 #ifdef DEBUG
-        assert(A.getSymmetry() != ASYMMETRIC);
+        assert(A.symmetry != ASYMMETRIC);
+        assert(A.magicNumber == MAGIC_NUMBER);
+        assert(A.sparse);
         assert(magicNumber == MAGIC_NUMBER);
         assert(factor);
 #endif
@@ -96,7 +98,7 @@ namespace oocholmod {
         return false;
     }
     
-    DenseMatrix solve(Factor& F, DenseMatrix& b)
+    DenseMatrix solve(const Factor& F, const DenseMatrix& b)
     {
 #ifdef DEBUG
         assert(F.magicNumber == MAGIC_NUMBER);
@@ -108,7 +110,7 @@ namespace oocholmod {
         return DenseMatrix(x);
     }
     
-    SparseMatrix solve(Factor& F, SparseMatrix& b)
+    SparseMatrix solve(const Factor& F, const SparseMatrix& b)
     {
 #ifdef DEBUG
         assert(F.magicNumber == MAGIC_NUMBER);

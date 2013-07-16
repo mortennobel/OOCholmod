@@ -63,18 +63,9 @@ namespace oocholmod {
         friend SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS);
         
         friend SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS);
-        friend SparseMatrix&& operator*(SparseMatrix&& LHS, const SparseMatrix& RHS);
-        friend SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
-        friend SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
         
         friend DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
         friend DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
-        friend DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
-        friend DenseMatrix operator*(SparseMatrix&& LHS, const DenseMatrix& RHS);
-        friend DenseMatrix&& operator*(const SparseMatrix& LHS, DenseMatrix&& RHS);
-        friend DenseMatrix operator*(const DenseMatrix& LHS, SparseMatrix&& RHS);
-        friend DenseMatrix&& operator*(SparseMatrix&& LHS, DenseMatrix&& RHS);
-        friend DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
         
         // Transpose
         void transpose();
@@ -82,13 +73,13 @@ namespace oocholmod {
         friend SparseMatrix&& transposed(SparseMatrix&& M);
         
         // Solve
-        friend DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
-        friend SparseMatrix solve(SparseMatrix& A, SparseMatrix& b);
-        friend SparseMatrix solve(Factor& F, SparseMatrix& b);
+        friend DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
+        friend SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b);
+        friend SparseMatrix solve(const Factor& F, const SparseMatrix& b);
         
         void build(bool readOnly = false);
         
-        Factor analyze();
+        Factor analyze() const;
         
         void zero();
         
@@ -201,27 +192,20 @@ namespace oocholmod {
     SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS);
     
     SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator*(SparseMatrix&& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS);
-    SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS);
     
     // DenseMatrix times SparseMatrix (Note that SparseMatrix times DenseMatrix may be faster).
     DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
     DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
-    DenseMatrix operator*(SparseMatrix&& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator*(const SparseMatrix& LHS, DenseMatrix&& RHS);
-    DenseMatrix operator*(const DenseMatrix& LHS, SparseMatrix&& RHS);
-    DenseMatrix&& operator*(SparseMatrix&& LHS, DenseMatrix&& RHS);
-    DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
     
     // Transpose
     SparseMatrix transposed(const SparseMatrix& M);
     SparseMatrix&& transposed(SparseMatrix&& M);
     
+    // Swap
     void swap(SparseMatrix& v1, SparseMatrix& v2);
     
-    DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
-    SparseMatrix solve(SparseMatrix& A, SparseMatrix& b);
+    // Solve
+    DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
+    SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b);
 }
 

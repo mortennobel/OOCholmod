@@ -29,10 +29,10 @@ namespace oocholmod {
         
         // returns true if factorization is done
         // Return false if matrix is not positive definite
-        bool factorize(SparseMatrix& sparse);
+        bool factorize(const SparseMatrix& sparse);
         
-        friend DenseMatrix solve(Factor& F, DenseMatrix& b);
-        friend SparseMatrix solve(Factor& F, SparseMatrix& b);
+        friend DenseMatrix solve(const Factor& F, const DenseMatrix& b);
+        friend SparseMatrix solve(const Factor& F, const SparseMatrix& b);
         
         bool isInitialized();
     private:
@@ -43,7 +43,7 @@ namespace oocholmod {
 #endif
     };
     
-    DenseMatrix solve(Factor& F, DenseMatrix& b);
-    SparseMatrix solve(Factor& F, SparseMatrix& b);
+    DenseMatrix solve(const Factor& F, const DenseMatrix& b);
+    SparseMatrix solve(const Factor& F, const SparseMatrix& b);
 }
 

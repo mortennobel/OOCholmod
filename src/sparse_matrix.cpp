@@ -212,7 +212,8 @@ namespace oocholmod {
         }
     }
     
-    Factor SparseMatrix::analyze(){
+    Factor SparseMatrix::analyze() const
+    {
 #ifdef DEBUG
         assert(sparse);
         assert(magicNumber == MAGIC_NUMBER);
@@ -344,35 +345,6 @@ namespace oocholmod {
         return SparseMatrix(sparse);
     }
     
-    SparseMatrix&& operator*(SparseMatrix&& LHS, const SparseMatrix& RHS)
-    {
-        assert(LHS.sparse && RHS.sparse);
-        assert(LHS.ncol == RHS.nrow);
-        cholmod_sparse *sparse = cholmod_ssmult(LHS.sparse, RHS.sparse, ASYMMETRIC, true, true, ConfigSingleton::getCommonPtr());
-        cholmod_free_sparse(&LHS.sparse, ConfigSingleton::getCommonPtr());
-        LHS.sparse = sparse;
-        LHS.ncol = RHS.ncol;
-        LHS.symmetry = ASYMMETRIC;
-        return std::move(LHS);
-    }
-    
-    SparseMatrix&& operator*(const SparseMatrix& LHS, SparseMatrix&& RHS)
-    {
-        assert(LHS.sparse && RHS.sparse);
-        assert(LHS.ncol == RHS.nrow);
-        cholmod_sparse *sparse = cholmod_ssmult(LHS.sparse, RHS.sparse, ASYMMETRIC, true, true, ConfigSingleton::getCommonPtr());
-        cholmod_free_sparse(&RHS.sparse, ConfigSingleton::getCommonPtr());
-        RHS.sparse = sparse;
-        RHS.ncol = RHS.ncol;
-        RHS.symmetry = ASYMMETRIC;
-        return std::move(RHS);
-    }
-    
-    SparseMatrix&& operator*(SparseMatrix&& LHS, SparseMatrix&& RHS)
-    {
-        return std::move(LHS) * RHS;
-    }
-    
     SparseMatrix operator*(const SparseMatrix& LHS, const double& RHS)
     {
         assert(LHS.sparse);
@@ -435,14 +407,6 @@ namespace oocholmod {
         return res;
     }
     
-    DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
-    DenseMatrix operator*(SparseMatrix&& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator*(const SparseMatrix& LHS, DenseMatrix&& RHS);
-    DenseMatrix operator*(const DenseMatrix& LHS, SparseMatrix&& RHS);
-    DenseMatrix&& operator*(SparseMatrix&& LHS, DenseMatrix&& RHS);
-    DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
-    
-    
     void SparseMatrix::transpose()
     {
         assert(symmetry == ASYMMETRIC);
@@ -469,7 +433,7 @@ namespace oocholmod {
         return std::move(M);
     }
     
-    DenseMatrix solve(SparseMatrix& A, DenseMatrix& b)
+    DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b)
     {
 #ifdef DEBUG
         assert(A.magicNumber == MAGIC_NUMBER);
@@ -482,7 +446,7 @@ namespace oocholmod {
         return solve(F, b);
     }
     
-    SparseMatrix solve(SparseMatrix& A, SparseMatrix& b)
+    SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b)
     {
 #ifdef DEBUG
         assert(A.magicNumber == MAGIC_NUMBER);

@@ -66,18 +66,9 @@ namespace oocholmod {
         friend DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
         
         friend DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS);
-        friend DenseMatrix&& operator*(DenseMatrix&& LHS, const DenseMatrix& RHS);
-        friend DenseMatrix&& operator*(const DenseMatrix& LHS, DenseMatrix&& RHS);
-        friend DenseMatrix&& operator*(DenseMatrix&& LHS, DenseMatrix&& RHS);
         
         friend DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
         friend DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
-        friend DenseMatrix&& operator*(DenseMatrix&& LHS, const SparseMatrix& RHS);
-        friend DenseMatrix operator*(SparseMatrix&& LHS, const DenseMatrix& RHS);
-        friend DenseMatrix&& operator*(const SparseMatrix& LHS, DenseMatrix&& RHS);
-        friend DenseMatrix operator*(const DenseMatrix& LHS, SparseMatrix&& RHS);
-        friend DenseMatrix&& operator*(SparseMatrix&& LHS, DenseMatrix&& RHS);
-        friend DenseMatrix&& operator*(DenseMatrix&& LHS, SparseMatrix&& RHS);
         
         // Transpose
         void transpose();
@@ -90,8 +81,8 @@ namespace oocholmod {
         friend DenseMatrix&& solve(const DenseMatrix& A, DenseMatrix&& b);
         friend DenseMatrix&& solve(DenseMatrix&& A, DenseMatrix&& b);
         
-        friend DenseMatrix solve(SparseMatrix& A, DenseMatrix& b);
-        friend DenseMatrix solve(Factor& F, DenseMatrix& b);
+        friend DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
+        friend DenseMatrix solve(const Factor& F, const DenseMatrix& b);
         
         inline double *getData(){ return (double *)(dense->x); };
         inline double *getData() const { return (double *)(dense->x); };
@@ -152,8 +143,10 @@ namespace oocholmod {
     DenseMatrix transposed(const DenseMatrix& M);
     DenseMatrix&& transposed(DenseMatrix&& M);
     
+    // Swap
     void swap(DenseMatrix& v1, DenseMatrix& v2);
     
+    // Solve
     DenseMatrix solve(const DenseMatrix& A, const DenseMatrix& b);
     DenseMatrix solve(DenseMatrix&& A, const DenseMatrix& b);
     DenseMatrix&& solve(const DenseMatrix& A, DenseMatrix&& b);
