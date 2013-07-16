@@ -24,7 +24,7 @@ using namespace oocholmod;
 
 int SolveSparseDenseTestObj()
 {    
-    SparseMatrix A{3,3};
+    SparseMatrix A{3,3, true};
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
@@ -44,9 +44,37 @@ int SolveSparseDenseTestObj()
     return 1;
 }
 
+int SolveSparseSparseTestObj()
+{
+    SparseMatrix A{3,3, true};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
+    A.build();
+    
+    SparseMatrix b{3,2};
+    b(0,0) = 6;
+    b(0,1) = -4;
+    b(2,1) = 27;
+    b(1,1) = -2;
+    b.build();
+    
+    // Ax = b
+    A.print();
+    b.print();
+    SparseMatrix x = solve(A, b);
+    x.print();
+    double expected[6] = {10.7143, -2.5714, -2.1429, -15.9286, 9.1429, 2.7857};
+    assert(std::abs(expected[0] - x(0,0)) < 0.0001);
+    assert(std::abs(expected[2] - x(2,0)) < 0.0001);
+    return 1;
+}
+
 int SolveSparseDenseFactorTestObj()
 {    
-    SparseMatrix A{3,3};
+    SparseMatrix A{3,3, true};
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
@@ -84,7 +112,7 @@ int SolveSparseDenseFactorTestObj()
 
 int AddSparseSparseTestObj()
 {
-    SparseMatrix A(3,3);
+    SparseMatrix A(3,3, true);
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
@@ -92,7 +120,7 @@ int AddSparseSparseTestObj()
     A(2, 2) = -1;
     A.build();
     
-    SparseMatrix B(3,3);
+    SparseMatrix B(3,3, true);
     B(0, 0) = 2;
     B(0, 1) = -1;
     B(0, 2) = 3;
@@ -153,50 +181,30 @@ int TransposeDenseTestObj()
     DenseMatrix d = transposed(std::move(c));
     
     assertEqual(b.getData(), d.getData(), 3)
-    
-    // Cannot do before asymmetric matrices are supported.
     return 1;
 }
 
 int TestCaseFunctionOperatorObj(){
     
-    SparseMatrix A{3,3};
-    
-    A(0, 0) = 0;
-    A(0, 1) = 0;
-    A(0, 2) = 0;
-    A(1, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    A(2, 2) = 0;
-    
-    A.build();
-    
-    // Ax = b
+    SparseMatrix A{3,3, true};
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
     A(1, 2) = 5;
     A(2, 2) = -1;
+    A.build();
     
     DenseMatrix b{3};
     b(0) = 6;
     b(1) = -4;
     b(2) = 27;
-    //b->print("b");
     
-    //A->print("A");
+    // Ax = b
     Factor factor = A.analyze();
     bool res = factor.factorize(A);
     TINYTEST_ASSERT(res);
-    //cout << "factor->factorize(A) "<<res<<endl;
+    
     DenseMatrix x = solve(factor, b);
-    //x->print("x");
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, x.getData(), 3);
     
@@ -209,10 +217,7 @@ int TestCaseFunctionOperatorObj(){
     A(2, 2) = -3;
     
     factor.factorize(A);
-    //A->print("A");
-    
     x = solve(factor, b);
-    //x->print("x");
     
     double expected2[] = {1.0935,1.76937,-1.73019};
     assertEqual(expected2, x.getData(), 3);
@@ -221,15 +226,15 @@ int TestCaseFunctionOperatorObj(){
 }
 
 int MultiplySparseSparseTestObj(){
-    SparseMatrix A(3,3);
+    SparseMatrix A(2,3);
     A(0, 0) = 1;
-    A(0, 1) = 1;
+    A(0, 1) = 2;
     A(0, 2) = 1;
+    A(1, 1) = -2;
     A(1, 2) = 5;
-    A(2, 2) = -1;
     A.build();
     
-    SparseMatrix B(3,3);
+    SparseMatrix B(3,3, true);
     B(0, 0) = 2;
     B(0, 1) = -1;
     B(0, 2) = 3;
@@ -239,40 +244,37 @@ int MultiplySparseSparseTestObj(){
     B.build();
     
     SparseMatrix C = A*B;
+    assert(C(1,1) == -37);
+    assert(C(0,2) == -8);
     
-    SparseMatrix D = B*(A*B);
-//    assert(D(2,2) == 22);
-//    assert(D(0,2) == -67);
-    
-    SparseMatrix E;
-    E = (A*B)*C;
-    
+    SparseMatrix D;
+    D = (C*B)*transposed(A);
+
     return 1;
 }
 
 int MultiplyScalarSparseTestObj(){
-    SparseMatrix A(3,3);
+    SparseMatrix A(3,3, true);
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
     A(1, 2) = 5;
     A(2, 2) = -1;
     A.build();
-    
+
     SparseMatrix B = A*0.1;
-    SparseMatrix C = -13.4*(A*B);
-    
+    SparseMatrix C = -10.*(A*B);
     A = 0.3 * A;
-//    A.print();
-//    assert(C(2,2) == 281.4);
-//    assert(C(0,2) == 40.2);
+    
+    assert(C(2,2) == -27);
+    assert(C(0,2) == -5);
     
     return 1;
 }
 
 
 int MultiplySparseDenseTestObj(){
-    SparseMatrix A{3,3};
+    SparseMatrix A{3,3, true};
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
@@ -431,7 +433,7 @@ int ElemMultiplyTestObj(){
 }
 
 int SingularTestObj(){
-    SparseMatrix A{3,3};
+    SparseMatrix A{3,3, true};
     
     A(2, 2) = 1;
     
@@ -441,13 +443,10 @@ int SingularTestObj(){
     b(0) = 0;
     b(1) = 1;
     b(2) = 0;
-    //b->print("b");
     
-    //A->print("A");
     Factor factor = A.analyze();
     bool res = factor.factorize(A);
     TINYTEST_ASSERT(!res);
-    //cout << "Factorize ok "<< res << endl;
     DenseMatrix x = solve(factor, b);
     return 1;
 }
