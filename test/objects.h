@@ -276,6 +276,24 @@ int MultiplyTestObj(){
     return 1;
 }
 
+int MultiplyScalarDenseTestObj()
+{
+    DenseMatrix x{3,2};
+    x.fill(1);
+    x(0,1) = 3;
+    x(1,1) = 7;
+    x(2,0) = 9;
+
+    DenseMatrix res1 = 3.*x;
+    
+    DenseMatrix res2 = 0.1*std::move(res1);
+    
+    double expected2[6] = {0.3, 0.3, 2.7, 0.9, 2.1, 0.3};
+    assertEqual(expected2, res2.getData(), 6);
+    
+    return 1;
+}
+
 int MultiplyDenseDenseTestObj(){
     
     DenseMatrix x{3,2};

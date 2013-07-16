@@ -264,10 +264,37 @@ namespace oocholmod {
     DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS);
     
     // Multiplication
-    DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS);
-    DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS);
-    DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
+    DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS)
+    {
+#ifdef DEBUG
+        assert(LHS.dense);
+        assert(LHS.magicNumber == MAGIC_NUMBER);
+#endif
+        cholmod_dense *dense = cholmod_copy_dense(LHS.dense, ConfigSingleton::getCommonPtr());
+        DenseMatrix res(dense);
+        cblas_dscal (LHS.nrow*LHS.ncol, RHS, res.getData(), 1);
+        return res;
+    }
+    
+    DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS)
+    {
+#ifdef DEBUG
+        assert(LHS.dense);
+        assert(LHS.magicNumber == MAGIC_NUMBER);
+#endif
+        cblas_dscal (LHS.nrow*LHS.ncol, RHS, LHS.getData(), 1);
+        return std::move(LHS);
+    }
+    
+    DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS)
+    {
+        return RHS*LHS;
+    }
+    
+    DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS)
+    {
+        return std::move(RHS)*LHS;
+    }
     
     DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS)
     {

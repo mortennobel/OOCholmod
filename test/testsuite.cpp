@@ -31,6 +31,7 @@ TINYTEST_ADD_TEST(TransposeTestObj);
 TINYTEST_ADD_TEST(TestCaseFunctionOperatorObj);
 TINYTEST_ADD_TEST(MultiplyMatrixMatrixTestObj);
 TINYTEST_ADD_TEST(MultiplyScalarMatrixTestObj);
+TINYTEST_ADD_TEST(MultiplyScalarDenseTestObj);
 TINYTEST_ADD_TEST(MultiplyDenseDenseTestObj);
 TINYTEST_ADD_TEST(MultiplyTestObj);
 TINYTEST_ADD_TEST(FillTestObj);
