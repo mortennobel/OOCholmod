@@ -95,18 +95,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7ba49451ef88ed6eb98c2c60831ed4e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ba49451ef88ed6eb98c2c60831ed4e8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DenseMatrix</b> (unsigned int size)</td></tr>
-<tr class="separator:a7ba49451ef88ed6eb98c2c60831ed4e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f67fc3fca87c85a837ec18ae1003232"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f67fc3fca87c85a837ec18ae1003232"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DenseMatrix</b> (cholmod_dense *x, unsigned int size)</td></tr>
-<tr class="separator:a9f67fc3fca87c85a837ec18ae1003232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae971082fb9a8bc917f07c302d625f81c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae971082fb9a8bc917f07c302d625f81c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DenseMatrix</b> (unsigned int rows, unsigned int cols=1)</td></tr>
+<tr class="separator:ae971082fb9a8bc917f07c302d625f81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bceb7d00e19fff5dd33668edc93576f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7bceb7d00e19fff5dd33668edc93576f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DenseMatrix</b> (cholmod_dense *x)</td></tr>
+<tr class="separator:a7bceb7d00e19fff5dd33668edc93576f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e7062079f5935a621699a0f6571c869"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e7062079f5935a621699a0f6571c869"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DenseMatrix</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;move)</td></tr>
 <tr class="separator:a8e7062079f5935a621699a0f6571c869"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4335fe85379fa2abeb3e9bf43e1ac245"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4335fe85379fa2abeb3e9bf43e1ac245"></a>
 <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;other)</td></tr>
 <tr class="separator:a4335fe85379fa2abeb3e9bf43e1ac245"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83a7de0c65a866dc03c57c12f9f9614a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83a7de0c65a866dc03c57c12f9f9614a"></a>
+double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (unsigned int row, unsigned int col=0)</td></tr>
+<tr class="separator:a83a7de0c65a866dc03c57c12f9f9614a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaa0236c31bfe9750264280653cc4009"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeaa0236c31bfe9750264280653cc4009"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (unsigned int row, unsigned int col=0) const </td></tr>
+<tr class="separator:aeaa0236c31bfe9750264280653cc4009"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85bfe5da94cf963efe30309c6b73fc3a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85bfe5da94cf963efe30309c6b73fc3a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>transpose</b> ()</td></tr>
+<tr class="separator:a85bfe5da94cf963efe30309c6b73fc3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40326fe7bf9cd4ac512e08b63a56c84e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40326fe7bf9cd4ac512e08b63a56c84e"></a>
 double *&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> ()</td></tr>
 <tr class="separator:a40326fe7bf9cd4ac512e08b63a56c84e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,15 +128,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getRows</b> () const <
 <tr class="memitem:a9ce23708652b855ac171566939083ec0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ce23708652b855ac171566939083ec0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getColumns</b> () const </td></tr>
 <tr class="separator:a9ce23708652b855ac171566939083ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5545d80c9c73e32541069ea700703374"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5545d80c9c73e32541069ea700703374"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>getSize</b> () const </td></tr>
-<tr class="separator:a5545d80c9c73e32541069ea700703374"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbdea63088c5c7c1b2bd62e7f1cc7f07"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbdea63088c5c7c1b2bd62e7f1cc7f07"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>copyTo</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> *dest)</td></tr>
-<tr class="separator:abbdea63088c5c7c1b2bd62e7f1cc7f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabb19d73bf4e5509c04f16ba78ac743b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabb19d73bf4e5509c04f16ba78ac743b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>copyTo</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;dest)</td></tr>
-<tr class="separator:aabb19d73bf4e5509c04f16ba78ac743b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75ca404c7db821998e6e8b970660a05b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75ca404c7db821998e6e8b970660a05b"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> () const </td></tr>
+<tr class="separator:a75ca404c7db821998e6e8b970660a05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4caee07b852cf356cf30547433e22de0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4caee07b852cf356cf30547433e22de0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>zero</b> ()</td></tr>
 <tr class="separator:a4caee07b852cf356cf30547433e22de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,15 +140,21 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>length</b> ()</td><
 <tr class="memitem:a69eccb429e0cd0834ddd0602c482598e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69eccb429e0cd0834ddd0602c482598e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>scale</b> (double alpha)</td></tr>
 <tr class="separator:a69eccb429e0cd0834ddd0602c482598e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bdbc8040e900d11c0adbbb888949a35"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3bdbc8040e900d11c0adbbb888949a35"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>divideBy</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b)</td></tr>
-<tr class="separator:a3bdbc8040e900d11c0adbbb888949a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a59e65d3ad484a9bb45033c517f8603"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a59e65d3ad484a9bb45033c517f8603"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>multiplyWith</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b)</td></tr>
-<tr class="separator:a4a59e65d3ad484a9bb45033c517f8603"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a001d547c369257fb54d5dafc2798b0e5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a001d547c369257fb54d5dafc2798b0e5"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>dot</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b)</td></tr>
-<tr class="separator:a001d547c369257fb54d5dafc2798b0e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2479330dfd6ecdfd6abee4bc962bac4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2479330dfd6ecdfd6abee4bc962bac4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>elemDivide</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b)</td></tr>
+<tr class="separator:ae2479330dfd6ecdfd6abee4bc962bac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2644b750831bdeeb976ff50b8cd660"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a2644b750831bdeeb976ff50b8cd660"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>elemDivide</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b, <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;dest) const </td></tr>
+<tr class="separator:a3a2644b750831bdeeb976ff50b8cd660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc3ece813f7a1817c3ba0b433b225bd7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc3ece813f7a1817c3ba0b433b225bd7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>elemMultiply</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b)</td></tr>
+<tr class="separator:acc3ece813f7a1817c3ba0b433b225bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c33753a09e57052e7b1e74fd6c30f31"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c33753a09e57052e7b1e74fd6c30f31"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>elemMultiply</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b, <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;dest) const </td></tr>
+<tr class="separator:a5c33753a09e57052e7b1e74fd6c30f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e1b25b96f90fd342b1d0f0797824e76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e1b25b96f90fd342b1d0f0797824e76"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>dot</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b) const </td></tr>
+<tr class="separator:a2e1b25b96f90fd342b1d0f0797824e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76d84c84b6116aa45f0b4f9e9ff31948"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a76d84c84b6116aa45f0b4f9e9ff31948"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>fill</b> (double value)</td></tr>
 <tr class="separator:a76d84c84b6116aa45f0b4f9e9ff31948"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,27 +164,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (float *data)
 <tr class="memitem:ae8025823dc4b04def6bcd94c3c0c3acb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8025823dc4b04def6bcd94c3c0c3acb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (double *data)</td></tr>
 <tr class="separator:ae8025823dc4b04def6bcd94c3c0c3acb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19af2128b544b447b1e882d81161d03c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19af2128b544b447b1e882d81161d03c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (double *outData)</td></tr>
-<tr class="separator:a19af2128b544b447b1e882d81161d03c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3ae36e31913771e09306e154119be2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3ae36e31913771e09306e154119be2a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (float *outData)</td></tr>
-<tr class="separator:ae3ae36e31913771e09306e154119be2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cb7f709d44f0fe7598fdaad0b1d8cfe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cb7f709d44f0fe7598fdaad0b1d8cfe"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (unsigned int index, double value)</td></tr>
-<tr class="separator:a7cb7f709d44f0fe7598fdaad0b1d8cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affdc06ae75a7e1a8556e9014056ffaaa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affdc06ae75a7e1a8556e9014056ffaaa"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int i) const </td></tr>
-<tr class="separator:affdc06ae75a7e1a8556e9014056ffaaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b6559b5a7c7021c35ea54662b3caf41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b6559b5a7c7021c35ea54662b3caf41"></a>
-double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int i)</td></tr>
-<tr class="separator:a2b6559b5a7c7021c35ea54662b3caf41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a238ba3386288684a1e166d5668bfaa7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a238ba3386288684a1e166d5668bfaa7c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (double *outData) const </td></tr>
+<tr class="separator:a238ba3386288684a1e166d5668bfaa7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab521b6ef740ccbf46d0f6e7cbb3adcd6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab521b6ef740ccbf46d0f6e7cbb3adcd6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (float *outData) const </td></tr>
+<tr class="separator:ab521b6ef740ccbf46d0f6e7cbb3adcd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca8138f4852c2519010ec3218048663a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca8138f4852c2519010ec3218048663a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;other)</td></tr>
+<tr class="separator:aca8138f4852c2519010ec3218048663a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae06e0fdcf480c269e6c33fb8f4d56b83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae06e0fdcf480c269e6c33fb8f4d56b83"></a>
 cholmod_dense *&#160;</td><td class="memItemRight" valign="bottom"><b>getHandle</b> () const </td></tr>
 <tr class="separator:ae06e0fdcf480c269e6c33fb8f4d56b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9c01fd47aae5e3293aae0aca6a871f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9c01fd47aae5e3293aae0aca6a871f7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (const char *name=&quot;&quot;)</td></tr>
-<tr class="separator:ae9c01fd47aae5e3293aae0aca6a871f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8bb95ae53ae36b10b1e648da14359c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f8bb95ae53ae36b10b1e648da14359c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (const char *name=&quot;&quot;) const </td></tr>
+<tr class="separator:a5f8bb95ae53ae36b10b1e648da14359c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -215,6 +218,30 @@ Friends</h2></td></tr>
 <tr class="memitem:acfabd0d47d87640252d055cfbfcfc55e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acfabd0d47d87640252d055cfbfcfc55e"></a>
 <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;LHS, <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;RHS)</td></tr>
 <tr class="separator:acfabd0d47d87640252d055cfbfcfc55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a724b26b570aa5a2658bb8ad0bf83fdfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a724b26b570aa5a2658bb8ad0bf83fdfa"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;LHS, const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:a724b26b570aa5a2658bb8ad0bf83fdfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad633e114f39ed728a39f58924b666895"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad633e114f39ed728a39f58924b666895"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;LHS, const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:ad633e114f39ed728a39f58924b666895"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a413c92e327e4367d5f1e79b03f4b43cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a413c92e327e4367d5f1e79b03f4b43cf"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;LHS, const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:a413c92e327e4367d5f1e79b03f4b43cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf3caa087b0a36b1964826ce269ab69c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf3caa087b0a36b1964826ce269ab69c"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;LHS, const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:acf3caa087b0a36b1964826ce269ab69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f1da9aef0d72be575e6e388c7d3e1a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f1da9aef0d72be575e6e388c7d3e1a7"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;LHS, <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:a2f1da9aef0d72be575e6e388c7d3e1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb64400cffdf9317b59f2914a52c763a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb64400cffdf9317b59f2914a52c763a"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;LHS, <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:aeb64400cffdf9317b59f2914a52c763a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3862bd66365522e765c0023ebd2559d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3862bd66365522e765c0023ebd2559d"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;LHS, <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:aa3862bd66365522e765c0023ebd2559d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5e50340aa0a278ab6c1db43d683a50b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5e50340aa0a278ab6c1db43d683a50b"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;LHS, <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:ae5e50340aa0a278ab6c1db43d683a50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43162bafdbf4140c7f9d29f2b6c5a4a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43162bafdbf4140c7f9d29f2b6c5a4a5"></a>
 <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>transposed</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;M)</td></tr>
 <tr class="separator:a43162bafdbf4140c7f9d29f2b6c5a4a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,7 +256,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 15 2013 10:51:44 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 16 2013 09:56:58 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

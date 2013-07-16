@@ -134,12 +134,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getColumns</b> ()</td>
 <tr class="separator:a6ee36959126ffad478d27b3b2803db7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a331ab2e32b9e29d1080e66891cda3f8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#a331ab2e32b9e29d1080e66891cda3f8e">setNullSpace</a> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;N)</td></tr>
 <tr class="separator:a331ab2e32b9e29d1080e66891cda3f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a872edac8ade004e1a9856359045e52e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a872edac8ade004e1a9856359045e52e9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>multiply</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;X, <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;res, double alpha=1, double beta=0)</td></tr>
-<tr class="separator:a872edac8ade004e1a9856359045e52e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a094a43783c0b8b6fa281cb7a6f54601a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a094a43783c0b8b6fa281cb7a6f54601a"></a>
-<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>multiply</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;X, double alpha=1, double beta=0)</td></tr>
-<tr class="separator:a094a43783c0b8b6fa281cb7a6f54601a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c3bb81c7876b93b96d24db2e7aebd1c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c3bb81c7876b93b96d24db2e7aebd1c"></a>
 cholmod_sparse *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#a8c3bb81c7876b93b96d24db2e7aebd1c">getHandle</a> () const </td></tr>
 <tr class="memdesc:a8c3bb81c7876b93b96d24db2e7aebd1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get cholmod_sparse pointer. <br/></td></tr>
@@ -148,6 +142,9 @@ cholmod_sparse *&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#ac4473ba97e28be4fdf85ec83ef8214fb">print</a> (const char *name=&quot;&quot;)</td></tr>
 <tr class="memdesc:ac4473ba97e28be4fdf85ec83ef8214fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print debugging information. <br/></td></tr>
 <tr class="separator:ac4473ba97e28be4fdf85ec83ef8214fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa8be6a77d9b44e074e63cfaa0d55c8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa8be6a77d9b44e074e63cfaa0d55c8e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;other)</td></tr>
+<tr class="separator:aaa8be6a77d9b44e074e63cfaa0d55c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f6cccae668f175d9e97e811370fdf73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f6cccae668f175d9e97e811370fdf73"></a>
 double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (unsigned int row, unsigned int column=0)</td></tr>
 <tr class="separator:a7f6cccae668f175d9e97e811370fdf73"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,6 +187,30 @@ Friends</h2></td></tr>
 <tr class="memitem:aa6203c98baecce75345ee0e4a0ce51ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6203c98baecce75345ee0e4a0ce51ee"></a>
 <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;LHS, <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;RHS)</td></tr>
 <tr class="separator:aa6203c98baecce75345ee0e4a0ce51ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a724b26b570aa5a2658bb8ad0bf83fdfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a724b26b570aa5a2658bb8ad0bf83fdfa"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;LHS, const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:a724b26b570aa5a2658bb8ad0bf83fdfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad633e114f39ed728a39f58924b666895"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad633e114f39ed728a39f58924b666895"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;LHS, const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:ad633e114f39ed728a39f58924b666895"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a413c92e327e4367d5f1e79b03f4b43cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a413c92e327e4367d5f1e79b03f4b43cf"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;LHS, const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:a413c92e327e4367d5f1e79b03f4b43cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf3caa087b0a36b1964826ce269ab69c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf3caa087b0a36b1964826ce269ab69c"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;LHS, const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:acf3caa087b0a36b1964826ce269ab69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f1da9aef0d72be575e6e388c7d3e1a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f1da9aef0d72be575e6e388c7d3e1a7"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;LHS, <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:a2f1da9aef0d72be575e6e388c7d3e1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb64400cffdf9317b59f2914a52c763a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb64400cffdf9317b59f2914a52c763a"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;LHS, <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:aeb64400cffdf9317b59f2914a52c763a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3862bd66365522e765c0023ebd2559d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3862bd66365522e765c0023ebd2559d"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;LHS, <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:aa3862bd66365522e765c0023ebd2559d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5e50340aa0a278ab6c1db43d683a50b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5e50340aa0a278ab6c1db43d683a50b"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&amp;LHS, <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:ae5e50340aa0a278ab6c1db43d683a50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1248906760a39a6a0c67dad70f9c90e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1248906760a39a6a0c67dad70f9c90e"></a>
 <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>transposed</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;M)</td></tr>
 <tr class="separator:af1248906760a39a6a0c67dad70f9c90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -269,7 +290,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 15 2013 10:51:44 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 16 2013 09:56:58 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
