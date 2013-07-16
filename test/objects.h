@@ -114,6 +114,34 @@ int AddTestObj()
     return 1;
 }
 
+int AddDenseDenseTestObj()
+{
+    DenseMatrix A(3,3);
+    A.fill(0.);
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
+    
+    DenseMatrix B(3,3);
+    B.fill(1.);
+    B(0, 0) = 2;
+    B(0, 1) = -1;
+    B(0, 2) = 3;
+    B(1, 2) = -5;
+    B(2, 2) = -1;
+    
+    DenseMatrix C = A + B;
+    DenseMatrix D = (A+B) + B;
+    DenseMatrix E = std::move(A) + (B+A);
+    
+    double expected[9] = {4, 1, 1, 1, 1, 1, 5, 5, -3};
+    assertEqual(expected, E.getData(), 9);
+    
+    return 1;
+}
+
 int TransposeTestObj()
 {
     DenseMatrix b{3};

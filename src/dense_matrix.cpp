@@ -248,20 +248,36 @@ namespace oocholmod {
     // Addition
     DenseMatrix operator+(const DenseMatrix& LHS, const DenseMatrix& RHS)
     {
+#ifdef DEBUG
+        assert(LHS.magicNumber == MAGIC_NUMBER && RHS.magicNumber == MAGIC_NUMBER);
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
-        
-        
+#endif
+        DenseMatrix res = RHS.copy();
+        cblas_daxpy(LHS.nrow*LHS.ncol, 1., LHS.getData(), 1, res.getData(), 1);
+        return res;
     }
     
     DenseMatrix&& operator+(DenseMatrix&& LHS, const DenseMatrix& RHS)
     {
-        assert(LHS.dense && RHS.dense);
-        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+        return RHS+std::move(LHS);
     }
     
-    DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS);
-    DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS);
+    DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS)
+    {
+#ifdef DEBUG
+        assert(LHS.magicNumber == MAGIC_NUMBER && RHS.magicNumber == MAGIC_NUMBER);
+        assert(LHS.dense && RHS.dense);
+        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+#endif
+        cblas_daxpy(LHS.nrow*LHS.ncol, 1., LHS.getData(), 1, RHS.getData(), 1);
+        return std::move(RHS);
+    }
+    
+    DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS)
+    {
+        return LHS+std::move(RHS);
+    }
     
     // Multiplication
     DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS)

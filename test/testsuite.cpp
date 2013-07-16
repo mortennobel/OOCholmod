@@ -27,6 +27,7 @@ using namespace std;
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(TestCaseObj);
 TINYTEST_ADD_TEST(AddTestObj);
+TINYTEST_ADD_TEST(AddDenseDenseTestObj);
 TINYTEST_ADD_TEST(TransposeTestObj);
 TINYTEST_ADD_TEST(TestCaseFunctionOperatorObj);
 TINYTEST_ADD_TEST(MultiplyMatrixMatrixTestObj);
