@@ -138,7 +138,8 @@ namespace oocholmod {
         }
         void assertValidIndex(unsigned int row, unsigned int column) const;
         void assertHasSparse() const;
-        void assertValidInitAddValue(unsigned int row, unsigned int column, double value) const;
+        void increaseTripletCapacity();
+        void assertValidInitAddValue(unsigned int row, unsigned int column) const;
         
         int getIndex(unsigned int row, unsigned int column) const
         {
@@ -148,7 +149,11 @@ namespace oocholmod {
             } else if (symmetry == SYMMETRIC_LOWER && row < column) {
                 std::swap(row, column);
             }
-            return (lookupIndex.find(key(row,column)))->second;
+            auto iter = lookupIndex.find(key(row,column));
+            if (iter == lookupIndex.end()){
+                return -1;
+            }
+            return iter->second;
         }
         
         double& initAddValue(unsigned int row, unsigned int column, double value=0)
@@ -158,8 +163,10 @@ namespace oocholmod {
                 values = (double *)triplet->x;
                 iRow = (int *)triplet->i;
                 jColumn = (int *)triplet->j;
+            } else if (triplet->nnz == maxTripletElements ){
+                increaseTripletCapacity();
             }
-            assertValidInitAddValue(row, column, value);
+            assertValidInitAddValue(row, column);
             long k = key(row, column);
             auto res = lookupIndex.find(k);
             if (res != lookupIndex.end()) {
@@ -180,6 +187,11 @@ namespace oocholmod {
         {
             assertHasSparse();
             int index = getIndex(row, column);
+            if (index == -1){
+                static double zero = 0;
+                zero = 0;
+                return zero;
+            }
             return ((double*)sparse->x)[index];
         }
         
@@ -187,6 +199,9 @@ namespace oocholmod {
         {
             assertHasSparse();
             int index = getIndex(row, column);
+            if (index == -1){
+                return 0;
+            }
             return ((double*)sparse->x)[index];
         }
         

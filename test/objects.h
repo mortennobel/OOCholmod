@@ -562,3 +562,18 @@ int SparseStateTest(){
     TINYTEST_ASSERT(A.getMatrixState() == DESTROYED);
     return 1;
 }
+
+int DynamicTripletGrow(){
+    SparseMatrix A{10,10,true, 1};
+    for (int i=0;i<10;i++){
+        A(i,i) = 123;
+    }
+    A.build();
+    for (int x=0;x<10;x++) for (int y=x;y<10;y++){
+        double expected = x==y?123:0;
+        double val = A(x,y);
+        TINYTEST_ASSERT(expected == val);
+    }
+    return 1;
+}
+

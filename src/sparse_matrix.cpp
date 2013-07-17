@@ -267,11 +267,25 @@ namespace oocholmod {
 #endif
     }
     
-    void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column, double value) const
-    {
+    void SparseMatrix::increaseTripletCapacity(){
+        // grow size with factor 1.5
+        maxTripletElements = (int)ceil(1.5f*maxTripletElements);
+        auto commonPtr = ConfigSingleton::getCommonPtr();
+        auto newTriplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, commonPtr);
+        memcpy(newTriplet->x, triplet->x, triplet->nzmax*sizeof(double));
+        memcpy(newTriplet->i, triplet->i, triplet->nzmax*sizeof(int));
+        memcpy(newTriplet->j, triplet->j, triplet->nzmax*sizeof(int));
+        newTriplet->nnz = triplet->nnz;
+        cholmod_free_triplet(&triplet, commonPtr);
+        triplet = newTriplet;
+        values = (double *)triplet->x;
+        iRow = (int *)triplet->i;
+        jColumn = (int *)triplet->j;
+    }
+    
+    void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column) const {
 #ifdef DEBUG
         assert(sparse == nullptr); // must be called before matrix build
-        assert(triplet->nnz < maxTripletElements);
         assert(row < nrow);
         assert(column < ncol);
         int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
