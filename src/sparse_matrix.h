@@ -25,6 +25,13 @@ namespace oocholmod {
         SYMMETRIC_UPPER = 1, // Upper triangular part stored
     };
     
+    enum MatrixState {
+        UNINITIALIZED,
+        INIT,
+        BUILT,
+        DESTROYED
+    };
+    
     ///
     /// Currently only real (double), upper symmetric matrices are supported.
     ///
@@ -46,6 +53,8 @@ namespace oocholmod {
         SparseMatrix& operator=(SparseMatrix&& other);
         
         virtual ~SparseMatrix();
+        
+        MatrixState getMatrixState();
         
         // Addition
         friend SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);

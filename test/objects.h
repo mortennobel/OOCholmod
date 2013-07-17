@@ -533,3 +533,15 @@ int SwapTest(){
     
     return 1;
 }
+
+int SparseStateTest(){
+    SparseMatrix A{1,1};
+    TINYTEST_ASSERT(A.getMatrixState() == UNINITIALIZED);
+    A(0,0) = 1;
+    TINYTEST_ASSERT(A.getMatrixState() == INIT);
+    A.build();
+    TINYTEST_ASSERT(A.getMatrixState() == BUILT);
+    SparseMatrix B = move(A);
+    TINYTEST_ASSERT(A.getMatrixState() == DESTROYED);
+    return 1;
+}

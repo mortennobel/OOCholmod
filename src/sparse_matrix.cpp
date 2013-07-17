@@ -54,7 +54,8 @@ namespace oocholmod {
         other.values = nullptr;
         other.iRow = nullptr;
         other.jColumn = nullptr;
-        other.lookupIndex = std::map<unsigned long, unsigned int>();
+        other.nrow = 0;
+        other.ncol = 0;
     }
     
     SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other){
@@ -81,7 +82,8 @@ namespace oocholmod {
             other.values = nullptr;
             other.iRow = nullptr;
             other.jColumn = nullptr;
-            other.lookupIndex = std::map<unsigned long, unsigned int>();
+            other.nrow = 0;
+            other.ncol = 0;
         }
         return *this;
     }
@@ -101,10 +103,23 @@ namespace oocholmod {
         }
     }
     
+    MatrixState SparseMatrix::getMatrixState(){
+        if (nrow == 0 && ncol == 0){
+            return DESTROYED;
+        }
+        if (sparse == nullptr && triplet == nullptr){
+            return UNINITIALIZED;
+        }
+        if (triplet != nullptr){
+            return INIT;
+        }
+        return BUILT;
+    }
+    
     void SparseMatrix::setSymmetry(Symmetry symmetry){
 #ifdef DEBUG
-        assert(sparse != NULL);
-        assert(triplet != NULL);
+        assert(sparse == nullptr);
+        assert(triplet == nullptr);
 #endif
         this->symmetry = symmetry;
     }
