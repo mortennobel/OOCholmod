@@ -2,7 +2,7 @@ OOCholmod
 =========
 
 An object oriented C++ wrapper for Timothy A. Davis' Cholmod library (part of SuiteSparse).
-The main purpose of the library is to provide an easy way use Cholmod from C++ (without comprimising the performance).
+The main purpose of the library is to provide an easy way to use the Cholmod from C++ (without comprimising the performance).
 The library also has a wrapper for dense vectors (which is accelerated by BLAS).
 
 Usage:
@@ -22,7 +22,7 @@ Sparse matrices needs to be initialized and then builded before they can be used
  ```
 The elements of a matrix are accessed using the function operator (unsigned int row, unsigned int column), which can be a bit confusing, but is very easy to use (as can be seen in the example above).
 
-There are not any vectors - instead matrices of Nx1 can be used (in the constructor column defaults to 1 and in the accessor column defaults to 0):
+There are not any vector-class - instead matrices of Nx1 can be used (in the constructor column defaults to 1 and in the accessor column defaults to 0):
 
  ```cpp
     SparseMatrix vector{3};
@@ -34,6 +34,7 @@ There are not any vectors - instead matrices of Nx1 can be used (in the construc
     vector(1) = 2;
     vector(2) = 2;
  ```
+
 
 
 See alse test/object.h
