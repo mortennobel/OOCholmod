@@ -159,8 +159,10 @@ namespace oocholmod {
         values = nullptr;
         iRow = nullptr;
         jColumn = nullptr;
+
         
         // build lookup index
+        lookupIndex.clear();
 #ifdef DEBUG
         assert(sparse->itype == CHOLMOD_INT);
         assert(sparse->stype == symmetry);
@@ -190,29 +192,15 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(sparse->sorted && sparse->packed);
 #endif
-        if (symmetry == SYMMETRIC_UPPER){
-            // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
-            int idx = 0;
-            for (int j=0;j<ncol;j++){
-                int iFrom = ((int*)sparse->p)[j];
-                int iTo = ((int*)sparse->p)[j+1]-1;
-                for (int i=iFrom;i<=iTo;i++){
-                    int row = ((int*)sparse->i)[i];
-                    lookupIndex[key(row, j)] = idx;
-                    idx++;
-                }
-            }
-        } else {
-            // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
-            int idx = 0;
-            for (int j=0;j<ncol;j++){
-                int iFrom = ((int*)sparse->p)[j];
-                int iTo = ((int*)sparse->p)[j+1]-1;
-                for (int i=iFrom;i<=iTo;i++){
-                    int row = ((int*)sparse->i)[i];
-                    lookupIndex[key(row, j)] = idx;
-                    idx++;
-                }
+        // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
+        int idx = 0;
+        for (int j=0;j<ncol;j++){
+            int iFrom = ((int*)sparse->p)[j];
+            int iTo = ((int*)sparse->p)[j+1]-1;
+            for (int i=iFrom;i<=iTo;i++){
+                int row = ((int*)sparse->i)[i];
+                lookupIndex[key(row, j)] = idx;
+                idx++;
             }
         }
     }
