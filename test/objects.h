@@ -578,11 +578,12 @@ int DynamicTripletGrow(){
 }
 
 int IndexTest(){
-    SparseMatrix A{10,10,true, 1};
-    DenseMatrix B{10,10,0};
-    SparseMatrix C{10,10,false, 1};
+    int size = 3;
+    SparseMatrix A{size,size,true};
+    DenseMatrix B{size,size};
+    SparseMatrix C{size,size,false};
     int value = 1;
-    for (int x=0;x<10;x++) for (int y=x;y<10;y++){
+    for (int x=0;x<size;x++) for (int y=x;y<size;y++){
         A(x,y) = value;
         B(x,y) = value;
         B(y,x) = value;
@@ -591,11 +592,14 @@ int IndexTest(){
         value++;
     }
     A.build();
+    A.print("A");
+    C.print("C - prebuild");
     C.build();
-    
-    for (int x=0;x<10;x++) for (int y=x;y<10;y++){
+    C.print("C");
+    for (int x=0;x<size;x++) for (int y=x;y<size;y++){
         TINYTEST_ASSERT(A(x,y) == A(y,x));
         TINYTEST_ASSERT(B(x,y) == B(y,x));
+        cout << x << " "<<y<<" "<<C(x,y)<<" "<<C(y,x)<<endl<<flush;
         TINYTEST_ASSERT(C(x,y) == C(y,x));
         TINYTEST_ASSERT(A(x,y) == B(y,x));
         TINYTEST_ASSERT(A(x,y) == C(y,x));

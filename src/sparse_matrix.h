@@ -156,7 +156,7 @@ namespace oocholmod {
             return iter->second;
         }
         
-        double& initAddValue(unsigned int row, unsigned int column, double value=0)
+        double& initAddValue(unsigned int row, unsigned int column)
         {
             if (!triplet){
                 triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
@@ -171,13 +171,12 @@ namespace oocholmod {
             auto res = lookupIndex.find(k);
             if (res != lookupIndex.end()) {
                 auto& pos = (*res).second;
-                values[pos] += value;
                 return values[pos];
             }
             lookupIndex[k] = (int)triplet->nnz;
             iRow[triplet->nnz] = row;
             jColumn[triplet->nnz] = column;
-            values[triplet->nnz] = value;
+            values[triplet->nnz] = 0;
             
             triplet->nnz++;
             return values[triplet->nnz - 1];

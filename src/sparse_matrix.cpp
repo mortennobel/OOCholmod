@@ -44,6 +44,9 @@ namespace oocholmod {
     :sparse{sparse}, triplet{nullptr}, nrow{static_cast<unsigned int>(sparse->nrow)},
     ncol{static_cast<unsigned int>(sparse->ncol)}, symmetry{static_cast<Symmetry>(sparse->stype)}, maxTripletElements{0}
     {
+#ifdef DEBUG
+        assert(sparse->itype == CHOLMOD_INT);
+#endif
     }
     
     SparseMatrix::SparseMatrix(SparseMatrix&& other)
@@ -159,6 +162,7 @@ namespace oocholmod {
         
         // build lookup index
 #ifdef DEBUG
+        assert(sparse->itype == CHOLMOD_INT);
         assert(sparse->stype == symmetry);
         assert(sparse->packed);
 #endif
@@ -182,15 +186,33 @@ namespace oocholmod {
     }
     
     void SparseMatrix::buildLookupIndexFromSparse() {
-        // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
-        int idx = 0;
-        for (int j=0;j<ncol;j++){
-            int iFrom = ((int*)sparse->p)[j];
-            int iTo = ((int*)sparse->p)[j+1]-1;
-            for (int i=iFrom;i<=iTo;i++){
-                int row = ((int*)sparse->i)[i];
-                lookupIndex[key(row, j)] = idx;
-                idx++;
+        lookupIndex.clear();
+#ifdef DEBUG
+        assert(sparse->sorted && sparse->packed);
+#endif
+        if (symmetry == SYMMETRIC_UPPER){
+            // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
+            int idx = 0;
+            for (int j=0;j<ncol;j++){
+                int iFrom = ((int*)sparse->p)[j];
+                int iTo = ((int*)sparse->p)[j+1]-1;
+                for (int i=iFrom;i<=iTo;i++){
+                    int row = ((int*)sparse->i)[i];
+                    lookupIndex[key(row, j)] = idx;
+                    idx++;
+                }
+            }
+        } else {
+            // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
+            int idx = 0;
+            for (int j=0;j<ncol;j++){
+                int iFrom = ((int*)sparse->p)[j];
+                int iTo = ((int*)sparse->p)[j+1]-1;
+                for (int i=iFrom;i<=iTo;i++){
+                    int row = ((int*)sparse->i)[i];
+                    lookupIndex[key(row, j)] = idx;
+                    idx++;
+                }
             }
         }
     }
@@ -245,6 +267,14 @@ namespace oocholmod {
             }
             cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
             cout << endl;
+        }
+        else if (triplet){
+            cholmod_print_triplet(triplet, name, ConfigSingleton::getCommonPtr());
+            for (int i=0;i<triplet->nnz;i++){
+                cout << ((int*)triplet->i)[i]<<" "<< ((int*)triplet->j)[i]<<" "<< ((double*)triplet->x)[i]<<" "<<endl;
+            }
+        } else {
+            cout << "[Empty sparse matrix]"<<endl;
         }
     }
     
