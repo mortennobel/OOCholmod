@@ -122,9 +122,6 @@ namespace oocholmod {
         cholmod_dense *dense;
         unsigned int nrow;
         unsigned int ncol;
-#ifdef DEBUG
-        unsigned long magicNumber;
-#endif
     };
     
     // Addition

@@ -174,9 +174,6 @@ namespace oocholmod {
         int *jColumn;
         Symmetry symmetry;
         int maxTripletElements;
-#ifdef DEBUG
-        unsigned long magicNumber;
-#endif
     };
     
     // Addition
