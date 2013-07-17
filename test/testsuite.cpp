@@ -26,6 +26,7 @@ using namespace std;
 
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(BuildSparseTestObj);
+TINYTEST_ADD_TEST(EqualSparseTestObj);
 TINYTEST_ADD_TEST(TestCaseFunctionOperatorObj);
 TINYTEST_ADD_TEST(SolveDenseDenseTestObj);
 TINYTEST_ADD_TEST(SolveSparseDenseTestObj);

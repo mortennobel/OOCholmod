@@ -128,6 +128,9 @@ namespace oocholmod {
                 return initAddValue(row, column);
             }
         }
+        
+        bool operator==(const SparseMatrix& RHS);
+        
     private:
         SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
         SparseMatrix operator=(const SparseMatrix& other) = delete; // prevent copy assignment operator
