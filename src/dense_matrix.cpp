@@ -17,7 +17,7 @@ namespace oocholmod {
 #define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
     
     DenseMatrix::DenseMatrix(unsigned int rows, unsigned int cols, double value)
-        :nrow(rows), ncol(cols)
+    :nrow{rows}, ncol{cols}
     {
         dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
         if (!isnan(value)) {
@@ -26,12 +26,12 @@ namespace oocholmod {
     }
     
     DenseMatrix::DenseMatrix(cholmod_dense *dense_)
-    :dense(dense_), nrow(static_cast<unsigned int>(dense_->nrow)), ncol(static_cast<unsigned int>(dense_->ncol))
+    :dense{dense_}, nrow{static_cast<unsigned int>(dense_->nrow)}, ncol{static_cast<unsigned int>(dense_->ncol)}
     {
     }
     
     DenseMatrix::DenseMatrix(DenseMatrix&& move)
-    :dense(move.dense), nrow(move.nrow), ncol(move.ncol)
+    :dense{move.dense}, nrow{move.nrow}, ncol{move.ncol}
     {
         move.dense = nullptr;
         move.nrow = 0;

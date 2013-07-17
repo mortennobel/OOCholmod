@@ -19,17 +19,17 @@ using namespace std;
 namespace oocholmod {
     
     Factor::Factor()
-    :factor(nullptr)
+    :factor{nullptr}
     {
     }
     
     Factor::Factor(cholmod_factor *factor)
-    :factor(factor)
+    :factor{factor}
     {
     }
     
     Factor::Factor(Factor&& move)
-    :factor(move.factor)
+    :factor{move.factor}
     {
         move.factor = nullptr;
     }
