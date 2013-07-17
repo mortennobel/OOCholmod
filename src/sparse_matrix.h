@@ -32,22 +32,18 @@ namespace oocholmod {
         DESTROYED
     };
     
-    ///
-    /// Currently only real (double), upper symmetric matrices are supported.
-    ///
     /// The sparse matrix must be used in the following way:
-    /// 1. Fill the matrix elements using the initAddValue() method
+    /// 1. Fill the matrix elements using the (unsigned int row, unsigned int column) function operator
     /// 2. Call build()
-    /// 3. Fill matrix with elements using setValue or addValue
+    /// 3. Update matrix with elements using the (unsigned int row, unsigned int column) function operator
     ///
-    /// At any point after the matrix has been build, you can call
     class SparseMatrix {
         friend class Factor;
     public:
         /// nrow # of rows of A
         /// ncol # of columns of A
-        /// maxSize (size allocated before build). 0 means triangular
-        SparseMatrix(unsigned int nrow = 0, unsigned int ncol = 1, bool symmetric = false, int maxSize = 0);
+        /// initialNumberOfElements. If exceeded (during initialization of the matrix) the number of elements will automatically grow with a factor of 1.5
+        SparseMatrix(unsigned int nrow = 0, unsigned int ncol = 1, bool symmetric = false, int initialNumberOfElements = 200);
         SparseMatrix(cholmod_sparse *sparse);
         SparseMatrix(SparseMatrix&& move);
         SparseMatrix& operator=(SparseMatrix&& other);
@@ -95,20 +91,6 @@ namespace oocholmod {
         int getRows() const { return nrow; }
         
         int getColumns() const { return ncol; }
-        
-        /// Set the nullspace
-        /// Null = sparseDiagonal(N)
-        /// K = N^T * K * N - (Null-I)
-        ///
-        /// In other words it gives matrixes with the following patterns
-        /// where 0 elements in N marks the columns and rows to 'null'
-        ///
-        ///     0
-        ///     0
-        /// 00001000
-        ///     0
-        ///
-        void setNullSpace(const DenseMatrix& N);
         
         /// Print debugging information
         void print(const char* name = "") const;

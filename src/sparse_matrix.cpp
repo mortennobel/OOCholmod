@@ -127,28 +127,6 @@ namespace oocholmod {
         this->symmetry = symmetry;
     }
     
-    void SparseMatrix::setNullSpace(const DenseMatrix& v){
-#ifdef DEBUG
-        assert(sparse);
-#endif
-        // naive implementation: Todo run fast
-        int idx = 0;
-        for (int j=0;j<ncol;j++){
-            int iFrom = ((int*)sparse->p)[j];
-            int iTo = ((int*)sparse->p)[j+1]-1;
-            for (int i=iFrom;i<=iTo;i++){
-                int row = ((int*)sparse->i)[i];
-                ((double*)sparse->x)[idx] *= v(row)*v(j);
-                idx++;
-            }
-        }
-        for (int i = 0; i < v.getRows(); i++){
-            if (v(i) == 0){
-                (*this)(i,i) = 1;
-            }
-        }
-    }
-    
     void SparseMatrix::build(){
 #ifdef DEBUG
         assert(sparse == nullptr);
