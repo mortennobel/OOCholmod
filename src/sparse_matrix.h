@@ -83,7 +83,7 @@ namespace oocholmod {
         friend SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b);
         friend SparseMatrix solve(const Factor& F, const SparseMatrix& b);
         
-        void build(bool readOnly = false);
+        void build();
         
         Factor analyze() const;
         
@@ -186,6 +186,9 @@ namespace oocholmod {
         double& getValue(unsigned int row, unsigned int column)
         {
             assertHasSparse();
+            if (lookupIndex.empty()){
+                buildLookupIndexFromSparse();
+            }
             int index = getIndex(row, column);
             if (index == -1){
                 static double zero = 0;
@@ -198,6 +201,10 @@ namespace oocholmod {
         double getValue(unsigned int row, unsigned int column) const
         {
             assertHasSparse();
+            if (lookupIndex.empty()){
+                SparseMatrix & nonConst = const_cast<SparseMatrix &>(*this);
+                nonConst.buildLookupIndexFromSparse();
+            }
             int index = getIndex(row, column);
             if (index == -1){
                 return 0;

@@ -44,7 +44,6 @@ namespace oocholmod {
     :sparse{sparse}, triplet{nullptr}, nrow{static_cast<unsigned int>(sparse->nrow)},
     ncol{static_cast<unsigned int>(sparse->ncol)}, symmetry{static_cast<Symmetry>(sparse->stype)}, maxTripletElements{0}
     {
-        buildLookupIndexFromSparse();
     }
     
     SparseMatrix::SparseMatrix(SparseMatrix&& other)
@@ -147,7 +146,7 @@ namespace oocholmod {
         }
     }
     
-    void SparseMatrix::build(bool readOnly){
+    void SparseMatrix::build(){
 #ifdef DEBUG
         assert(sparse == nullptr);
 #endif
@@ -163,9 +162,6 @@ namespace oocholmod {
         assert(sparse->stype == symmetry);
         assert(sparse->packed);
 #endif
-        if (!readOnly){
-            buildLookupIndexFromSparse();
-        }
     }
     
     void SparseMatrix::swap(SparseMatrix& other){
@@ -185,8 +181,7 @@ namespace oocholmod {
         v1.swap(v2);
     }
     
-    void SparseMatrix::buildLookupIndexFromSparse(){
-        lookupIndex.clear();
+    void SparseMatrix::buildLookupIndexFromSparse() {
         // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
         int idx = 0;
         for (int j=0;j<ncol;j++){
