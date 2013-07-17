@@ -7,7 +7,36 @@ The library also has a wrapper for dense vectors (which is accelerated by BLAS).
 
 Usage:
 ======
-See test/object.h or unique_ptr.h (raw pointers is disencouraged)
+Sparse matrices needs to be initialized and then builded before they can be used. After building a sparse matrices it is possible to change any element used in the initialization, but not element not used in the initialization. Example:
+
+```cpp
+    SparseMatrix A{3,3};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A.build();
+    A(0, 0) = 2;
+    A(0, 1) = 2;
+    A(0, 2) = 2;
+    A = A * A;
+ ```
+The elements of a matrix are accessed using the function operator (unsigned int row, unsigned int column), which can be a bit confusing, but is very easy to use (as can be seen in the example above).
+
+There are not any vectors - instead matrices of Nx1 can be used (in the constructor column defaults to 1 and in the accessor column defaults to 0):
+
+ ```cpp
+    SparseMatrix vector{3};
+    vector(0) = 1;
+    vector(1) = 1;
+    vector(2) = 1;
+    vector.build();
+    vector(0) = 2;
+    vector(1) = 2;
+    vector(2) = 2;
+ ```
+
+
+See alse test/object.h
 
 API documentation:
 ==================

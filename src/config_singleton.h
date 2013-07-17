@@ -2,7 +2,7 @@
 //  config_singleton.h
 //  OOCholmod
 //
-//  Created by Morten Nobel-Jørgensen on 7/12/13.
+//  Created by Morten Nobel-Jørgensen / Asger Nyman Christiansen
 //  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
 //
 
