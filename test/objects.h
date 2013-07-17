@@ -577,3 +577,30 @@ int DynamicTripletGrow(){
     return 1;
 }
 
+int IndexTest(){
+    SparseMatrix A{10,10,true, 1};
+    DenseMatrix B{10,10,0};
+    SparseMatrix C{10,10,false, 1};
+    int value = 1;
+    for (int x=0;x<10;x++) for (int y=x;y<10;y++){
+        A(x,y) = value;
+        B(x,y) = value;
+        B(y,x) = value;
+        C(x,y) = value;
+        C(y,x) = value;
+        value++;
+    }
+    A.build();
+    C.build();
+    
+    for (int x=0;x<10;x++) for (int y=x;y<10;y++){
+        TINYTEST_ASSERT(A(x,y) == A(y,x));
+        TINYTEST_ASSERT(B(x,y) == B(y,x));
+        TINYTEST_ASSERT(C(x,y) == C(y,x));
+        TINYTEST_ASSERT(A(x,y) == B(y,x));
+        TINYTEST_ASSERT(A(x,y) == C(y,x));
+    }
+    
+    return 1;
+}
+
