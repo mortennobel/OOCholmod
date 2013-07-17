@@ -92,13 +92,13 @@ namespace oocholmod {
     SparseMatrix::~SparseMatrix(){
         if (sparse != nullptr || triplet != nullptr){
 
-            if (sparse != NULL){
+            if (sparse != nullptr){
                 cholmod_free_sparse(&sparse, ConfigSingleton::getCommonPtr());
-                sparse = NULL;
+                sparse = nullptr;
             }
-            if (triplet != NULL){
+            if (triplet != nullptr){
                 cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
-                triplet = NULL;
+                triplet = nullptr;
             }
         }
     }
@@ -148,14 +148,14 @@ namespace oocholmod {
     
     void SparseMatrix::build(bool readOnly){
 #ifdef DEBUG
-        assert(sparse == NULL);
+        assert(sparse == nullptr);
 #endif
         sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, ConfigSingleton::getCommonPtr());
         cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
-        triplet = NULL;
-        values = NULL;
-        iRow = NULL;
-        jColumn = NULL;
+        triplet = nullptr;
+        values = nullptr;
+        iRow = nullptr;
+        jColumn = nullptr;
         
         // build lookup index
 #ifdef DEBUG
