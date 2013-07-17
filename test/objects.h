@@ -22,6 +22,22 @@
 using namespace std;
 using namespace oocholmod;
 
+int BuildSparseTestObj()
+{
+    SparseMatrix A{3,3, true};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 1) = -1;
+    A.build();
+    A.print();
+    
+    assert(A(2,1) == 5);
+    assert(A(1,2) == 5);
+    return 1;
+}
+
 int SolveDenseDenseTestObj()
 {
     DenseMatrix A{3,3, 1.};
