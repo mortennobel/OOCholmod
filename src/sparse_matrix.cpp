@@ -257,11 +257,6 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(row < nrow);
         assert(column < ncol);
-        if (symmetry == SYMMETRIC_UPPER) {
-            assert(row <= column);
-        } else if (symmetry == SYMMETRIC_LOWER) {
-            assert(row >= column);
-        }
 #endif
     }
     
@@ -279,11 +274,6 @@ namespace oocholmod {
         assert(triplet->nnz < maxTripletElements);
         assert(row < nrow);
         assert(column < ncol);
-        if (symmetry == SYMMETRIC_UPPER) {
-            assert(row <= column);
-        } else if (symmetry == SYMMETRIC_LOWER) {
-            assert(row >= column);
-        }
         int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
         long maxId = (long)pow(2, shiftBits);
         assert (row < maxId);

@@ -30,11 +30,12 @@ int BuildSparseTestObj()
     A(0, 2) = 1;
     A(1, 2) = 5;
     A(2, 1) = -1;
+    A(2, 0) = -3;
     A.build();
     A.print();
     
-    assert(A(2,1) == 5);
-    assert(A(1,2) == 5);
+    assert(A(2,1) == 4);
+    assert(A(1,2) == 4);
     return 1;
 }
 

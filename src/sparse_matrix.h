@@ -143,6 +143,11 @@ namespace oocholmod {
         int getIndex(unsigned int row, unsigned int column) const
         {
             assertValidIndex(row, column);
+            if (symmetry == SYMMETRIC_UPPER && row > column) {
+                std::swap(row, column);
+            } else if (symmetry == SYMMETRIC_LOWER && row < column) {
+                std::swap(row, column);
+            }
             return (lookupIndex.find(key(row,column)))->second;
         }
         
