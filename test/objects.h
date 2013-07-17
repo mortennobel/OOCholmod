@@ -12,6 +12,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <climits>
 
 #include "sparse_matrix.h"
 #include "factor.h"
@@ -564,16 +565,29 @@ int SparseStateTest(){
 }
 
 int DynamicTripletGrow(){
-    SparseMatrix A{10,10,true, 1};
-    for (int i=0;i<10;i++){
+    int size = 1000;
+    SparseMatrix A{size,size,true, 1};
+    for (int i=0;i<size;i++){
         A(i,i) = 123;
     }
     A.build();
-    for (int x=0;x<10;x++) for (int y=x;y<10;y++){
+    for (int x=0;x<size;x++) for (int y=x;y<size;y++){
         double expected = x==y?123:0;
         double val = A(x,y);
         TINYTEST_ASSERT(expected == val);
     }
+    return 1;
+}
+
+int LargeSparseMatrix(){
+    int size = UINT_MAX/100;
+    SparseMatrix A{size,size,true, 1};
+    A(0,0) = 1;
+    A(size-1,size-1) = 2;
+    A.build();
+
+    TINYTEST_ASSERT(A(0,0) == 1);
+    TINYTEST_ASSERT(A(size-1,size-1) == 2);
     return 1;
 }
 
