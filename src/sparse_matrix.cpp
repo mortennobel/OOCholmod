@@ -106,7 +106,7 @@ namespace oocholmod {
         }
     }
     
-    MatrixState SparseMatrix::getMatrixState(){
+    MatrixState SparseMatrix::getMatrixState() const {
         if (nrow == 0 && ncol == 0){
             return DESTROYED;
         }
@@ -222,7 +222,7 @@ namespace oocholmod {
         memset(sparse->x, 0, sparse->nzmax * sizeof(double));
     }
     
-    void SparseMatrix::print(const char* name){
+    void SparseMatrix::print(const char* name) const {
         if (sparse){
             cholmod_print_sparse(sparse, name, ConfigSingleton::getCommonPtr());
             cholmod_dense *dense = cholmod_sparse_to_dense(sparse, ConfigSingleton::getCommonPtr());

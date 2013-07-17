@@ -54,7 +54,7 @@ namespace oocholmod {
         
         virtual ~SparseMatrix();
         
-        MatrixState getMatrixState();
+        MatrixState getMatrixState() const;
         
         // Addition
         friend SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
@@ -90,11 +90,11 @@ namespace oocholmod {
         void zero();
         
         void setSymmetry(Symmetry symmetry);
-        Symmetry getSymmetry() { return symmetry; }
+        Symmetry getSymmetry() const { return symmetry; }
         
-        int getRows(){ return nrow; }
+        int getRows() const { return nrow; }
         
-        int getColumns(){ return ncol; }
+        int getColumns() const { return ncol; }
         
         /// Set the nullspace
         /// Null = sparseDiagonal(N)
@@ -111,7 +111,7 @@ namespace oocholmod {
         void setNullSpace(const DenseMatrix& N);
         
         /// Print debugging information
-        void print(const char* name = "");
+        void print(const char* name = "") const;
         
         void swap(SparseMatrix& other);
         
