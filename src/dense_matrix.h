@@ -67,6 +67,8 @@ namespace oocholmod {
         friend DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS);
         friend DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
         
+        DenseMatrix& operator*=(const double& RHS);
+        
         friend DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS);
         
         friend DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);

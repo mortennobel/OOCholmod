@@ -364,6 +364,22 @@ int MultiplyScalarDenseTestObj()
     return 1;
 }
 
+int MultiplyEqualScalarDenseTestObj()
+{
+    DenseMatrix x{3,2,1.};
+    x(0,1) = -3;
+    x(1,1) = 7;
+    x(2,0) = 9;
+    
+    x *= -3.;
+    x *= 0.1;
+    
+    double expected2[6] = {-0.3, -0.3, -2.7, 0.9, -2.1, -0.3};
+    assertEqual(expected2, x.getData(), 6);
+    
+    return 1;
+}
+
 int MultiplyDenseDenseTestObj(){
     
     DenseMatrix x{3, 2, 1.};

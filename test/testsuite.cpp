@@ -37,6 +37,7 @@ TINYTEST_ADD_TEST(TransposeDenseTestObj);
 TINYTEST_ADD_TEST(MultiplySparseSparseTestObj);
 TINYTEST_ADD_TEST(MultiplyScalarSparseTestObj);
 TINYTEST_ADD_TEST(MultiplyScalarDenseTestObj);
+TINYTEST_ADD_TEST(MultiplyEqualScalarDenseTestObj);
 TINYTEST_ADD_TEST(MultiplyDenseDenseTestObj);
 TINYTEST_ADD_TEST(MultiplySparseDenseTestObj);
 TINYTEST_ADD_TEST(FillTestObj);

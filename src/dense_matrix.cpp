@@ -319,6 +319,12 @@ namespace oocholmod {
         return std::move(RHS)*LHS;
     }
     
+    DenseMatrix& DenseMatrix::operator*=(const double& RHS)
+    {
+        std::move(*this) * RHS;
+        return *this;
+    }
+    
     DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS)
     {
 #ifdef DEBUG
