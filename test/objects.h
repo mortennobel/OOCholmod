@@ -17,7 +17,6 @@
 #include "sparse_matrix.h"
 #include "factor.h"
 #include "dense_matrix.h"
-#include "cpp14.h"
 
 
 using namespace std;
@@ -33,15 +32,32 @@ int BuildSparseTestObj()
     A(2, 1) = -1;
     A(2, 0) = -3;
     A.build();
-    A(0, 0) = 1;
-    A(0, 1) = 1;
-    A(0, 2) = 1;
-    A(1, 2) = 5;
-    A(2, 1) = -1;
-    A(2, 0) = -3;
     
     assert(A(2,1) == 4);
     assert(A(1,2) == 4);
+    return 1;
+}
+
+int EqualSparseTestObj()
+{
+    SparseMatrix A{3,3, true};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1.356;
+    A(1, 2) = 5;
+    A(2, 1) = -1.12;
+    A(2, 0) = -3;
+    A.build();
+    
+    SparseMatrix B{3,3, true};
+    B(0, 0) = 1;
+    B(0, 1) = 1;
+    B(0, 2) = 1.356;
+    B(1, 2) = 5;
+    B(2, 1) = -1.12;
+    B(2, 0) = -3;
+    B.build();
+    assert(A == B);
     return 1;
 }
 

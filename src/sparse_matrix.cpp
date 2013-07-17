@@ -170,6 +170,21 @@ namespace oocholmod {
 #endif
     }
     
+    bool SparseMatrix::operator==(const SparseMatrix& RHS)
+    {
+        for(int r = 0; r < nrow; r++)
+        {
+            for(int c = 0; c < ncol; c++)
+            {
+                if((*this)(r,c) != RHS(r,c))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
     void SparseMatrix::swap(SparseMatrix& other){
         std::swap(sparse, other.sparse);
         std::swap(triplet, other.triplet);
