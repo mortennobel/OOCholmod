@@ -78,7 +78,7 @@ namespace oocholmod {
         }
     }
     
-    double DenseMatrix::dot(const DenseMatrix& b) const{
+    double DenseMatrix::dot(const DenseMatrix& b) const {
 #ifdef DEBUG
         assert(ncol == 1 || nrow == 1);
         assert(b.ncol == ncol && b.nrow == nrow);
@@ -86,14 +86,14 @@ namespace oocholmod {
         return cblas_ddot(nrow*ncol, getData(), 1, b.getData(), 1);
     }
     
-    double DenseMatrix::length(){
+    double DenseMatrix::length() const {
 #ifdef DEBUG
         assert(ncol == 1 || nrow == 1);
 #endif
         return cblas_dnrm2(ncol*nrow, getData(), 1);
     }
     
-    void DenseMatrix::elemDivide(const DenseMatrix& b, DenseMatrix& dest) const{
+    void DenseMatrix::elemDivide(const DenseMatrix& b, DenseMatrix& dest) const {
 #ifdef DEBUG
         assert(nrow == b.getRows() && ncol == b.getColumns());
 #endif

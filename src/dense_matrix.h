@@ -97,7 +97,7 @@ namespace oocholmod {
         DenseMatrix copy() const;
         void zero();
         // computes the L^2 norm of the vector
-        double length();
+        double length() const;
         
         // elementwise division
         void elemDivide(const DenseMatrix& b);
