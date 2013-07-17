@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "cholmod.h"
+#include <cholmod.h>
 
 namespace oocholmod {
     

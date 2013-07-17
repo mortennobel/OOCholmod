@@ -8,19 +8,16 @@
 
 #pragma once
 
-#include <iostream>
-#include <set>
 #include <map>
-#include <cmath>
-
 #include <cholmod.h>
-#include "factor.h"
+
 #include "config_singleton.h"
 
 namespace oocholmod {
     
     // forward declaration
     class DenseMatrix;
+    class Factor;
     
     enum Symmetry {
         SYMMETRIC_LOWER = -1, // Lower triangular part stored

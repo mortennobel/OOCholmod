@@ -11,7 +11,6 @@
 #include <iostream>
 #include <cassert>
 #include <cmath>
-
 #include <cholmod.h>
 
 namespace oocholmod {

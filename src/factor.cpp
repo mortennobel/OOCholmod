@@ -9,7 +9,6 @@
 #include "factor.h"
 #include "sparse_matrix.h"
 #include "dense_matrix.h"
-#include "cpp14.h"
 #include "config_singleton.h"
 
 using namespace std;

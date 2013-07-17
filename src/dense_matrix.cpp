@@ -5,11 +5,10 @@
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0
 
-#include "dense_matrix.h"
-#include <cassert>
-#include <algorithm>
 #include <vecLib/cblas.h>
 #include <vecLib/clapack.h>
+
+#include "dense_matrix.h"
 #include "config_singleton.h"
 
 namespace oocholmod {

@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0
 
-#include "sparse_matrix.h"
 #include <cassert>
 
+#include "sparse_matrix.h"
 #include "dense_matrix.h"
-#include "config_singleton.h"
+#include "factor.h"
 
 using namespace std;
 
