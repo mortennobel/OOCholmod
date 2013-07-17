@@ -115,28 +115,35 @@ namespace oocholmod {
         
         void swap(SparseMatrix& other);
         
-        double& operator()(unsigned int row, unsigned int column = 0) {
+        double operator()(unsigned int row, unsigned int column = 0) const
+        {
+            return getValue(row, column);
+        }
+        
+        double& operator()(unsigned int row, unsigned int column = 0)
+        {
             if (sparse != nullptr){
                 return getValue(row, column);
             } else {
                 return initAddValue(row, column);
             }
-            
         }
     private:
         SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
         SparseMatrix operator=(const SparseMatrix& other) = delete; // prevent copy assignment operator
         void buildLookupIndexFromSparse();
-        inline long key(unsigned int row, unsigned int column){
+        inline long key(unsigned int row, unsigned int column) const{
             int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
             return (((long)row)<<shiftBits)+column;
         }
-        void assertValidIndex(unsigned int row, unsigned int column);
-        void assertHasSparse();
-        void assertValidInitAddValue(unsigned int row, unsigned int column, double value);
-        inline int getIndex(unsigned int row, unsigned int column) {
+        void assertValidIndex(unsigned int row, unsigned int column) const;
+        void assertHasSparse() const;
+        void assertValidInitAddValue(unsigned int row, unsigned int column, double value) const;
+        
+        int getIndex(unsigned int row, unsigned int column) const
+        {
             assertValidIndex(row, column);
-            return lookupIndex[key(row, column)];
+            return (lookupIndex.find(key(row,column)))->second;
         }
         
         double& initAddValue(unsigned int row, unsigned int column, double value=0)
@@ -164,7 +171,15 @@ namespace oocholmod {
             return values[triplet->nnz - 1];
         }
         
-        double& getValue(unsigned int row, unsigned int column){
+        double& getValue(unsigned int row, unsigned int column)
+        {
+            assertHasSparse();
+            int index = getIndex(row, column);
+            return ((double*)sparse->x)[index];
+        }
+        
+        double getValue(unsigned int row, unsigned int column) const
+        {
             assertHasSparse();
             int index = getIndex(row, column);
             return ((double*)sparse->x)[index];

@@ -252,7 +252,8 @@ namespace oocholmod {
         }
     }
     
-    void SparseMatrix::assertValidIndex(unsigned int row, unsigned int column){
+    void SparseMatrix::assertValidIndex(unsigned int row, unsigned int column) const
+    {
 #ifdef DEBUG
         assert(row < nrow);
         assert(column < ncol);
@@ -264,13 +265,15 @@ namespace oocholmod {
 #endif
     }
     
-    void SparseMatrix::assertHasSparse(){
+    void SparseMatrix::assertHasSparse() const
+    {
 #ifdef DEBUG
         assert(sparse != nullptr); // matrix must be build
 #endif
     }
     
-    void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column, double value){
+    void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column, double value) const
+    {
 #ifdef DEBUG
         assert(sparse == nullptr); // must be called before matrix build
         assert(triplet->nnz < maxTripletElements);
