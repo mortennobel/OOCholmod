@@ -32,7 +32,7 @@ int BuildSparseTestObj()
     A(2, 1) = -1;
     A(2, 0) = -3;
     A.build();
-    A.print();
+    //A.print();
     
     assert(A(2,1) == 4);
     assert(A(1,2) == 4);
@@ -582,16 +582,12 @@ int IndexTest2(){
     SparseMatrix C{size,size,false};
     int value = 1;
     for (int x=0;x<size;x++) for (int y=0;y<size;y++){
-        cout << "set x "<<x<<" y "<<y<<" = "<<value<<endl;
         C(x,y) = value;
         value++;
     }
-    C.print("C pre");
     C.build();
-    C.print("C post");
     value = 1;
     for (int x=0;x<size;x++) for (int y=0;y<size;y++){
-        cout <<x<<" "<<y<<" C(x,y)  "<<C(x,y)<<endl;
         TINYTEST_ASSERT(C(x,y) == value);
         value++;
     }
@@ -613,10 +609,7 @@ int IndexTest(){
         value++;
     }
     A.build();
-    A.print("A");
-    C.print("C - prebuild");
     C.build();
-    C.print("C");
     for (int x=0;x<size;x++) for (int y=x;y<size;y++){
         TINYTEST_ASSERT(A(x,y) == A(y,x));
         TINYTEST_ASSERT(B(x,y) == B(y,x));
