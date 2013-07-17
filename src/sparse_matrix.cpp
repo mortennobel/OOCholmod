@@ -41,7 +41,7 @@ namespace oocholmod {
     }
     
     SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
-    :sparse(sparse), triplet(nullptr), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol), maxTripletElements(0)
+    :sparse(sparse), triplet(nullptr), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol), symmetry(static_cast<Symmetry>(sparse->stype)), maxTripletElements(0)
     {
         buildLookupIndexFromSparse();
     }
