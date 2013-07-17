@@ -282,12 +282,7 @@ namespace oocholmod {
     
     DenseMatrix& DenseMatrix::operator+=(const DenseMatrix& RHS)
     {
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER && RHS.magicNumber == MAGIC_NUMBER);
-        assert(dense && RHS.dense);
-        assert(nrow == RHS.nrow && ncol == RHS.ncol);
-#endif
-        cblas_daxpy(nrow*ncol, 1., RHS.getData(), 1, getData(), 1);
+        RHS + std::move(*this);
         return *this;
     }
     
