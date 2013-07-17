@@ -19,9 +19,6 @@ namespace oocholmod {
     
     DenseMatrix::DenseMatrix(unsigned int rows, unsigned int cols, double value)
         :nrow(rows), ncol(cols)
-#ifdef DEBUG
-        ,magicNumber(MAGIC_NUMBER)
-#endif
     {
         dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
         if (!isnan(value)) {
@@ -31,24 +28,15 @@ namespace oocholmod {
     
     DenseMatrix::DenseMatrix(cholmod_dense *dense_)
     :dense(dense_), nrow(static_cast<unsigned int>(dense_->nrow)), ncol(static_cast<unsigned int>(dense_->ncol))
-#ifdef DEBUG
-    ,magicNumber(MAGIC_NUMBER)
-#endif
     {
     }
     
     DenseMatrix::DenseMatrix(DenseMatrix&& move)
     :dense(move.dense), nrow(move.nrow), ncol(move.ncol)
-#ifdef DEBUG
-    ,magicNumber(move.magicNumber)
-#endif
     {
         move.dense = nullptr;
         move.nrow = 0;
         move.ncol = 0;
-#ifdef DEBUG
-        move.magicNumber = 0;
-#endif
     }
     
     DenseMatrix& DenseMatrix::operator=(DenseMatrix&& other)
@@ -61,17 +49,10 @@ namespace oocholmod {
             dense = other.dense;
             nrow = other.nrow;
             ncol = other.ncol;
-#ifdef DEBUG
-            magicNumber = other.magicNumber;
-#endif
             
             other.dense = nullptr;
             other.nrow = 0;
             other.ncol = 0;
-#ifdef DEBUG
-            other.magicNumber = 0;
-#endif
-            
         }
         return *this;
     }
@@ -79,29 +60,17 @@ namespace oocholmod {
     DenseMatrix::~DenseMatrix()
     {
         if (dense){
-#ifdef DEBUG
-            assert(magicNumber == MAGIC_NUMBER);
-            magicNumber = 0;
-#endif
             cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
             dense = nullptr;
         }
     }
     
     void DenseMatrix::zero(){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-        assert(dense);
-#endif
         memset(dense->x, 0, nrow * ncol * sizeof(double));
     }
     
     void DenseMatrix::fill(double value)
     {
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-        assert(dense);
-#endif
         double *data = getData();
         for (int c = 0; c < ncol; c++){
             for (int r = 0; r < nrow; r++){
@@ -112,7 +81,6 @@ namespace oocholmod {
     
     double DenseMatrix::dot(const DenseMatrix& b) const{
 #ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
         assert(ncol == 1 || nrow == 1);
         assert(b.ncol == ncol && b.nrow == nrow);
 #endif
@@ -121,7 +89,6 @@ namespace oocholmod {
     
     double DenseMatrix::length(){
 #ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
         assert(ncol == 1 || nrow == 1);
 #endif
         return cblas_dnrm2(ncol*nrow, getData(), 1);
@@ -129,7 +96,6 @@ namespace oocholmod {
     
     void DenseMatrix::elemDivide(const DenseMatrix& b, DenseMatrix& dest) const{
 #ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
         assert(nrow == b.getRows() && ncol == b.getColumns());
 #endif
         double *thisData = getData();
@@ -151,7 +117,6 @@ namespace oocholmod {
 
     void DenseMatrix::elemMultiply(const DenseMatrix& b, DenseMatrix& dest) const {
 #ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
         assert(nrow == b.getRows() && ncol == b.getColumns());
 #endif
         double *thisData = dest.getData();
@@ -164,9 +129,6 @@ namespace oocholmod {
     }
     
     DenseMatrix DenseMatrix::copy() const{
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
         DenseMatrix dest(nrow,ncol);
         const double *srcPtr = getData();
         double *destPtr = dest.getData();
@@ -176,7 +138,6 @@ namespace oocholmod {
     
     void DenseMatrix::set(float *inData){
 #ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
         assert(dense);
 #endif
         double *data = getData();
@@ -189,7 +150,6 @@ namespace oocholmod {
     
     void DenseMatrix::set(double *data){
 #ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
         assert(dense);
 #endif
         memcpy(dense->x, data, nrow*ncol*sizeof(double));
@@ -197,16 +157,12 @@ namespace oocholmod {
     
     void DenseMatrix::get(double *outData) const {
 #ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
         assert(dense);
 #endif
         memcpy(outData, dense->x, nrow*ncol*sizeof(double));
     }
     
     void DenseMatrix::get(float *outData) const {
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
         double *data = getData();
         for (int c = 0; c < ncol; c++){
             for (int r = 0; r < nrow; r++){
@@ -216,9 +172,6 @@ namespace oocholmod {
     }
     
     void DenseMatrix::print(const char* name) const{
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
         cholmod_print_dense(dense, name, ConfigSingleton::getCommonPtr());
         int n_rows = (int)dense->nrow;
         int n_cols = (int)dense->ncol;
@@ -237,9 +190,6 @@ namespace oocholmod {
         std::swap(dense, other.dense);
         std::swap(nrow, other.nrow);
         std::swap(ncol, other.ncol);
-#ifdef DEBUG        
-        std::swap(magicNumber, other.magicNumber);
-#endif
     }
     
     void swap(DenseMatrix& v1, DenseMatrix& v2) {
@@ -250,7 +200,6 @@ namespace oocholmod {
     DenseMatrix operator+(const DenseMatrix& LHS, const DenseMatrix& RHS)
     {
 #ifdef DEBUG
-        assert(LHS.magicNumber == MAGIC_NUMBER && RHS.magicNumber == MAGIC_NUMBER);
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
@@ -267,7 +216,6 @@ namespace oocholmod {
     DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS)
     {
 #ifdef DEBUG
-        assert(LHS.magicNumber == MAGIC_NUMBER && RHS.magicNumber == MAGIC_NUMBER);
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
@@ -291,7 +239,6 @@ namespace oocholmod {
     {
 #ifdef DEBUG
         assert(LHS.dense);
-        assert(LHS.magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_dense *dense = cholmod_copy_dense(LHS.dense, ConfigSingleton::getCommonPtr());
         DenseMatrix res(dense);
@@ -303,7 +250,6 @@ namespace oocholmod {
     {
 #ifdef DEBUG
         assert(LHS.dense);
-        assert(LHS.magicNumber == MAGIC_NUMBER);
 #endif
         cblas_dscal (LHS.nrow*LHS.ncol, RHS, LHS.getData(), 1);
         return std::move(LHS);

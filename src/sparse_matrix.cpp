@@ -21,9 +21,6 @@ namespace oocholmod {
     
     SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, bool symmetric, int maxSize)
     :sparse(nullptr), triplet(nullptr), nrow(nrow), ncol(ncol)
-#ifdef DEBUG
-    ,magicNumber(MAGIC_NUMBER)
-#endif
     {
         if (symmetric && nrow == ncol) {
             symmetry = SYMMETRIC_UPPER;
@@ -45,18 +42,12 @@ namespace oocholmod {
     
     SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
     :sparse(sparse), triplet(nullptr), nrow((unsigned int)sparse->nrow), ncol((unsigned int)sparse->ncol), maxTripletElements(0)
-#ifdef DEBUG
-    ,magicNumber(MAGIC_NUMBER)
-#endif
     {
         buildLookupIndexFromSparse();
     }
     
     SparseMatrix::SparseMatrix(SparseMatrix&& other)
     :sparse(other.sparse), triplet(other.triplet), nrow(other.nrow), ncol(other.ncol), lookupIndex(std::move(other.lookupIndex)), iRow(other.iRow), jColumn(other.jColumn), symmetry(other.symmetry), maxTripletElements(other.maxTripletElements)
-#ifdef DEBUG
-    ,magicNumber(other.magicNumber)
-#endif
     {
         other.sparse = nullptr;
         other.triplet = nullptr;
@@ -64,9 +55,6 @@ namespace oocholmod {
         other.iRow = nullptr;
         other.jColumn = nullptr;
         other.maxTripletElements = 0;
-#ifdef DEBUG
-        other.magicNumber = 0L;
-#endif
     }
     
     SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other){
@@ -87,18 +75,13 @@ namespace oocholmod {
             jColumn = other.jColumn;
             symmetry = other.symmetry;
             maxTripletElements = other.maxTripletElements;
-#ifdef DEBUG
-            magicNumber = other.magicNumber;
-#endif
+
             other.sparse = nullptr;
             other.triplet = nullptr;
             other.values = nullptr;
             other.iRow = nullptr;
             other.jColumn = nullptr;
             other.maxTripletElements = 0;
-#ifdef DEBUG
-            other.magicNumber = 0L;
-#endif
         }
         return *this;
     }
@@ -106,10 +89,7 @@ namespace oocholmod {
     
     SparseMatrix::~SparseMatrix(){
         if (sparse != nullptr || triplet != nullptr){
-#ifdef DEBUG
-            assert(magicNumber == MAGIC_NUMBER);
-            magicNumber = 0;
-#endif
+
             if (sparse != NULL){
                 cholmod_free_sparse(&sparse, ConfigSingleton::getCommonPtr());
                 sparse = NULL;
@@ -132,7 +112,6 @@ namespace oocholmod {
     void SparseMatrix::setNullSpace(const DenseMatrix& v){
 #ifdef DEBUG
         assert(sparse);
-        assert(magicNumber == MAGIC_NUMBER);
 #endif
         // naive implementation: Todo run fast
         int idx = 0;
@@ -155,7 +134,6 @@ namespace oocholmod {
     void SparseMatrix::build(bool readOnly){
 #ifdef DEBUG
         assert(sparse == NULL);
-        assert(magicNumber == MAGIC_NUMBER);
 #endif
         sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, ConfigSingleton::getCommonPtr());
         cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
@@ -185,9 +163,6 @@ namespace oocholmod {
         std::swap(jColumn, other.jColumn);
         std::swap(symmetry, other.symmetry);
         std::swap(maxTripletElements, other.maxTripletElements);
-#ifdef DEBUG
-        std::swap(magicNumber, other.magicNumber);
-#endif
     }
     
     void swap(SparseMatrix& v1, SparseMatrix& v2) {
@@ -195,9 +170,6 @@ namespace oocholmod {
     }
     
     void SparseMatrix::buildLookupIndexFromSparse(){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
         lookupIndex.clear();
         // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
         int idx = 0;
@@ -216,7 +188,6 @@ namespace oocholmod {
     {
 #ifdef DEBUG
         assert(sparse);
-        assert(magicNumber == MAGIC_NUMBER);
 #endif
         cholmod_factor *L = cholmod_analyze(sparse, ConfigSingleton::getCommonPtr());
         return Factor(L);
@@ -226,15 +197,11 @@ namespace oocholmod {
     void SparseMatrix::zero(){
 #ifdef DEBUG
         assert(sparse);
-        assert(magicNumber == MAGIC_NUMBER);
 #endif
         memset(sparse->x, 0, sparse->nzmax * sizeof(double));
     }
     
     void SparseMatrix::print(const char* name){
-#ifdef DEBUG
-        assert(magicNumber == MAGIC_NUMBER);
-#endif
         if (sparse){
             cholmod_print_sparse(sparse, name, ConfigSingleton::getCommonPtr());
             cholmod_dense *dense = cholmod_sparse_to_dense(sparse, ConfigSingleton::getCommonPtr());
@@ -381,8 +348,6 @@ namespace oocholmod {
     {
 #ifdef DEBUG
         assert(LHS.dense && RHS.sparse);
-        assert(LHS.magicNumber == MAGIC_NUMBER);
-        assert(RHS.magicNumber == MAGIC_NUMBER);
         assert(LHS.ncol == RHS.nrow);
 #endif
         double alpha[2] = {1.,1.};
@@ -396,8 +361,6 @@ namespace oocholmod {
     {
 #ifdef DEBUG
         assert(LHS.sparse && RHS.dense);
-        assert(LHS.magicNumber == MAGIC_NUMBER);
-        assert(RHS.magicNumber == MAGIC_NUMBER);
         assert(LHS.ncol == RHS.nrow);
 #endif
         double alpha[2] = {1.,1.};
@@ -436,8 +399,6 @@ namespace oocholmod {
     DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b)
     {
 #ifdef DEBUG
-        assert(A.magicNumber == MAGIC_NUMBER);
-        assert(b.magicNumber == MAGIC_NUMBER);
         assert(A.sparse && b.dense);
         assert(A.nrow == b.nrow);
 #endif
@@ -449,8 +410,6 @@ namespace oocholmod {
     SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b)
     {
 #ifdef DEBUG
-        assert(A.magicNumber == MAGIC_NUMBER);
-        assert(b.magicNumber == MAGIC_NUMBER);
         assert(A.sparse && b.sparse);
         assert(A.nrow == b.nrow);
 #endif

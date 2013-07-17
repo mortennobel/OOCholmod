@@ -84,9 +84,7 @@ namespace oocholmod {
     bool Factor::factorize(const SparseMatrix& A){
 #ifdef DEBUG
         assert(A.symmetry != ASYMMETRIC);
-        assert(A.magicNumber == MAGIC_NUMBER);
         assert(A.sparse);
-        assert(magicNumber == MAGIC_NUMBER);
         assert(factor);
 #endif
         auto Common = ConfigSingleton::getCommonPtr();
@@ -103,7 +101,6 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(F.magicNumber == MAGIC_NUMBER);
         assert(F.factor);
-        assert(b.magicNumber == MAGIC_NUMBER);
         assert(b.dense);
 #endif
         cholmod_dense *x = cholmod_solve(CHOLMOD_A, F.factor, b.dense, ConfigSingleton::getCommonPtr());
@@ -113,9 +110,7 @@ namespace oocholmod {
     SparseMatrix solve(const Factor& F, const SparseMatrix& b)
     {
 #ifdef DEBUG
-        assert(F.magicNumber == MAGIC_NUMBER);
         assert(F.factor);
-        assert(b.magicNumber == MAGIC_NUMBER);
         assert(b.sparse);
 #endif
         cholmod_sparse *x = cholmod_spsolve(CHOLMOD_A, F.factor, b.sparse, ConfigSingleton::getCommonPtr());
