@@ -54,7 +54,7 @@ namespace oocholmod {
         other.values = nullptr;
         other.iRow = nullptr;
         other.jColumn = nullptr;
-        other.maxTripletElements = 0;
+        other.lookupIndex = std::map<unsigned long, unsigned int>();
     }
     
     SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other){
@@ -81,7 +81,7 @@ namespace oocholmod {
             other.values = nullptr;
             other.iRow = nullptr;
             other.jColumn = nullptr;
-            other.maxTripletElements = 0;
+            other.lookupIndex = std::map<unsigned long, unsigned int>();
         }
         return *this;
     }

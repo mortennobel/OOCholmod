@@ -38,9 +38,6 @@ namespace oocholmod {
     private:
         Factor(const Factor& that) = delete; // prevent copy constructor
         cholmod_factor *factor;
-#ifdef DEBUG
-        unsigned long magicNumber;
-#endif
     };
     
     DenseMatrix solve(const Factor& F, const DenseMatrix& b);
