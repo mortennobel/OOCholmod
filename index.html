@@ -77,9 +77,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">OOCholmod Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>An object oriented C++ wrapper for Timothy A. Davis' Cholmod library (part of SuiteSparse). The main purpose of the library is to provide an easy way use Cholmod from C++ (without comprimising the performance). The library also has a wrapper for dense vectors (which is accelerated by BLAS).</p>
+<div class="textblock"><p>An object oriented C++ wrapper for Timothy A. Davis' Cholmod library (part of SuiteSparse). The main purpose of the library is to provide an easy way to use the Cholmod from C++ (without comprimising the performance). The library also has a wrapper for dense vectors (which is accelerated by BLAS).</p>
 <h1>Usage: </h1>
-<p>See test/object.h or unique_ptr.h (raw pointers is disencouraged)</p>
+<p>Sparse matrices needs to be initialized and then builded before they can be used. After building a sparse matrices it is possible to change any element used in the initialization, but not element not used in the initialization. Example:</p>
+<p>```cpp SparseMatrix A{3,3}; A(0, 0) = 1; A(0, 1) = 1; A(0, 2) = 1; A.build(); A(0, 0) = 2; A(0, 1) = 2; A(0, 2) = 2; A = A * A; ``` The elements of a matrix are accessed using the function operator (unsigned int row, unsigned int column), which can be a bit confusing, but is very easy to use (as can be seen in the example above).</p>
+<p>There are not any vector-class - instead matrices of Nx1 can be used (in the constructor column defaults to 1 and in the accessor column defaults to 0):</p>
+<p>```cpp SparseMatrix vector{3}; vector(0) = 1; vector(1) = 1; vector(2) = 1; vector.build(); vector(0) = 2; vector(1) = 2; vector(2) = 2; ```</p>
+<p>See alse test/object.h</p>
 <h1>API documentation: </h1>
 <p><a href="http://mortennobel.github.io/OOCholmod/">http://mortennobel.github.io/OOCholmod/</a></p>
 <h1>License: </h1>
@@ -119,7 +123,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 16 2013 09:56:58 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 17 2013 16:59:22 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
