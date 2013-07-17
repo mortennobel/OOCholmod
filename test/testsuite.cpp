@@ -32,6 +32,7 @@ TINYTEST_ADD_TEST(SolveSparseSparseTestObj);
 TINYTEST_ADD_TEST(SolveSparseDenseFactorTestObj);
 TINYTEST_ADD_TEST(AddSparseSparseTestObj);
 TINYTEST_ADD_TEST(AddDenseDenseTestObj);
+TINYTEST_ADD_TEST(AddEqualDenseDenseTestObj);
 TINYTEST_ADD_TEST(TransposeDenseTestObj);
 TINYTEST_ADD_TEST(MultiplySparseSparseTestObj);
 TINYTEST_ADD_TEST(MultiplyScalarSparseTestObj);

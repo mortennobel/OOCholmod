@@ -59,6 +59,8 @@ namespace oocholmod {
         friend DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS);
         friend DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS);
         
+        DenseMatrix& operator+=(const DenseMatrix& RHS);
+        
         // Multiplication
         friend DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS);
         friend DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS);
