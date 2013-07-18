@@ -97,12 +97,12 @@ namespace oocholmod {
         
         void swap(SparseMatrix& other);
         
-        double operator()(unsigned int row, unsigned int column = 0) const
+        inline double operator()(unsigned int row, unsigned int column = 0) const
         {
             return getValue(row, column);
         }
         
-        double& operator()(unsigned int row, unsigned int column = 0)
+        inline double& operator()(unsigned int row, unsigned int column = 0)
         {
             if (sparse != nullptr){
                 return getValue(row, column);
@@ -126,7 +126,7 @@ namespace oocholmod {
         void increaseTripletCapacity();
         void assertValidInitAddValue(unsigned int row, unsigned int column) const;
         
-        int getIndex(unsigned int row, unsigned int column) const
+        inline int getIndex(unsigned int row, unsigned int column) const
         {
             assertValidIndex(row, column);
             if (symmetry == SYMMETRIC_UPPER && row > column) {
@@ -141,7 +141,7 @@ namespace oocholmod {
             return iter->second;
         }
         
-        double& initAddValue(unsigned int row, unsigned int column)
+        inline double& initAddValue(unsigned int row, unsigned int column)
         {
             if (!triplet){
                 triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
@@ -167,7 +167,7 @@ namespace oocholmod {
             return values[triplet->nnz - 1];
         }
         
-        double& getValue(unsigned int row, unsigned int column)
+        inline double& getValue(unsigned int row, unsigned int column)
         {
             assertHasSparse();
             if (lookupIndex.empty()){

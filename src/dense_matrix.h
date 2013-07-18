@@ -32,7 +32,7 @@ namespace oocholmod {
         ~DenseMatrix();
         
         
-        double& operator()(unsigned int row, unsigned int col = 0)
+        inline double& operator()(unsigned int row, unsigned int col = 0)
         {
 #ifdef DEBUG
             assert(dense);
@@ -41,7 +41,7 @@ namespace oocholmod {
             return ((double*)dense->x)[col*nrow + row];
         }
         
-        double operator()(unsigned int row, unsigned int col = 0) const
+        inline double operator()(unsigned int row, unsigned int col = 0) const
         {
 #ifdef DEBUG
             assert(dense);
