@@ -35,7 +35,7 @@ There are not any vector-class - instead matrices of Nx1 can be used (in the con
     vector(2) = 2;
  ```
 
-Sparse matrices is slightly faster to update after being build than building a new matrix.
+Note that sparse matrices is slightly faster to update after being build than building a new matrix.
 
 
 See alse test/object.h
