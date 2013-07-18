@@ -126,11 +126,10 @@ namespace oocholmod {
         void assertValidInitAddValue(unsigned int row, unsigned int column) const;
         
         inline int binarySearch(int *array, int low, int high, unsigned int value) const {
-            int midpoint = 0;
             while (low <= high)
             {
                 // http://googleresearch.blogspot.dk/2006/06/extra-extra-read-all-about-it-nearly.html
-                midpoint = (((unsigned int)high + (unsigned int)low) >> 1);
+                int midpoint = (((unsigned int)high + (unsigned int)low) >> 1);
                 int midpointValue = array[midpoint];
                 if (value == midpointValue) {
                     return midpoint;

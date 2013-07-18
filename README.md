@@ -35,7 +35,7 @@ There are not any vector-class - instead matrices of Nx1 can be used (in the con
     vector(2) = 2;
  ```
 
-In general it is most efficient to build a new matrix when all values are updated. However if only a few elements needs to be changed it is faster to update a built matrix.
+Sparse matrices is slightly faster to update after being build than building a new matrix.
 
 
 See alse test/object.h
