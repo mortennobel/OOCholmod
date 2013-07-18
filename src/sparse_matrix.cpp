@@ -42,7 +42,8 @@ namespace oocholmod {
     
     SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
     :sparse{sparse}, triplet{nullptr}, nrow{static_cast<unsigned int>(sparse->nrow)},
-    ncol{static_cast<unsigned int>(sparse->ncol)}, symmetry{static_cast<Symmetry>(sparse->stype)}, maxTripletElements{0}
+    ncol{static_cast<unsigned int>(sparse->ncol)},
+    values{(double*)sparse->x}, iRow{(int*)sparse->i}, jColumn{(int*)sparse->p}, symmetry{static_cast<Symmetry>(sparse->stype)}, maxTripletElements{0}
     {
 #ifdef DEBUG
         assert(sparse->itype == CHOLMOD_INT);
@@ -50,7 +51,7 @@ namespace oocholmod {
     }
     
     SparseMatrix::SparseMatrix(SparseMatrix&& other)
-    :sparse{other.sparse}, triplet{other.triplet}, nrow{other.nrow}, ncol{other.ncol}, iRow{other.iRow}, jColumn{other.jColumn}, symmetry{other.symmetry}, maxTripletElements{other.maxTripletElements}
+    :sparse{other.sparse}, triplet{other.triplet}, nrow{other.nrow}, ncol{other.ncol}, values{other.values}, iRow{other.iRow}, jColumn{other.jColumn}, symmetry{other.symmetry}, maxTripletElements{other.maxTripletElements}
     {
         other.sparse = nullptr;
         other.triplet = nullptr;
@@ -74,6 +75,7 @@ namespace oocholmod {
             triplet = other.triplet;
             nrow = other.nrow;
             ncol = other.ncol;
+            values = other.values;
             iRow = other.iRow;
             jColumn = other.jColumn;
             symmetry = other.symmetry;
@@ -133,9 +135,9 @@ namespace oocholmod {
         sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, ConfigSingleton::getCommonPtr());
         cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
         triplet = nullptr;
-        values = nullptr;
-        iRow = nullptr;
-        jColumn = nullptr;
+        values = ((double*)sparse->x);
+        iRow = ((int*)sparse->i);
+        jColumn = ((int*)sparse->p);
 
         
 #ifdef DEBUG
@@ -180,18 +182,17 @@ namespace oocholmod {
     Factor SparseMatrix::analyze() const
     {
 #ifdef DEBUG
-        assert(sparse);
+        assertHasSparse();
 #endif
         cholmod_factor *L = cholmod_analyze(sparse, ConfigSingleton::getCommonPtr());
         return Factor(L);
     }
     
-    
     void SparseMatrix::zero(){
 #ifdef DEBUG
-        assert(sparse);
+        assertHasSparse();
 #endif
-        memset(sparse->x, 0, sparse->nzmax * sizeof(double));
+        memset(values, 0, sparse->nzmax * sizeof(double));
     }
     
     void SparseMatrix::print(const char* name) const {
@@ -299,6 +300,9 @@ namespace oocholmod {
         cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, scale, scale, true, true, ConfigSingleton::getCommonPtr());
         cholmod_free_sparse(&LHS.sparse, ConfigSingleton::getCommonPtr());
         LHS.sparse = sparse;
+        LHS.values = ((double*)sparse->x);
+        LHS.iRow = ((int*)sparse->i);
+        LHS.jColumn = ((int*)sparse->p);
         return std::move(LHS);
     }
     
@@ -384,6 +388,9 @@ namespace oocholmod {
         sparse = cholmod_transpose(sparse, 1, ConfigSingleton::getCommonPtr());
         nrow = static_cast<int>(sparse->nrow);
         ncol = static_cast<int>(sparse->ncol);
+        values = ((double*)sparse->x);
+        iRow = ((int*)sparse->i);
+        jColumn = ((int*)sparse->p);
     }
     
     SparseMatrix transposed(const SparseMatrix& M)
@@ -401,6 +408,9 @@ namespace oocholmod {
         M.sparse = sparse;
         M.nrow = static_cast<int>(sparse->nrow);
         M.ncol = static_cast<int>(sparse->ncol);
+        M.values = ((double*)sparse->x);
+        M.iRow = ((int*)sparse->i);
+        M.jColumn = ((int*)sparse->p);
         return std::move(M);
     }
     

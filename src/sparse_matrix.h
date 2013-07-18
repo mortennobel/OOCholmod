@@ -144,32 +144,15 @@ namespace oocholmod {
         
         inline int getIndex(unsigned int row, unsigned int column) const
         {
-            if (symmetry == SYMMETRIC_UPPER && row > column) {
-                std::swap(row, column);
-            } else if (symmetry == SYMMETRIC_LOWER && row < column) {
+            if ((symmetry == SYMMETRIC_UPPER && row > column) || (symmetry == SYMMETRIC_LOWER && row < column)) {
                 std::swap(row, column);
             }
-            auto p = (int*)sparse->p;
-            int iFrom = p[column];
-            int iTo = p[column+1]-1;
             
-            return binarySearch((int*)sparse->i, iFrom, iTo, row);
             
-            /*
-            assertValidIndex(row, column);
-            if (symmetry == SYMMETRIC_UPPER && row > column) {
-                std::swap(row, column);
-            } else if (symmetry == SYMMETRIC_LOWER && row < column) {
-                std::swap(row, column);
-            }
-            auto iter = lookupIndex.find(key(row,column));
-            if (iter == lookupIndex.end()){
-                return -1;
-            }
-            if (idx != iter->second){
-                std::cout << "err"<<std::endl;
-            }
-            return iter->second;*/
+            int iFrom = jColumn[column];
+            int iTo = jColumn[column+1]-1;
+            
+            return binarySearch(iRow, iFrom, iTo, row);
         }
         
         inline double& initAddValue(unsigned int row, unsigned int column)
@@ -202,7 +185,7 @@ namespace oocholmod {
                 zero = 0;
                 return zero;
             }
-            return ((double*)sparse->x)[index];
+            return values[index];
         }
         
         double getValue(unsigned int row, unsigned int column) const
@@ -214,7 +197,7 @@ namespace oocholmod {
             if (index == -1){
                 return 0;
             }
-            return ((double*)sparse->x)[index];
+            return values[index];
         }
         
         cholmod_sparse *sparse;
