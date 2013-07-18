@@ -50,7 +50,7 @@ namespace oocholmod {
     }
     
     SparseMatrix::SparseMatrix(SparseMatrix&& other)
-    :sparse{other.sparse}, triplet{other.triplet}, nrow{other.nrow}, ncol{other.ncol}, lookupIndex{std::move(other.lookupIndex)}, iRow{other.iRow}, jColumn{other.jColumn}, symmetry{other.symmetry}, maxTripletElements{other.maxTripletElements}
+    :sparse{other.sparse}, triplet{other.triplet}, nrow{other.nrow}, ncol{other.ncol}, iRow{other.iRow}, jColumn{other.jColumn}, symmetry{other.symmetry}, maxTripletElements{other.maxTripletElements}
     {
         other.sparse = nullptr;
         other.triplet = nullptr;
@@ -74,7 +74,6 @@ namespace oocholmod {
             triplet = other.triplet;
             nrow = other.nrow;
             ncol = other.ncol;
-            lookupIndex = std::move(other.lookupIndex);
             iRow = other.iRow;
             jColumn = other.jColumn;
             symmetry = other.symmetry;
@@ -139,8 +138,6 @@ namespace oocholmod {
         jColumn = nullptr;
 
         
-        // build lookup index
-        lookupIndex.clear();
 #ifdef DEBUG
         assert(sparse->itype == CHOLMOD_INT);
         assert(sparse->stype == symmetry);
@@ -169,7 +166,6 @@ namespace oocholmod {
         std::swap(nrow, other.nrow);
         std::swap(ncol, other.ncol);
         std::swap(values, other.values);
-        std::swap(lookupIndex, other.lookupIndex);
         std::swap(iRow, other.iRow);
         std::swap(jColumn, other.jColumn);
         std::swap(symmetry, other.symmetry);
@@ -179,24 +175,7 @@ namespace oocholmod {
     void swap(SparseMatrix& v1, SparseMatrix& v2) {
         v1.swap(v2);
     }
-    
-    void SparseMatrix::buildLookupIndexFromSparse() {
-        lookupIndex.clear();
-#ifdef DEBUG
-        assert(sparse->sorted && sparse->packed);
-#endif
-        // In packed form, the nonzero pattern of column j is in A->i [A->p [j] ... A->p [j+1]-1]
-        int idx = 0;
-        for (int j=0;j<ncol;j++){
-            int iFrom = ((int*)sparse->p)[j];
-            int iTo = ((int*)sparse->p)[j+1]-1;
-            for (int i=iFrom;i<=iTo;i++){
-                int row = ((int*)sparse->i)[i];
-                lookupIndex[key(row, j)] = idx;
-                idx++;
-            }
-        }
-    }
+   
     
     Factor SparseMatrix::analyze() const
     {

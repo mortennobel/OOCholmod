@@ -116,7 +116,6 @@ namespace oocholmod {
     private:
         SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
         SparseMatrix operator=(const SparseMatrix& other) = delete; // prevent copy assignment operator
-        void buildLookupIndexFromSparse();
         inline long key(unsigned int row, unsigned int column) const{
             int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
             return (((long)row)<<shiftBits)+column;
@@ -126,8 +125,37 @@ namespace oocholmod {
         void increaseTripletCapacity();
         void assertValidInitAddValue(unsigned int row, unsigned int column) const;
         
+        inline int binarySearch(int *array, int low, int high, unsigned int value) const {
+            int midpoint = 0;
+            while (low <= high)
+            {
+                midpoint = low + (high - low)/2;
+                int midpointValue = array[midpoint];
+                if (value == midpointValue) {
+                    return midpoint;
+                } else if (value < midpointValue) {
+                    high = midpoint - 1;
+                } else {
+                    low = midpoint + 1;
+                }
+            }
+            return -1;
+        }
+        
         inline int getIndex(unsigned int row, unsigned int column) const
         {
+            if (symmetry == SYMMETRIC_UPPER && row > column) {
+                std::swap(row, column);
+            } else if (symmetry == SYMMETRIC_LOWER && row < column) {
+                std::swap(row, column);
+            }
+            auto p = (int*)sparse->p;
+            int iFrom = p[column];
+            int iTo = p[column+1]-1;
+            
+            return binarySearch((int*)sparse->i, iFrom, iTo, row);
+            
+            /*
             assertValidIndex(row, column);
             if (symmetry == SYMMETRIC_UPPER && row > column) {
                 std::swap(row, column);
@@ -138,7 +166,10 @@ namespace oocholmod {
             if (iter == lookupIndex.end()){
                 return -1;
             }
-            return iter->second;
+            if (idx != iter->second){
+                std::cout << "err"<<std::endl;
+            }
+            return iter->second;*/
         }
         
         inline double& initAddValue(unsigned int row, unsigned int column)
@@ -162,10 +193,9 @@ namespace oocholmod {
         
         inline double& getValue(unsigned int row, unsigned int column)
         {
+#ifdef DEBUG
             assertHasSparse();
-            if (lookupIndex.empty()){
-                buildLookupIndexFromSparse();
-            }
+#endif
             int index = getIndex(row, column);
             if (index == -1){
                 static double zero = 0;
@@ -177,11 +207,9 @@ namespace oocholmod {
         
         double getValue(unsigned int row, unsigned int column) const
         {
+#ifdef DEBUG
             assertHasSparse();
-            if (lookupIndex.empty()){
-                SparseMatrix & nonConst = const_cast<SparseMatrix &>(*this);
-                nonConst.buildLookupIndexFromSparse();
-            }
+#endif
             int index = getIndex(row, column);
             if (index == -1){
                 return 0;
@@ -194,7 +222,6 @@ namespace oocholmod {
         unsigned int nrow;
         unsigned int ncol;
         double *values;
-        std::map<unsigned long, unsigned int> lookupIndex;
         int *iRow;
         int *jColumn;
         Symmetry symmetry;
