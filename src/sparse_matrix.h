@@ -129,7 +129,8 @@ namespace oocholmod {
             int midpoint = 0;
             while (low <= high)
             {
-                midpoint = low + (high - low)/2;
+                // http://googleresearch.blogspot.dk/2006/06/extra-extra-read-all-about-it-nearly.html
+                midpoint = (((unsigned int)high + (unsigned int)low) >> 1);
                 int midpointValue = array[midpoint];
                 if (value == midpointValue) {
                     return midpoint;
