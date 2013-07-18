@@ -152,13 +152,6 @@ namespace oocholmod {
                 increaseTripletCapacity();
             }
             assertValidInitAddValue(row, column);
-            long k = key(row, column);
-            auto res = lookupIndex.find(k);
-            if (res != lookupIndex.end()) {
-                auto& pos = (*res).second;
-                return values[pos];
-            }
-            lookupIndex[k] = (int)triplet->nnz;
             iRow[triplet->nnz] = row;
             jColumn[triplet->nnz] = column;
             values[triplet->nnz] = 0;

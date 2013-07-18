@@ -31,10 +31,30 @@ int BuildSparseTestObj()
     A(1, 2) = 5;
     A(2, 1) = -1;
     A(2, 0) = -3;
+    A(0, 0) = 3;
     A.build();
     
     assert(A(2,1) == 4);
     assert(A(1,2) == 4);
+    assert(A(0,2) == -2);
+    assert(A(2,0) == -2);
+    assert(A(0,0) == 4);
+    
+    SparseMatrix B{3,3};
+    B(0, 0) = 1;
+    B(0, 1) = 1;
+    B(0, 2) = 1;
+    B(1, 2) = 5;
+    B(2, 1) = -1;
+    B(2, 0) = -3;
+    B(0, 0) = 3;
+    B.build();
+    
+    assert(B(2,1) == -1);
+    assert(B(1,2) == 5);
+    assert(B(0,2) == 1);
+    assert(B(2,0) == -3);
+    assert(B(0,0) == 4);
     return 1;
 }
 
@@ -640,7 +660,9 @@ int IndexTest(){
         B(x,y) = value;
         B(y,x) = value;
         C(x,y) = value;
-        C(y,x) = value;
+        if(x != y) {
+            C(y,x) = value;
+        }
         value++;
     }
     A.build();
