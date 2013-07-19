@@ -333,12 +333,12 @@ namespace oocholmod {
         assert(A.nrow == A.ncol);
         assert(A.nrow == b.nrow);
 #endif
-        int N = b.nrow;
-        int nrhs = b.ncol;
-        int lda = A.nrow;
-        int ldb = b.nrow;
-        int ipiv[N];
-        int info;
+        __CLPK_integer N = b.nrow;
+        __CLPK_integer nrhs = b.ncol;
+        __CLPK_integer lda = A.nrow;
+        __CLPK_integer ldb = b.nrow;
+        __CLPK_integer ipiv[N];
+        __CLPK_integer info;
         
         cholmod_dense *a = cholmod_copy_dense(A.dense, ConfigSingleton::getCommonPtr());
         cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
@@ -357,12 +357,12 @@ namespace oocholmod {
         assert(A.nrow == A.ncol);
         assert(A.nrow == b.nrow);
 #endif
-        int N = b.nrow;
-        int nrhs = b.ncol;
-        int lda = A.nrow;
-        int ldb = b.nrow;
-        int ipiv[N];
-        int info;
+        __CLPK_integer N = b.nrow;
+        __CLPK_integer nrhs = b.ncol;
+        __CLPK_integer lda = A.nrow;
+        __CLPK_integer ldb = b.nrow;
+        __CLPK_integer ipiv[N];
+        __CLPK_integer info;
         
         cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
         dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, (double*)res->x, &ldb, &info);
@@ -379,12 +379,12 @@ namespace oocholmod {
         assert(A.nrow == A.ncol);
         assert(A.nrow == b.nrow);
 #endif
-        int N = b.nrow;
-        int nrhs = b.ncol;
-        int lda = A.nrow;
-        int ldb = b.nrow;
-        int ipiv[N];
-        int info;
+        __CLPK_integer N = b.nrow;
+        __CLPK_integer nrhs = b.ncol;
+        __CLPK_integer lda = A.nrow;
+        __CLPK_integer ldb = b.nrow;
+        __CLPK_integer ipiv[N];
+        __CLPK_integer info;
         
         cholmod_dense *a = cholmod_copy_dense(A.dense, ConfigSingleton::getCommonPtr());
         dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, b.getData(), &ldb, &info);
@@ -401,12 +401,12 @@ namespace oocholmod {
         assert(A.nrow == A.ncol);
         assert(A.nrow == b.nrow);
 #endif
-        int N = b.nrow;
-        int nrhs = b.ncol;
-        int lda = A.nrow;
-        int ldb = b.nrow;
-        int ipiv[N];
-        int info;
+        __CLPK_integer N = b.nrow;
+        __CLPK_integer nrhs = b.ncol;
+        __CLPK_integer lda = A.nrow;
+        __CLPK_integer ldb = b.nrow;
+        __CLPK_integer ipiv[N];
+        __CLPK_integer info;
         
         dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, b.getData(), &ldb, &info);
 #ifdef DEBUG
