@@ -97,8 +97,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a726866037c7c53042371aee0438803e7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#a726866037c7c53042371aee0438803e7">SparseMatrix</a> (unsigned int nrow=0, unsigned int ncol=1, bool symmetric=false, int maxSize=0)</td></tr>
-<tr class="separator:a726866037c7c53042371aee0438803e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedc0fa96d47190aaefd5951b3e3721e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#aedc0fa96d47190aaefd5951b3e3721e6">SparseMatrix</a> (unsigned int nrow=0, unsigned int ncol=1, bool symmetric=false, int initialNumberOfElements=200)</td></tr>
+<tr class="separator:aedc0fa96d47190aaefd5951b3e3721e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada0bc7158751c6ff58b03194700981b6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada0bc7158751c6ff58b03194700981b6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SparseMatrix</b> (cholmod_sparse *sparse)</td></tr>
 <tr class="separator:ada0bc7158751c6ff58b03194700981b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,8 +135,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getRows</b> () const <
 <tr class="memitem:afbf6f81812792fd83fc44196714e8ee4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbf6f81812792fd83fc44196714e8ee4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getColumns</b> () const </td></tr>
 <tr class="separator:afbf6f81812792fd83fc44196714e8ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a331ab2e32b9e29d1080e66891cda3f8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#a331ab2e32b9e29d1080e66891cda3f8e">setNullSpace</a> (const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;N)</td></tr>
-<tr class="separator:a331ab2e32b9e29d1080e66891cda3f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae2290a7064f64d624979af8f080b97d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae2290a7064f64d624979af8f080b97d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#aae2290a7064f64d624979af8f080b97d">print</a> (const char *name=&quot;&quot;) const </td></tr>
 <tr class="memdesc:aae2290a7064f64d624979af8f080b97d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print debugging information. <br/></td></tr>
@@ -209,16 +207,14 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
 <tr class="separator:aa5c80843743ecf35ab2322dc2705f73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Currently only real (double), upper symmetric matrices are supported.</p>
-<p>The sparse matrix must be used in the following way:</p>
+<div class="textblock"><p>The sparse matrix must be used in the following way:</p>
 <ol type="1">
-<li>Fill the matrix elements using the initAddValue() method</li>
+<li>Fill the matrix elements using the (unsigned int row, unsigned int column) function operator</li>
 <li>Call build()</li>
-<li>Fill matrix with elements using setValue or addValue</li>
+<li>Update matrix with elements using the (unsigned int row, unsigned int column) function operator </li>
 </ol>
-<p>At any point after the matrix has been build, you can call </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a726866037c7c53042371aee0438803e7"></a>
+<a class="anchor" id="aedc0fa96d47190aaefd5951b3e3721e6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -244,7 +240,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>maxSize</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>initialNumberOfElements</em> = <code>200</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -253,29 +249,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>nrow # of rows of A ncol # of columns of A maxSize (size allocated before build). 0 means triangular </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a331ab2e32b9e29d1080e66891cda3f8e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void oocholmod::SparseMatrix::setNullSpace </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&#160;</td>
-          <td class="paramname"><em>N</em>)</td><td></td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Set the nullspace Null = sparseDiagonal(N) K = N^T * K * N - (Null-I)</p>
-<p>In other words it gives matrixes with the following patterns where 0 elements in N marks the columns and rows to 'null' </p>
-<pre class="fragment">0
-0
-</pre><p> 00001000 0 </p>
+<p>nrow # of rows of A ncol # of columns of A initialNumberOfElements. If exceeded (during initialization of the matrix) the number of elements will automatically grow with a factor of 1.5 </p>
 
 </div>
 </div>
@@ -286,7 +260,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 17 2013 16:59:22 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 22 2013 16:54:37 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

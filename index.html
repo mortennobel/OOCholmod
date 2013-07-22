@@ -83,6 +83,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>```cpp SparseMatrix A{3,3}; A(0, 0) = 1; A(0, 1) = 1; A(0, 2) = 1; A.build(); A(0, 0) = 2; A(0, 1) = 2; A(0, 2) = 2; A = A * A; ``` The elements of a matrix are accessed using the function operator (unsigned int row, unsigned int column), which can be a bit confusing, but is very easy to use (as can be seen in the example above).</p>
 <p>There are not any vector-class - instead matrices of Nx1 can be used (in the constructor column defaults to 1 and in the accessor column defaults to 0):</p>
 <p>```cpp SparseMatrix vector{3}; vector(0) = 1; vector(1) = 1; vector(2) = 1; vector.build(); vector(0) = 2; vector(1) = 2; vector(2) = 2; ```</p>
+<p>Note that sparse matrices are slightly faster to update after being build than building a new matrix.</p>
 <p>See alse test/object.h</p>
 <h1>API documentation: </h1>
 <p><a href="http://mortennobel.github.io/OOCholmod/">http://mortennobel.github.io/OOCholmod/</a></p>
@@ -123,7 +124,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 17 2013 16:59:22 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 22 2013 16:54:37 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
