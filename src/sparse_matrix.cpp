@@ -14,9 +14,6 @@
 
 using namespace std;
 
-// bad coffee odd food
-#define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
-
 namespace oocholmod {
     
     SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, bool symmetric, int maxSize)
@@ -275,10 +272,6 @@ namespace oocholmod {
         assert(sparse == nullptr); // must be called before matrix build
         assert(row < nrow);
         assert(column < ncol);
-        int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
-        long maxId = (long)pow(2, shiftBits);
-        assert (row < maxId);
-        assert (column < maxId);
 #endif
     }
     
@@ -303,17 +296,17 @@ namespace oocholmod {
         LHS.values = ((double*)sparse->x);
         LHS.iRow = ((int*)sparse->i);
         LHS.jColumn = ((int*)sparse->p);
-        return std::move(LHS);
+        return move(LHS);
     }
     
     SparseMatrix&& operator+(const SparseMatrix& LHS, SparseMatrix&& RHS)
     {
-        return std::move(RHS) + LHS;
+        return move(RHS) + LHS;
     }
     
     SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS)
     {
-        return std::move(LHS) + RHS;
+        return move(LHS) + RHS;
     }
     
     SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS)
@@ -342,7 +335,7 @@ namespace oocholmod {
         ((double*)dense->x)[0] = RHS;
         cholmod_scale(dense, CHOLMOD_SCALAR, LHS.sparse, ConfigSingleton::getCommonPtr());
         cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
-        return std::move(LHS);
+        return move(LHS);
     }
     
     SparseMatrix operator*(const double& LHS, const SparseMatrix& RHS)
@@ -352,7 +345,7 @@ namespace oocholmod {
     
     SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS)
     {
-        return std::move(RHS) * LHS;
+        return move(RHS) * LHS;
     }
     
     
@@ -411,7 +404,7 @@ namespace oocholmod {
         M.values = ((double*)sparse->x);
         M.iRow = ((int*)sparse->i);
         M.jColumn = ((int*)sparse->p);
-        return std::move(M);
+        return move(M);
     }
     
     DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b)

@@ -11,16 +11,15 @@
 #include "dense_matrix.h"
 #include "config_singleton.h"
 
+using namespace std;
+
 namespace oocholmod {
-    
-    // bad coffee odd food
-#define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
-    
+   
     DenseMatrix::DenseMatrix(unsigned int rows, unsigned int cols, double value)
     :nrow{rows}, ncol{cols}
     {
         dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
-        if (!isnan(value)) {
+        if (!std::isnan(value)) {
             fill(value);
         }
     }
@@ -209,7 +208,7 @@ namespace oocholmod {
     
     DenseMatrix&& operator+(DenseMatrix&& LHS, const DenseMatrix& RHS)
     {
-        return RHS+std::move(LHS);
+        return RHS+move(LHS);
     }
     
     DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS)
@@ -219,17 +218,17 @@ namespace oocholmod {
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
         cblas_daxpy(LHS.nrow*LHS.ncol, 1., LHS.getData(), 1, RHS.getData(), 1);
-        return std::move(RHS);
+        return move(RHS);
     }
     
     DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS)
     {
-        return LHS+std::move(RHS);
+        return LHS+move(RHS);
     }
     
     DenseMatrix& DenseMatrix::operator+=(const DenseMatrix& RHS)
     {
-        RHS + std::move(*this);
+        RHS + move(*this);
         return *this;
     }
     
@@ -251,7 +250,7 @@ namespace oocholmod {
         assert(LHS.dense);
 #endif
         cblas_dscal (LHS.nrow*LHS.ncol, RHS, LHS.getData(), 1);
-        return std::move(LHS);
+        return move(LHS);
     }
     
     DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS)
@@ -261,12 +260,12 @@ namespace oocholmod {
     
     DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS)
     {
-        return std::move(RHS)*LHS;
+        return move(RHS)*LHS;
     }
     
     DenseMatrix& DenseMatrix::operator*=(const double& RHS)
     {
-        std::move(*this) * RHS;
+        move(*this) * RHS;
         return *this;
     }
     
@@ -323,7 +322,7 @@ namespace oocholmod {
     DenseMatrix&& transposed(DenseMatrix&& M)
     {
         M.transpose();
-        return std::move(M);
+        return move(M);
     }
     
     DenseMatrix solve(const DenseMatrix& A, const DenseMatrix& b)
@@ -391,7 +390,7 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(info == 0);
 #endif
-        return std::move(b);
+        return move(b);
     }
     
     DenseMatrix&& solve(DenseMatrix&& A, DenseMatrix&& b)
@@ -412,7 +411,7 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(info == 0);
 #endif
-        return std::move(b);
+        return move(b);
     }
     
 }

@@ -114,7 +114,7 @@ int SolveDenseDenseTestObj()
     double expected[6] = {-23.8750, -1.0625, 4.1875, -0.5, 0.25, 0.25};
     assertEqual(expected, x.getData(), 6);
     
-    DenseMatrix x2 = solve(std::move(A), std::move(b));
+    DenseMatrix x2 = solve(move(A), move(b));
     assertEqual(expected, x2.getData(), 6);
     return 1;
 }
@@ -227,7 +227,7 @@ int AddSparseSparseTestObj()
     SparseMatrix D;
     D = (A+B) + B;
     
-    SparseMatrix E = std::move(A) + (B+A);
+    SparseMatrix E = move(A) + (B+A);
     
     assert(E(2,2) == -3);
     assert(E(0,2) == 5);
@@ -253,7 +253,7 @@ int AddDenseDenseTestObj()
     
     DenseMatrix C = A + B;
     DenseMatrix D = (A+B) + B;
-    DenseMatrix E = std::move(A) + (B+A);
+    DenseMatrix E = move(A) + (B+A);
     
     double expected[9] = {4, 1, 1, 1, 1, 1, 5, 5, -3};
     assertEqual(expected, E.getData(), 9);
@@ -296,7 +296,7 @@ int TransposeDenseTestObj()
     
     DenseMatrix c = transposed(b);
     
-    DenseMatrix d = transposed(std::move(c));
+    DenseMatrix d = transposed(move(c));
     
     assertEqual(b.getData(), d.getData(), 3)
     return 1;
@@ -429,7 +429,7 @@ int MultiplyScalarDenseTestObj()
     
     DenseMatrix res1 = -3.*x;
     
-    DenseMatrix res2 = 0.1*std::move(res1);
+    DenseMatrix res2 = 0.1*move(res1);
     
     double expected2[6] = {-0.3, -0.3, -2.7, 0.9, -2.1, -0.3};
     assertEqual(expected2, res2.getData(), 6);
@@ -600,7 +600,7 @@ int SwapTest(){
     SparseMatrix B{1,1};
     B(0,0) = 2;
     B.build();
-    std::swap(A, B);
+    swap(A, B);
     TINYTEST_ASSERT(A(0,0) == 2);
     TINYTEST_ASSERT(B(0,0) == 1);
     

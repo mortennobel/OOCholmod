@@ -8,20 +8,28 @@
 
 #include "config_singleton.h"
 
-
 namespace oocholmod {
     
-    std::unique_ptr<cholmod_common> ConfigSingleton::common;
+    using namespace std;
+    
+    unique_ptr<cholmod_common> common;
+    
+    void ConfigSingleton::config(cholmod_common *config){
+        destroy();
+        common.reset(config);
+        cholmod_start(common.get());
+    }
+    
     cholmod_common *ConfigSingleton::getCommonPtr(){
-        if (common.get() == nullptr){
-            common = std::unique_ptr<cholmod_common>(new cholmod_common());
+        if (!common.get()){
+            common.reset(new cholmod_common());
             cholmod_start(common.get());
         }
         return common.get();
     }
     
     void ConfigSingleton::destroy(){
-        if (common.get() != nullptr){
+        if (common.get()){
             cholmod_finish(common.get()) ;
             common.reset(nullptr);
         }

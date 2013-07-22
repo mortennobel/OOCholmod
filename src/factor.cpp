@@ -13,9 +13,6 @@
 
 using namespace std;
 
-// bad coffee odd food
-#define MAGIC_NUMBER (unsigned long)0xBADC0FFEE0DDF00DL
-
 namespace oocholmod {
     
     Factor::Factor()
