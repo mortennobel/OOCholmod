@@ -119,6 +119,8 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (uns
 <tr class="memitem:a9fb65ef13f8ac70b8fdcdc07fceac3b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9fb65ef13f8ac70b8fdcdc07fceac3b8"></a>
 <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (const double &amp;RHS)</td></tr>
 <tr class="separator:a9fb65ef13f8ac70b8fdcdc07fceac3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab6bfaad86da393429839a768c0b0232"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_dense_matrix.html#aab6bfaad86da393429839a768c0b0232">norm</a> (int norm) const </td></tr>
+<tr class="separator:aab6bfaad86da393429839a768c0b0232"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85bfe5da94cf963efe30309c6b73fc3a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85bfe5da94cf963efe30309c6b73fc3a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>transpose</b> ()</td></tr>
 <tr class="separator:a85bfe5da94cf963efe30309c6b73fc3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,6 +242,24 @@ Friends</h2></td></tr>
 <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solve</b> (const <a class="el" href="classoocholmod_1_1_factor.html">Factor</a> &amp;F, const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b)</td></tr>
 <tr class="separator:ade61f252908cba2ac967542cecdfd050"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aab6bfaad86da393429839a768c0b0232"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double oocholmod::DenseMatrix::norm </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>norm</em>)</td><td></td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the infinity-norm, 1-norm, or 2-norm of a dense matrix. Can compute the 2-norm only for a dense column vector. type of norm: 0: inf. norm, 1: 1-norm, 2: 2-norm </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/mono/Programming/cpp/OOCholmod/OOCholmod/src/<a class="el" href="dense__matrix_8h_source.html">dense_matrix.h</a></li>
 <li>/Users/mono/Programming/cpp/OOCholmod/OOCholmod/src/dense_matrix.cpp</li>
@@ -247,7 +267,7 @@ Friends</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 22 2013 16:54:36 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 23 2013 13:20:41 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

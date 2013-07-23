@@ -111,12 +111,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a09fcf539ee76dd4619515e422612c3bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09fcf539ee76dd4619515e422612c3bd"></a>
 MatrixState&#160;</td><td class="memItemRight" valign="bottom"><b>getMatrixState</b> () const </td></tr>
 <tr class="separator:a09fcf539ee76dd4619515e422612c3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f5514d580f288e6c4b4e138595c88c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f5514d580f288e6c4b4e138595c88c8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasElement</b> (unsigned int row, unsigned int column) const </td></tr>
+<tr class="separator:a7f5514d580f288e6c4b4e138595c88c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa281049cb8b723fcfb49de5bce0d9807"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#aa281049cb8b723fcfb49de5bce0d9807">norm</a> (int norm) const </td></tr>
+<tr class="separator:aa281049cb8b723fcfb49de5bce0d9807"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37193ab45b4d0860eff9a30f4e6c8cf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#a37193ab45b4d0860eff9a30f4e6c8cf5">dropSmallEntries</a> (double tol=1e-7f)</td></tr>
+<tr class="separator:a37193ab45b4d0860eff9a30f4e6c8cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6009ddf0f2c71fe8419eb23a2236633f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6009ddf0f2c71fe8419eb23a2236633f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>transpose</b> ()</td></tr>
 <tr class="separator:a6009ddf0f2c71fe8419eb23a2236633f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f38b01008f5dccf99b2f43943e23561"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f38b01008f5dccf99b2f43943e23561"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>build</b> ()</td></tr>
 <tr class="separator:a3f38b01008f5dccf99b2f43943e23561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3441407c93058e3d155027483314c5d0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3441407c93058e3d155027483314c5d0"></a>
+<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> () const </td></tr>
+<tr class="separator:a3441407c93058e3d155027483314c5d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac12b5ba471524f509cadd91d403e3ec5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac12b5ba471524f509cadd91d403e3ec5"></a>
 <a class="el" href="classoocholmod_1_1_factor.html">Factor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>analyze</b> () const </td></tr>
 <tr class="separator:ac12b5ba471524f509cadd91d403e3ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -253,6 +263,41 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a37193ab45b4d0860eff9a30f4e6c8cf5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void oocholmod::SparseMatrix::dropSmallEntries </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tol</em> = <code>1e-7f</code>)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Drop small entries from A, and entries in the ignored part of A if A is symmetric. keep entries with absolute values &gt; tol </p>
+
+</div>
+</div>
+<a class="anchor" id="aa281049cb8b723fcfb49de5bce0d9807"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double oocholmod::SparseMatrix::norm </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>norm</em>)</td><td></td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the infinity-norm or 1-norm of a sparse matrix. All xtypes are supported. type of norm: 0: inf. norm, 1: 1-norm </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/mono/Programming/cpp/OOCholmod/OOCholmod/src/<a class="el" href="sparse__matrix_8h_source.html">sparse_matrix.h</a></li>
 <li>/Users/mono/Programming/cpp/OOCholmod/OOCholmod/src/sparse_matrix.cpp</li>
@@ -260,7 +305,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 22 2013 16:54:37 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 23 2013 13:20:41 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
