@@ -54,15 +54,15 @@ namespace oocholmod {
         
         // Addition
         friend SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
-        friend SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
-        friend SparseMatrix&& operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
-        friend SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
+        friend SparseMatrix operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
+        friend SparseMatrix operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
+        friend SparseMatrix operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
         
         // Multiplication
         friend SparseMatrix operator*(const SparseMatrix& LHS, const double& RHS);
-        friend SparseMatrix&& operator*(SparseMatrix&& LHS, const double& RHS);
+        friend SparseMatrix operator*(SparseMatrix&& LHS, const double& RHS);
         friend SparseMatrix operator*(const double& LHS, const SparseMatrix& RHS);
-        friend SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS);
+        friend SparseMatrix operator*(const double& LHS, SparseMatrix&& RHS);
         
         friend SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS);
         
@@ -71,18 +71,15 @@ namespace oocholmod {
  
         bool hasElement(unsigned int row, unsigned int column) const;
         
-        
-        double norm(int norm) const;
-        
         ///
         /// Drop small entries from A, and entries in the ignored part of A if A is symmetric.
         /// keep entries with absolute values > tol
-        void dropSmallEntries(double tol);
+        void dropSmallEntries(double tol = 1e-7f);
         
         // Transpose
         void transpose();
         friend SparseMatrix transposed(const SparseMatrix& M);
-        friend SparseMatrix&& transposed(SparseMatrix&& M);
+        friend SparseMatrix transposed(SparseMatrix&& M);
         
         // Solve
         friend DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
@@ -223,15 +220,15 @@ namespace oocholmod {
     
     // Addition
     SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
-    SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
+    SparseMatrix operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
+    SparseMatrix operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
+    SparseMatrix operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
     
     // Multiplication
     SparseMatrix operator*(const SparseMatrix& LHS, const double& RHS);
-    SparseMatrix&& operator*(SparseMatrix&& LHS, const double& RHS);
+    SparseMatrix operator*(SparseMatrix&& LHS, const double& RHS);
     SparseMatrix operator*(const double& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS);
+    SparseMatrix operator*(const double& LHS, SparseMatrix&& RHS);
     
     SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS);
     
@@ -241,7 +238,7 @@ namespace oocholmod {
     
     // Transpose
     SparseMatrix transposed(const SparseMatrix& M);
-    SparseMatrix&& transposed(SparseMatrix&& M);
+    SparseMatrix transposed(SparseMatrix&& M);
     
     // Swap
     void swap(SparseMatrix& v1, SparseMatrix& v2);

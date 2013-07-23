@@ -206,12 +206,12 @@ namespace oocholmod {
         return res;
     }
     
-    DenseMatrix&& operator+(DenseMatrix&& LHS, const DenseMatrix& RHS)
+    DenseMatrix operator+(DenseMatrix&& LHS, const DenseMatrix& RHS)
     {
         return RHS+move(LHS);
     }
     
-    DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS)
+    DenseMatrix operator+(const DenseMatrix& LHS, DenseMatrix&& RHS)
     {
 #ifdef DEBUG
         assert(LHS.dense && RHS.dense);
@@ -221,7 +221,7 @@ namespace oocholmod {
         return move(RHS);
     }
     
-    DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS)
+    DenseMatrix operator+(DenseMatrix&& LHS, DenseMatrix&& RHS)
     {
         return LHS+move(RHS);
     }
@@ -244,7 +244,7 @@ namespace oocholmod {
         return res;
     }
     
-    DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS)
+    DenseMatrix operator*(DenseMatrix&& LHS, const double& RHS)
     {
 #ifdef DEBUG
         assert(LHS.dense);
@@ -258,7 +258,7 @@ namespace oocholmod {
         return RHS*LHS;
     }
     
-    DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS)
+    DenseMatrix operator*(const double& LHS, DenseMatrix&& RHS)
     {
         return move(RHS)*LHS;
     }
@@ -319,7 +319,7 @@ namespace oocholmod {
         return res;
     }
     
-    DenseMatrix&& transposed(DenseMatrix&& M)
+    DenseMatrix transposed(DenseMatrix&& M)
     {
         M.transpose();
         return move(M);
@@ -371,7 +371,7 @@ namespace oocholmod {
         return DenseMatrix(res);
     }
     
-    DenseMatrix&& solve(const DenseMatrix& A, DenseMatrix&& b)
+    DenseMatrix solve(const DenseMatrix& A, DenseMatrix&& b)
     {
 #ifdef DEBUG
         assert(A.dense && b.dense);
@@ -393,7 +393,7 @@ namespace oocholmod {
         return move(b);
     }
     
-    DenseMatrix&& solve(DenseMatrix&& A, DenseMatrix&& b)
+    DenseMatrix solve(DenseMatrix&& A, DenseMatrix&& b)
     {
 #ifdef DEBUG
         assert(A.dense && b.dense);
