@@ -122,6 +122,9 @@ namespace oocholmod {
         assert(getMatrixState() == BUILT);
 #endif
         cholmod_drop(tol, sparse, ConfigSingleton::getCommonPtr());
+        values = ((double*)sparse->x);
+        iRow = ((int*)sparse->i);
+        jColumn = ((int*)sparse->p);
     }
     
     MatrixState SparseMatrix::getMatrixState() const {
@@ -302,13 +305,12 @@ namespace oocholmod {
     void SparseMatrix::increaseTripletCapacity(){
         // grow size with factor 1.5
         maxTripletElements = (int)ceil(1.5f*maxTripletElements);
-        auto commonPtr = ConfigSingleton::getCommonPtr();
-        auto newTriplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, commonPtr);
+        auto newTriplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
         memcpy(newTriplet->x, triplet->x, triplet->nzmax*sizeof(double));
         memcpy(newTriplet->i, triplet->i, triplet->nzmax*sizeof(int));
         memcpy(newTriplet->j, triplet->j, triplet->nzmax*sizeof(int));
         newTriplet->nnz = triplet->nnz;
-        cholmod_free_triplet(&triplet, commonPtr);
+        cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
         triplet = newTriplet;
         values = (double *)triplet->x;
         iRow = (int *)triplet->i;
