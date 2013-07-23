@@ -72,6 +72,8 @@ namespace oocholmod {
         bool hasElement(unsigned int row, unsigned int column) const;
         
         
+        /// Returns the infinity-norm or 1-norm of a sparse matrix. All xtypes are supported.
+        ///  type of norm: 0: inf. norm, 1: 1-norm
         double norm(int norm) const;
         
         ///

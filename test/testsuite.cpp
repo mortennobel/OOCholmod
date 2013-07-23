@@ -737,7 +737,7 @@ int LargeMatrixPerformance(){
 }
 
 int DropSmallEntriesTest(){
-    SparseMatrix A(3,3, true);
+    SparseMatrix A{3,3, true};
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
@@ -755,7 +755,7 @@ int DropSmallEntriesTest(){
 }
 
 int CopyTest(){
-    SparseMatrix A(3,3, true);
+    SparseMatrix A{3,3, true};
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
@@ -765,6 +765,34 @@ int CopyTest(){
     SparseMatrix B = A.copy();
     
     TINYTEST_ASSERT(A == B);
+    return 1;
+}
+
+int NormTest(){
+    SparseMatrix A{3,3, true};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 0.5;
+    A(2, 2) = -0.5;
+    A.build();
+    double norm = A.norm(1);
+    TINYTEST_ASSERT(norm == 3);
+
+
+    DenseMatrix B{3,3};
+    B(0, 0) = 1;
+    B(2, 2) = 1;
+    B(0, 1) = 1;
+    B(1, 0) = 1;
+    B(0, 2) = 1;
+    B(2, 0) = 1;
+    B(1, 2) = 0.5;
+    B(2, 1) = 0.5;
+    B(2, 2) = -0.5;
+
+    norm = B.norm(1);
+    TINYTEST_ASSERT(norm == 3);
     return 1;
 }
 
@@ -801,6 +829,7 @@ TINYTEST_ADD_TEST(LargeSparseMatrix);
 TINYTEST_ADD_TEST(LargeMatrixPerformance);
 TINYTEST_ADD_TEST(DropSmallEntriesTest);
 TINYTEST_ADD_TEST(CopyTest);
+TINYTEST_ADD_TEST(NormTest);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();

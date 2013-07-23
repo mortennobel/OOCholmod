@@ -73,6 +73,10 @@ namespace oocholmod {
         friend DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
         friend DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
         
+        /// Returns the infinity-norm, 1-norm, or 2-norm of a dense matrix. Can compute the 2-norm only for a dense column vector. 
+        ///  type of norm: 0: inf. norm, 1: 1-norm, 2: 2-norm 
+        double norm(int norm) const;
+        
         // Transpose
         void transpose();
         friend DenseMatrix transposed(const DenseMatrix& M);

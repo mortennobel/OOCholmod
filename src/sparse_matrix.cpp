@@ -255,6 +255,13 @@ namespace oocholmod {
 #endif
     }
     
+    double SparseMatrix::norm(int norm) const{
+#ifdef DEBUG
+        assertHasSparse();
+#endif
+       return cholmod_norm_sparse(sparse, norm, ConfigSingleton::getCommonPtr());
+    }
+    
     SparseMatrix SparseMatrix::copy() const{
         SparseMatrix res;
         if (sparse){

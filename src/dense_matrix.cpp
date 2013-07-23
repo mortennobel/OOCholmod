@@ -77,6 +77,11 @@ namespace oocholmod {
         }
     }
     
+    double DenseMatrix::norm(int norm) const{
+        return cholmod_norm_dense(dense, norm, ConfigSingleton::getCommonPtr());
+    }
+    
+    
     double DenseMatrix::dot(const DenseMatrix& b) const {
 #ifdef DEBUG
         assert(ncol == 1 || nrow == 1);
