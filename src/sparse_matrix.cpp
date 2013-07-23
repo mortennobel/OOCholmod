@@ -103,6 +103,17 @@ namespace oocholmod {
             }
         }
     }
+
+    bool SparseMatrix::hasElement(unsigned int row, unsigned int column){
+        return getIndex(row, column) != -1;
+    }
+    
+    int SparseMatrix::dropSmallEntries(double tol){
+#ifdef DEBUG
+        assert(getMatrixState() == BUILT);
+#endif
+        return cholmod_drop(tol, sparse, ConfigSingleton::getCommonPtr());
+    }
     
     MatrixState SparseMatrix::getMatrixState() const {
         if (nrow == 0 && ncol == 0){
