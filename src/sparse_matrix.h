@@ -48,7 +48,9 @@ namespace oocholmod {
         SparseMatrix(SparseMatrix&& move);
         SparseMatrix& operator=(SparseMatrix&& other);
         
-        virtual ~SparseMatrix();
+        ~SparseMatrix();
+        
+        DenseMatrix toDense();
         
         MatrixState getMatrixState() const;
         

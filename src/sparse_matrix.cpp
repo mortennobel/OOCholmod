@@ -103,6 +103,15 @@ namespace oocholmod {
             }
         }
     }
+    
+    DenseMatrix SparseMatrix::toDense()
+    {
+#ifdef DEBUG
+        assert(sparse);
+#endif
+        cholmod_dense *dense = cholmod_sparse_to_dense(sparse, ConfigSingleton::getCommonPtr());
+        return DenseMatrix(dense);
+    }
 
     bool SparseMatrix::hasElement(unsigned int row, unsigned int column) const {
         return getIndex(row, column) != -1;
