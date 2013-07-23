@@ -83,8 +83,12 @@ namespace oocholmod {
         // Print
         friend std::ostream& operator<<(std::ostream& os, const SparseMatrix& A);
         
+        // hasElement only valid on built matrix
         bool hasElement(unsigned int row, unsigned int column) const;
-        
+
+        /// append an another matrix in the init state
+        /// useful for parallel matrix assembly
+        void append(const SparseMatrix& m);
         
         /// Returns the infinity-norm or 1-norm of a sparse matrix. All xtypes are supported.
         ///  type of norm: 0: inf. norm, 1: 1-norm
@@ -180,13 +184,17 @@ namespace oocholmod {
             return binarySearch(iRow, iFrom, iTo, row);
         }
         
+        inline void createTriplet(){
+            triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+            values = (double *)triplet->x;
+            iRow = (int *)triplet->i;
+            jColumn = (int *)triplet->j;
+        }
+        
         inline double& initAddValue(unsigned int row, unsigned int column)
         {
             if (!triplet){
-                triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
-                values = (double *)triplet->x;
-                iRow = (int *)triplet->i;
-                jColumn = (int *)triplet->j;
+                createTriplet();
             } else if (triplet->nnz == maxTripletElements ){
                 increaseTripletCapacity();
             }

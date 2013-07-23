@@ -825,6 +825,28 @@ int NormTest(){
     return 1;
 }
 
+int AppendTest(){
+    SparseMatrix AS[5]= {{3,3},{3,3},{3,3},{3,3},{3,3}};
+    AS[0](0, 0) = 1;
+    AS[1](0, 1) = 1;
+    AS[2](0, 2) = 1;
+    AS[3](1, 2) = 0.5;
+    AS[4](2, 2) = -0.5;
+    SparseMatrix A{3,3};
+    for (auto &a : AS){
+        A.append(a);
+    }
+    A.build();
+    TINYTEST_ASSERT(A.hasElement(0,0));
+    TINYTEST_ASSERT(A.hasElement(0,1));
+    TINYTEST_ASSERT(!A.hasElement(1,0));
+    TINYTEST_ASSERT(A.hasElement(0,2));
+    TINYTEST_ASSERT(!A.hasElement(2,0));
+    TINYTEST_ASSERT(A.hasElement(1,2));
+    TINYTEST_ASSERT(!A.hasElement(2,1));
+    TINYTEST_ASSERT(A.hasElement(2,2));
+}
+
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(BuildSparseTestObj);
 TINYTEST_ADD_TEST(EqualSparseTestObj);
@@ -860,6 +882,7 @@ TINYTEST_ADD_TEST(LargeMatrixPerformance);
 TINYTEST_ADD_TEST(DropSmallEntriesTest);
 TINYTEST_ADD_TEST(CopyTest);
 TINYTEST_ADD_TEST(NormTest);
+TINYTEST_ADD_TEST(AppendTest);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();

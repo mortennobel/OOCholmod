@@ -113,6 +113,24 @@ namespace oocholmod {
         return DenseMatrix(dense);
     }
 
+    void SparseMatrix::append(const SparseMatrix& m) {
+#ifdef DEBUG
+        assert(sparse == nullptr);
+        assert(m.triplet);
+#endif
+        if (!triplet){
+            createTriplet();
+        }
+        size_t newSize = triplet->nnz + m.triplet->nnz;
+        while (triplet->nzmax <= newSize){
+            increaseTripletCapacity();
+        }
+        memcpy(values+triplet->nnz, m.values, sizeof(double)*m.triplet->nnz);
+        memcpy(jColumn+triplet->nnz, m.jColumn, sizeof(int)*m.triplet->nnz);
+        memcpy(iRow+triplet->nnz, m.iRow, sizeof(int)*m.triplet->nnz);
+        triplet->nnz += m.triplet->nnz;
+    }
+    
     bool SparseMatrix::hasElement(unsigned int row, unsigned int column) const {
 #ifdef DEBUG
         assert(sparse);
