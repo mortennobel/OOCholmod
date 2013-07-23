@@ -357,6 +357,41 @@ namespace oocholmod {
         return move(LHS) + RHS;
     }
     
+    SparseMatrix operator-(const SparseMatrix& LHS, const SparseMatrix& RHS)
+    {
+        assert(LHS.sparse && RHS.sparse);
+        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+        double alpha[2] = {1.,1.};
+        double beta[2] = {-1.,-1.};
+        cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, alpha, beta, true, true, ConfigSingleton::getCommonPtr());
+        return SparseMatrix(sparse);
+    }
+    
+    SparseMatrix&& operator-(SparseMatrix&& LHS, const SparseMatrix& RHS)
+    {
+        assert(LHS.sparse && RHS.sparse);
+        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+        double alpha[2] = {1.,1.};
+        double beta[2] = {-1.,-1.};
+        cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, alpha, beta, true, true, ConfigSingleton::getCommonPtr());
+        cholmod_free_sparse(&LHS.sparse, ConfigSingleton::getCommonPtr());
+        LHS.sparse = sparse;
+        LHS.values = ((double*)sparse->x);
+        LHS.iRow = ((int*)sparse->i);
+        LHS.jColumn = ((int*)sparse->p);
+        return move(LHS);
+    }
+    
+    SparseMatrix&& operator-(const SparseMatrix& LHS, SparseMatrix&& RHS)
+    {
+        return move(RHS) - LHS;
+    }
+    
+    SparseMatrix&& operator-(SparseMatrix&& LHS, SparseMatrix&& RHS)
+    {
+        return move(LHS) - RHS;
+    }
+    
     SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS)
     {
         assert(LHS.sparse && RHS.sparse);

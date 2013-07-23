@@ -235,6 +235,36 @@ int AddSparseSparseTestObj()
     return 1;
 }
 
+int SubtractSparseSparseTestObj()
+{
+    SparseMatrix A(3,3, true);
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 5;
+    A(2, 2) = -1;
+    A.build();
+    
+    SparseMatrix B(3,3, true);
+    B(0, 0) = 2;
+    B(0, 1) = -1;
+    B(0, 2) = 3;
+    B(1, 2) = -5;
+    B(2, 2) = -1;
+    B.build();
+    
+    SparseMatrix C = A - B;
+    
+    SparseMatrix D;
+    D = (A-B) - B;
+    
+    SparseMatrix E = move(A) - (B-A);
+    assert(E(2,2) == -1);
+    assert(E(0,2) == -1);
+    
+    return 1;
+}
+
 int AddDenseDenseTestObj()
 {
     DenseMatrix A(3, 3, 0.);
@@ -807,6 +837,7 @@ TINYTEST_ADD_TEST(SolveSparseDenseFactorTestObj);
 TINYTEST_ADD_TEST(AddSparseSparseTestObj);
 TINYTEST_ADD_TEST(AddDenseDenseTestObj);
 TINYTEST_ADD_TEST(AddEqualDenseDenseTestObj);
+TINYTEST_ADD_TEST(SubtractSparseSparseTestObj);
 TINYTEST_ADD_TEST(TransposeDenseTestObj);
 TINYTEST_ADD_TEST(MultiplySparseSparseTestObj);
 TINYTEST_ADD_TEST(MultiplyScalarSparseTestObj);
