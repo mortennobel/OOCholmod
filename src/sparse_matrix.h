@@ -80,6 +80,9 @@ namespace oocholmod {
         friend DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
         friend DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
  
+        // Print
+        friend std::ostream& operator<<(std::ostream& os, const SparseMatrix& A);
+        
         bool hasElement(unsigned int row, unsigned int column) const;
         
         
@@ -116,9 +119,6 @@ namespace oocholmod {
         int getRows() const { return nrow; }
         
         int getColumns() const { return ncol; }
-        
-        /// Print debugging information
-        void print(const char* name = "") const;
         
         void swap(SparseMatrix& other);
         
@@ -273,5 +273,8 @@ namespace oocholmod {
     // Solve
     DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
     SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b);
+    
+    // Print
+    std::ostream& operator<<(std::ostream& os, const SparseMatrix& A);
 }
 

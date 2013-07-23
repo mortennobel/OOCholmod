@@ -215,50 +215,6 @@ namespace oocholmod {
         memset(values, 0, sparse->nzmax * sizeof(double));
     }
     
-    void SparseMatrix::print(const char* name) const {
-        if (sparse){
-            cholmod_print_sparse(sparse, name, ConfigSingleton::getCommonPtr());
-            cholmod_dense *dense = cholmod_sparse_to_dense(sparse, ConfigSingleton::getCommonPtr());
-            int n_rows = (int)dense->nrow;
-            int n_cols = (int)dense->ncol;
-            for (int r = 0; r  < n_rows; r++)
-            {
-                for (int c = 0; c  < n_cols; c++)
-                {
-                    cout << ((double*)dense->x)[c*n_rows + r] << " ";
-                }
-                cout << endl;
-            }
-            cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
-            cout << endl;
-            cout << "Packed "<<sparse->packed<< endl;
-            cout << "p: ";
-            for (int i=0;i<=sparse->ncol;i++){
-                printf("%4i ", ((int*)sparse->p)[i]);
-            }
-            cout << endl;
-            cout << "i: ";
-            for (int i=0;i<sparse->nzmax;i++){
-                printf("%4i ", ((int*)sparse->i)[i]);
-            }
-            cout << endl;
-            cout << "x: ";
-            for (int i=0;i<sparse->nzmax;i++){
-                printf("%3.3f ", ((double*)sparse->x)[i]);
-            }
-            cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
-            cout << endl;
-        }
-        else if (triplet){
-            cholmod_print_triplet(triplet, name, ConfigSingleton::getCommonPtr());
-            for (int i=0;i<triplet->nnz;i++){
-                cout << ((int*)triplet->i)[i]<<" "<< ((int*)triplet->j)[i]<<" "<< ((double*)triplet->x)[i]<<" "<<endl;
-            }
-        } else {
-            cout << "[Empty sparse matrix]"<<endl;
-        }
-    }
-    
     void SparseMatrix::assertValidIndex(unsigned int row, unsigned int column) const
     {
 #ifdef DEBUG
@@ -532,5 +488,39 @@ namespace oocholmod {
         Factor F = A.analyze();
         F.factorize(A);
         return solve(F, b);
+    }
+    
+    ostream& operator<<(ostream& os, const SparseMatrix& A)
+    {
+        os << endl;
+        if (A.sparse){
+            cholmod_print_sparse(A.sparse, "", ConfigSingleton::getCommonPtr());
+            DenseMatrix Dense = A.toDense();
+            os << "[";
+            for (int r = 0; r < Dense.getRows(); r++)
+            {
+                for (int c = 0; c < Dense.getColumns(); c++)
+                {
+                    os << Dense(r,c);
+                    if(c < Dense.getColumns()-1) {
+                        os << ", ";
+                    }
+                }
+                if(r < Dense.getRows()-1)
+                {
+                    os << ";" << endl;
+                }
+            }
+            os << "];" << endl;
+        }
+        else if (A.triplet){
+            cholmod_print_triplet(A.triplet, "", ConfigSingleton::getCommonPtr());
+            for (int i = 0; i < A.triplet->nnz; i++){
+                os << "( " << ((int*)A.triplet->i)[i] << ", " << ((int*)A.triplet->j)[i]<<" ) =\t"<< ((double*)A.triplet->x)[i] << endl;
+            }
+        } else {
+            os << "[Empty sparse matrix]" << endl;
+        }
+        return os;
     }
 }
