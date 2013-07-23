@@ -253,14 +253,14 @@ int SubtractSparseSparseTestObj()
     B(2, 2) = -1;
     B.build();
     
-    SparseMatrix C = A - B;
+    SparseMatrix C = -A - B;
     
     SparseMatrix D;
     D = (A-B) - B;
     
-    SparseMatrix E = move(A) - (B-A);
-    assert(E(2,2) == -1);
-    assert(E(0,2) == -1);
+    SparseMatrix E = -A - (A - move(B));
+    assert(E(2,2) == 1);
+    assert(E(0,2) == 1);
     
     return 1;
 }

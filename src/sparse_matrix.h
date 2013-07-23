@@ -61,6 +61,9 @@ namespace oocholmod {
         friend SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
         
         // Subtraction
+        friend SparseMatrix operator-(const SparseMatrix& M);
+        friend SparseMatrix&& operator-(SparseMatrix&& M);
+        
         friend SparseMatrix operator-(const SparseMatrix& LHS, const SparseMatrix& RHS);
         friend SparseMatrix&& operator-(SparseMatrix&& LHS, const SparseMatrix& RHS);
         friend SparseMatrix&& operator-(const SparseMatrix& LHS, SparseMatrix&& RHS);
@@ -240,6 +243,9 @@ namespace oocholmod {
     SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
     
     // Subtraction
+    SparseMatrix operator-(const SparseMatrix& M);
+    SparseMatrix&& operator-(SparseMatrix&& M);
+    
     SparseMatrix operator-(const SparseMatrix& LHS, const SparseMatrix& RHS);
     SparseMatrix&& operator-(SparseMatrix&& LHS, const SparseMatrix& RHS);
     SparseMatrix&& operator-(const SparseMatrix& LHS, SparseMatrix&& RHS);

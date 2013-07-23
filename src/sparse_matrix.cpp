@@ -357,6 +357,16 @@ namespace oocholmod {
         return move(LHS) + RHS;
     }
     
+    SparseMatrix operator-(const SparseMatrix& M)
+    {
+        return -1.*M;
+    }
+    
+    SparseMatrix&& operator-(SparseMatrix&& M)
+    {
+        return -1.*move(M);
+    }
+    
     SparseMatrix operator-(const SparseMatrix& LHS, const SparseMatrix& RHS)
     {
         assert(LHS.sparse && RHS.sparse);
