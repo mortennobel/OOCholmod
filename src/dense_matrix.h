@@ -93,6 +93,9 @@ namespace oocholmod {
         friend DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
         friend DenseMatrix solve(const Factor& F, const DenseMatrix& b);
         
+        // Print
+        friend std::ostream& operator<<(std::ostream& os, const DenseMatrix& A);
+        
         inline double *getData(){ return (double *)(dense->x); };
         inline double *getData() const { return (double *)(dense->x); };
         
@@ -122,7 +125,6 @@ namespace oocholmod {
         void get(float *outData) const;
         
         void swap(DenseMatrix& other);
-        void print(const char* name = "") const;
     private:
         DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor
         DenseMatrix operator=(const DenseMatrix& other) = delete; // prevent copy assignment operator
@@ -157,6 +159,9 @@ namespace oocholmod {
     DenseMatrix solve(DenseMatrix&& A, const DenseMatrix& b);
     DenseMatrix&& solve(const DenseMatrix& A, DenseMatrix&& b);
     DenseMatrix&& solve(DenseMatrix&& A, DenseMatrix&& b);
+    
+    // Print
+    std::ostream& operator<<(std::ostream& os, const DenseMatrix& A);
 }
 
 

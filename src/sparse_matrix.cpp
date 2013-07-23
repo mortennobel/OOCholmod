@@ -508,7 +508,7 @@ namespace oocholmod {
                 }
                 if(r < Dense.getRows()-1)
                 {
-                    os << ";" << endl;
+                    os << ";" << endl << " ";
                 }
             }
             os << "];" << endl;

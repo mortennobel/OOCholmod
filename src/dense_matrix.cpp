@@ -178,21 +178,6 @@ namespace oocholmod {
         }
     }
     
-    void DenseMatrix::print(const char* name) const{
-        cholmod_print_dense(dense, name, ConfigSingleton::getCommonPtr());
-        int n_rows = (int)dense->nrow;
-        int n_cols = (int)dense->ncol;
-        for (int r = 0; r  < n_rows; r++)
-        {
-            for (int c = 0; c  < n_cols; c++)
-            {
-                std::cout << ((double*)dense->x)[c*n_rows + r] << " ";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << std::endl;
-    }
-    
     void DenseMatrix::swap(DenseMatrix& other){
         std::swap(dense, other.dense);
         std::swap(nrow, other.nrow);
@@ -423,4 +408,32 @@ namespace oocholmod {
         return move(b);
     }
     
+    ostream& operator<<(ostream& os, const DenseMatrix& A)
+    {
+        os << endl;
+        if (A.dense)
+        {
+            cholmod_print_dense(A.dense, "", ConfigSingleton::getCommonPtr());
+            os << "[";
+            for (int r = 0; r < A.getRows(); r++)
+            {
+                for (int c = 0; c < A.getColumns(); c++)
+                {
+                    os << A(r,c);
+                    if(c < A.getColumns()-1) {
+                        os << ", ";
+                    }
+                }
+                if(r < A.getRows()-1)
+                {
+                    os << ";" << endl << " ";
+                }
+            }
+            os << "];" << endl;
+        }
+        else {
+            os << "[Empty dense matrix]" << endl;
+        }
+        return os;
+    }
 }
