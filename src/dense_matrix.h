@@ -21,6 +21,8 @@ namespace oocholmod {
     
     class DenseMatrix {
     public:
+        // In debug the matrix will be initialized to NAN
+        // In release mode, NAN will leave the matrix uninitialized
         DenseMatrix(unsigned int rows = 0, unsigned int cols = 1, double value = NAN);
         
         DenseMatrix(cholmod_dense *x);

@@ -810,7 +810,7 @@ int NormTest(){
     TINYTEST_ASSERT(norm == 3);
 
 
-    DenseMatrix B{3,3};
+    DenseMatrix B{3,3,0};
     B(0, 0) = 1;
     B(2, 2) = 1;
     B(0, 1) = 1;
@@ -820,7 +820,6 @@ int NormTest(){
     B(1, 2) = 0.5;
     B(2, 1) = 0.5;
     B(2, 2) = -0.5;
-
     norm = B.norm(1);
     TINYTEST_ASSERT(norm == 3);
     return 1;

@@ -21,6 +21,10 @@ namespace oocholmod {
         dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
         if (!std::isnan(value)) {
             fill(value);
+        } else {
+#ifdef DEBUG
+            fill(NAN);
+#endif
         }
     }
     
