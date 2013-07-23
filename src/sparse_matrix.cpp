@@ -384,7 +384,17 @@ namespace oocholmod {
     
     SparseMatrix&& operator-(const SparseMatrix& LHS, SparseMatrix&& RHS)
     {
-        return move(RHS) - LHS;
+        assert(LHS.sparse && RHS.sparse);
+        assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
+        double alpha[2] = {1.,1.};
+        double beta[2] = {-1.,-1.};
+        cholmod_sparse *sparse = cholmod_add(LHS.sparse, RHS.sparse, alpha, beta, true, true, ConfigSingleton::getCommonPtr());
+        cholmod_free_sparse(&RHS.sparse, ConfigSingleton::getCommonPtr());
+        RHS.sparse = sparse;
+        RHS.values = ((double*)sparse->x);
+        RHS.iRow = ((int*)sparse->i);
+        RHS.jColumn = ((int*)sparse->p);
+        return move(RHS);
     }
     
     SparseMatrix&& operator-(SparseMatrix&& LHS, SparseMatrix&& RHS)
