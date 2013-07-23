@@ -104,7 +104,7 @@ namespace oocholmod {
         }
     }
     
-    DenseMatrix SparseMatrix::toDense()
+    DenseMatrix SparseMatrix::toDense() const
     {
 #ifdef DEBUG
         assert(sparse);

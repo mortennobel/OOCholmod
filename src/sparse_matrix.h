@@ -50,7 +50,7 @@ namespace oocholmod {
         
         ~SparseMatrix();
         
-        DenseMatrix toDense();
+        DenseMatrix toDense() const;
         
         MatrixState getMatrixState() const;
         
