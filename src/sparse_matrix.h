@@ -77,7 +77,7 @@ namespace oocholmod {
         ///
         /// Drop small entries from A, and entries in the ignored part of A if A is symmetric.
         /// keep entries with absolute values > tol
-        void dropSmallEntries(double tol);
+        void dropSmallEntries(double tol = 1e-7f);
         
         // Transpose
         void transpose();
