@@ -69,7 +69,7 @@ namespace oocholmod {
         friend DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
         friend DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
  
-        bool hasElement(unsigned int row, unsigned int column);
+        bool hasElement(unsigned int row, unsigned int column) const;
         
         ///
         /// Drop small entries from A, and entries in the ignored part of A if A is symmetric.

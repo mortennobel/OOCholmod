@@ -104,7 +104,7 @@ namespace oocholmod {
         }
     }
 
-    bool SparseMatrix::hasElement(unsigned int row, unsigned int column){
+    bool SparseMatrix::hasElement(unsigned int row, unsigned int column) const {
         return getIndex(row, column) != -1;
     }
     
