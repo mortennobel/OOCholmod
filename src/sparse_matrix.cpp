@@ -255,7 +255,7 @@ namespace oocholmod {
 #endif
     }
     
-    SparseMatrix&& SparseMatrix::copy() const{
+    SparseMatrix SparseMatrix::copy() const{
         SparseMatrix res;
         if (sparse){
             res.sparse = cholmod_copy_sparse(sparse, ConfigSingleton::getCommonPtr());

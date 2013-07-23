@@ -91,7 +91,7 @@ namespace oocholmod {
         
         void build();
         
-        SparseMatrix&& copy() const;
+        SparseMatrix copy() const;
         
         Factor analyze() const;
         
