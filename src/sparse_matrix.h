@@ -71,10 +71,13 @@ namespace oocholmod {
  
         bool hasElement(unsigned int row, unsigned int column) const;
         
+        
+        double norm(int norm) const;
+        
         ///
         /// Drop small entries from A, and entries in the ignored part of A if A is symmetric.
         /// keep entries with absolute values > tol
-        int dropSmallEntries(double tol);
+        void dropSmallEntries(double tol);
         
         // Transpose
         void transpose();

@@ -741,14 +741,14 @@ int DropSmallEntriesTest(){
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(0, 2) = 1;
-    A(1, 2) = 5;
+    A(1, 2) = 0.5;
     A(2, 2) = -0.5;
     A.build();
     A.dropSmallEntries(0.5);
     TINYTEST_ASSERT(A.hasElement(0,0));
     TINYTEST_ASSERT(A.hasElement(0,1));
     TINYTEST_ASSERT(A.hasElement(0,2));
-    TINYTEST_ASSERT(A.hasElement(1,2));
+    TINYTEST_ASSERT(!A.hasElement(1,2));
     TINYTEST_ASSERT(!A.hasElement(2,2));
     
     return 1;

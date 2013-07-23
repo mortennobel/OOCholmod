@@ -108,11 +108,11 @@ namespace oocholmod {
         return getIndex(row, column) != -1;
     }
     
-    int SparseMatrix::dropSmallEntries(double tol){
+    void SparseMatrix::dropSmallEntries(double tol){
 #ifdef DEBUG
         assert(getMatrixState() == BUILT);
 #endif
-        return cholmod_drop(tol, sparse, ConfigSingleton::getCommonPtr());
+        cholmod_drop(tol, sparse, ConfigSingleton::getCommonPtr());
     }
     
     MatrixState SparseMatrix::getMatrixState() const {
