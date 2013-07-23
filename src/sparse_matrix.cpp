@@ -255,6 +255,27 @@ namespace oocholmod {
 #endif
     }
     
+    SparseMatrix&& SparseMatrix::copy() const{
+        SparseMatrix res;
+        if (sparse){
+            res.sparse = cholmod_copy_sparse(sparse, ConfigSingleton::getCommonPtr());
+            res.values = ((double*)res.sparse->x);
+            res.iRow = ((int*)res.sparse->i);
+            res.jColumn = ((int*)res.sparse->p);
+        }
+        if (triplet){
+            res.triplet = cholmod_copy_triplet(triplet, ConfigSingleton::getCommonPtr());
+            res.values = (double *)res.triplet->x;
+            res.iRow = (int *)res.triplet->i;
+            res.jColumn = (int *)res.triplet->j;
+        }
+        res.nrow = nrow;
+        res.ncol = ncol;
+        res.symmetry = symmetry;
+        res.maxTripletElements = maxTripletElements;
+        return move(res);
+    }
+    
     void SparseMatrix::assertHasSparse() const
     {
 #ifdef DEBUG

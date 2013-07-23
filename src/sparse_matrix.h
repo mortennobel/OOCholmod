@@ -88,6 +88,8 @@ namespace oocholmod {
         
         void build();
         
+        SparseMatrix&& copy() const;
+        
         Factor analyze() const;
         
         void zero();

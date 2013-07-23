@@ -754,6 +754,20 @@ int DropSmallEntriesTest(){
     return 1;
 }
 
+int CopyTest(){
+    SparseMatrix A(3,3, true);
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 0.5;
+    A(2, 2) = -0.5;
+    A.build();
+    SparseMatrix B = A.copy();
+    
+    TINYTEST_ASSERT(A == B);
+    return 1;
+}
+
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(BuildSparseTestObj);
 TINYTEST_ADD_TEST(EqualSparseTestObj);
@@ -786,6 +800,7 @@ TINYTEST_ADD_TEST(IndexTest);
 TINYTEST_ADD_TEST(LargeSparseMatrix);
 TINYTEST_ADD_TEST(LargeMatrixPerformance);
 TINYTEST_ADD_TEST(DropSmallEntriesTest);
+TINYTEST_ADD_TEST(CopyTest);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();
