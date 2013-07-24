@@ -104,6 +104,17 @@ namespace oocholmod {
         }
     }
     
+    size_t SparseMatrix::getNumberOfElements(){
+        switch (getMatrixState()) {
+            case INIT:
+                return triplet->nnz;
+            case BUILT:
+                return jColumn[getColumns()];
+            default:
+                return 0;
+        }
+    }
+    
     DenseMatrix SparseMatrix::toDense() const
     {
 #ifdef DEBUG

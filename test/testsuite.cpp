@@ -845,6 +845,21 @@ int AppendTest(){
     TINYTEST_ASSERT(A.hasElement(1,2));
     TINYTEST_ASSERT(!A.hasElement(2,1));
     TINYTEST_ASSERT(A.hasElement(2,2));
+    return 1;
+}
+
+int NumberOfElementsTest(){
+    SparseMatrix A{3,3};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 0.5;
+    A(2, 2) = -0.5;
+    A(2, 2) = 0; // add extra element
+    TINYTEST_ASSERT(A.getNumberOfElements()==6);
+    A.build();
+    TINYTEST_ASSERT(A.getNumberOfElements()==5);
+    return 1;
 }
 
 TINYTEST_START_SUITE(ObjSuite);
@@ -883,6 +898,7 @@ TINYTEST_ADD_TEST(DropSmallEntriesTest);
 TINYTEST_ADD_TEST(CopyTest);
 TINYTEST_ADD_TEST(NormTest);
 TINYTEST_ADD_TEST(AppendTest);
+TINYTEST_ADD_TEST(NumberOfElementsTest);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();

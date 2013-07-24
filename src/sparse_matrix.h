@@ -99,6 +99,10 @@ namespace oocholmod {
         /// keep entries with absolute values > tol
         void dropSmallEntries(double tol = 1e-7f);
         
+        // in init state return the number of triplets
+        // in built state returns the number of elements
+        size_t getNumberOfElements();
+        
         // Transpose
         void transpose();
         friend SparseMatrix transposed(const SparseMatrix& M);
