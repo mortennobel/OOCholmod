@@ -122,7 +122,7 @@ namespace oocholmod {
             createTriplet();
         }
         size_t newSize = triplet->nnz + m.triplet->nnz;
-        while (triplet->nzmax <= newSize){
+        while (triplet->nzmax < newSize){
             increaseTripletCapacity();
         }
         memcpy(values+triplet->nnz, m.values, sizeof(double)*m.triplet->nnz);
