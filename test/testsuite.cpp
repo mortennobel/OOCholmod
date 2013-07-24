@@ -826,14 +826,17 @@ int NormTest(){
 }
 
 int AppendTest(){
-    SparseMatrix AS[5]= {{3,3},{3,3},{3,3},{3,3},{3,3}};
+    vector<SparseMatrix> AS;
+    for(int i=0;i<5;i++){
+        AS.push_back(SparseMatrix{3,3});
+    }
     AS[0](0, 0) = 1;
     AS[1](0, 1) = 1;
     AS[2](0, 2) = 1;
     AS[3](1, 2) = 0.5;
     AS[4](2, 2) = -0.5;
     SparseMatrix A{3,3};
-    for (auto &a : AS){
+    for (SparseMatrix &a : AS){
         A.append(a);
     }
     A.build();
