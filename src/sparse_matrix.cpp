@@ -182,6 +182,7 @@ namespace oocholmod {
     
     void SparseMatrix::build(){
 #ifdef DEBUG
+        assert(triplet != nullptr);
         assert(sparse == nullptr);
 #endif
         sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, ConfigSingleton::getCommonPtr());
