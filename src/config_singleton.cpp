@@ -8,6 +8,8 @@
 
 #include "config_singleton.h"
 
+#include <memory>
+
 namespace oocholmod {
     
     using namespace std;
