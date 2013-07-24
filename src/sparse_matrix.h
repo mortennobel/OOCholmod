@@ -177,10 +177,12 @@ namespace oocholmod {
         
         inline int getIndex(unsigned int row, unsigned int column) const
         {
+#if DEBUG
+            assertValidIndex(row, column);
+#endif
             if ((symmetry == SYMMETRIC_UPPER && row > column) || (symmetry == SYMMETRIC_LOWER && row < column)) {
                 std::swap(row, column);
             }
-            
             
             int iFrom = jColumn[column];
             int iTo = jColumn[column+1]-1;
