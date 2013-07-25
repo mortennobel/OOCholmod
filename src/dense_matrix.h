@@ -125,6 +125,9 @@ namespace oocholmod {
         void get(float *outData) const;
         
         void swap(DenseMatrix& other);
+        
+        bool operator==(const DenseMatrix& RHS) const;
+        bool operator!=(const DenseMatrix& RHS) const;
     private:
         DenseMatrix(const DenseMatrix& that) = delete; // prevent copy constructor
         DenseMatrix operator=(const DenseMatrix& other) = delete; // prevent copy assignment operator

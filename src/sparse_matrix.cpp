@@ -200,7 +200,7 @@ namespace oocholmod {
 #endif
     }
     
-    bool SparseMatrix::operator==(const SparseMatrix& RHS)
+    bool SparseMatrix::operator==(const SparseMatrix& RHS) const
     {
         for(int r = 0; r < nrow; r++)
         {
@@ -213,6 +213,10 @@ namespace oocholmod {
             }
         }
         return true;
+    }
+    
+    bool SparseMatrix::operator!=(const SparseMatrix& RHS) const {
+        return !(*this == RHS);
     }
     
     void SparseMatrix::swap(SparseMatrix& other){

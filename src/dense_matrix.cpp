@@ -308,6 +308,24 @@ namespace oocholmod {
         ncol = temp;
     }
     
+    bool DenseMatrix::operator==(const DenseMatrix& RHS) const {
+        if (nrow != RHS.nrow || ncol != RHS.ncol){
+            return false;
+        }
+        double *data = getData();
+        double *rhsData = RHS.getData();
+        for (int i=0;i<nrow*ncol;i++){
+            if (data[i] != rhsData[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    bool DenseMatrix::operator!=(const DenseMatrix& RHS) const{
+        return !(*this == RHS);
+    }
+    
     DenseMatrix transposed(const DenseMatrix& M)
     {
         DenseMatrix res(M.ncol, M.nrow);
@@ -415,7 +433,7 @@ namespace oocholmod {
 #endif
         return move(b);
     }
-    
+        
     ostream& operator<<(ostream& os, const DenseMatrix& A)
     {
         os << endl;

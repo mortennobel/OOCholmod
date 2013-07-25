@@ -915,6 +915,28 @@ int DenseSetGetTest(){
     return 1;
 }
 
+int SparseToDense(){
+    SparseMatrix A{3,3};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 0.5;
+    A(2, 2) = -0.5;
+    A.build();
+    
+    DenseMatrix B{3,3,0};
+    B(0, 0) = 1;
+    B(0, 1) = 1;
+    B(0, 2) = 1;
+    B(1, 2) = 0.5;
+    B(2, 2) = -0.5;
+    TINYTEST_ASSERT(A.toDense() == B);
+    
+    B(2, 2) = 999;
+    TINYTEST_ASSERT(A.toDense() != B);
+    return 1;
+}
+
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(BuildSparseTestObj);
 TINYTEST_ADD_TEST(EqualSparseTestObj);
@@ -954,6 +976,7 @@ TINYTEST_ADD_TEST(AppendTest);
 TINYTEST_ADD_TEST(NumberOfElementsTest);
 TINYTEST_ADD_TEST(ZeroTest);
 TINYTEST_ADD_TEST(DenseSetGetTest);
+TINYTEST_ADD_TEST(SparseToDense);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();

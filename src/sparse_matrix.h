@@ -144,8 +144,8 @@ namespace oocholmod {
             }
         }
         
-        bool operator==(const SparseMatrix& RHS);
-        
+        bool operator==(const SparseMatrix& RHS) const;
+        bool operator!=(const SparseMatrix& RHS) const;
     private:
         SparseMatrix(const SparseMatrix& that) = delete; // prevent copy constructor
         SparseMatrix operator=(const SparseMatrix& other) = delete; // prevent copy assignment operator
