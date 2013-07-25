@@ -32,6 +32,9 @@ using namespace oocholmod;
             str_ << expected_[i]; \
             TINYTEST_ASSERT_MSG(false, str_.str().c_str()); \
         } \
+        if (std::isnan(expected_[i]) ^ std::isnan(actual_[i])){ \
+            TINYTEST_ASSERT_MSG(false, "NaN"); \
+        } \
     } \
 }
 
@@ -494,7 +497,7 @@ int MultiplyDenseDenseTestObj(){
     y(0,0) = -3;
     y(0,1) = 7;
     y(1,1) = 2;
-    
+
     DenseMatrix res = y*x;
     double expected[4] = {13, 12, 41, 18};
     assertEqual(expected, res.getData(), 3);
@@ -510,6 +513,7 @@ int MultiplyDenseDenseTestObj(){
     w(0,2) = 2;
     
     DenseMatrix res2 = w*v;
+
     TINYTEST_ASSERT(58 == res2(0,0));
     
     DenseMatrix res3 = v*w;
