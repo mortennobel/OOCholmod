@@ -510,10 +510,10 @@ int MultiplyDenseDenseTestObj(){
     w(0,2) = 2;
     
     DenseMatrix res2 = w*v;
-    assert(58 == res2(0,0));
+    TINYTEST_ASSERT(58 == res2(0,0));
     
     DenseMatrix res3 = v*w;
-    assert(-9 == res3(0,0));
+    TINYTEST_ASSERT(-9 == res3(0,0));
     
     DenseMatrix res4 = w*x;
     double expected2[2] = {22, 42};
@@ -865,6 +865,56 @@ int NumberOfElementsTest(){
     return 1;
 }
 
+int ZeroTest(){
+    SparseMatrix A{3,3};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(0, 2) = 1;
+    A(1, 2) = 0.5;
+    A(2, 2) = -0.5;
+    A.build();
+    A.zero();
+    TINYTEST_ASSERT(A(0, 0) == 0);
+    TINYTEST_ASSERT(A(0, 1) == 0);
+    TINYTEST_ASSERT(A(0, 2) == 0);
+    TINYTEST_ASSERT(A(1, 2) == 0);
+    TINYTEST_ASSERT(A(2, 2) == 0);
+    TINYTEST_ASSERT(A(2, 2) == 0);
+
+    DenseMatrix B{3,3};
+    B(0, 0) = 1;
+    B(0, 1) = 1;
+    B(0, 2) = 1;
+    B(1, 2) = 0.5;
+    B(2, 2) = -0.5;
+    B.zero();
+    TINYTEST_ASSERT(B(0, 0) == 0);
+    TINYTEST_ASSERT(B(0, 1) == 0);
+    TINYTEST_ASSERT(B(0, 2) == 0);
+    TINYTEST_ASSERT(B(1, 2) == 0);
+    TINYTEST_ASSERT(B(2, 2) == 0);
+    TINYTEST_ASSERT(B(2, 2) == 0);
+
+    return 1;
+}
+
+int DenseSetGetTest(){
+    DenseMatrix A{3,3};
+    float floats[9] = {1,2,3,4,5,6,7,8,9};
+    double doubles[9] = {2,3,4,5,6,7,8,9,1};
+    float floatRes[9];
+    double doubleRes[9];
+    A.set(floats);
+    A.get(floatRes);
+    A.set(doubles);
+    A.get(doubleRes);
+    for (int i=0;i<9;i++){
+        TINYTEST_ASSERT(floats[i] == floatRes[i]);
+        TINYTEST_ASSERT(doubles[i] == doubleRes[i]);
+    }
+    return 1;
+}
+
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(BuildSparseTestObj);
 TINYTEST_ADD_TEST(EqualSparseTestObj);
@@ -902,6 +952,8 @@ TINYTEST_ADD_TEST(CopyTest);
 TINYTEST_ADD_TEST(NormTest);
 TINYTEST_ADD_TEST(AppendTest);
 TINYTEST_ADD_TEST(NumberOfElementsTest);
+TINYTEST_ADD_TEST(ZeroTest);
+TINYTEST_ADD_TEST(DenseSetGetTest);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();
