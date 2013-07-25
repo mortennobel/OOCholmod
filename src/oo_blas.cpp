@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
 //
 
-#include "blas.h"
+#include "oo_blas.h"
 
 #include <cassert>
 

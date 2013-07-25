@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Morten Nobel-Joergensen. All rights reserved.
 //
 
-#include "lapack.h"
+#include "oo_lapack.h"
 #include <cassert>
 
 #ifdef NO_LAPACK

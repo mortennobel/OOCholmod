@@ -6,12 +6,12 @@
 //  License: LGPL 3.0
 
 #ifdef NO_BLAS
-#include "blas.h"
+#include "oo_blas.h"
 #else
 #include <vecLib/cblas.h>
 #endif
 #ifdef NO_LAPACK
-#include "lapack.h"
+#include "oo_lapack.h"
 #else
 #include <vecLib/clapack.h>
 #endif
