@@ -5,8 +5,16 @@
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0
 
+#ifdef NO_BLAS
+#include "blas.h"
+#else
 #include <vecLib/cblas.h>
+#endif
+#ifdef NO_LAPACK
+#include "lapack.h"
+#else
 #include <vecLib/clapack.h>
+#endif
 
 #include "dense_matrix.h"
 #include "config_singleton.h"

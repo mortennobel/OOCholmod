@@ -7,7 +7,7 @@
 //  License: LGPL 3.0
 
 #include <cassert>
-
+#include <algorithm>
 #include "sparse_matrix.h"
 #include "dense_matrix.h"
 #include "factor.h"
@@ -27,10 +27,10 @@ namespace oocholmod {
         }
         
         if (maxSize == 0 && symmetric) {
-            maxTripletElements = (nrow*(ncol+1))/2; // triangular number
+            maxTripletElements = min<int>(100000,(nrow*(ncol+1))/2); // triangular number
         }
         else if (maxSize == 0 && !symmetric) {
-            maxTripletElements = nrow*ncol; // triangular number
+            maxTripletElements = min<int>(100000,nrow*ncol); // triangular number
         }
         else {
             maxTripletElements = maxSize;
