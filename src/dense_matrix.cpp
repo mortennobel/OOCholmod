@@ -8,12 +8,12 @@
 #ifdef NO_BLAS
 #include "oo_blas.h"
 #else
-#include <vecLib/cblas.h>
+#include <cblas.h>
 #endif
 #ifdef NO_LAPACK
 #include "oo_lapack.h"
 #else
-#include <vecLib/clapack.h>
+#include <clapack.h>
 #endif
 
 #include "dense_matrix.h"
