@@ -145,36 +145,6 @@ namespace oocholmod {
         unsigned int nrow;
         unsigned int ncol;
     };
-    
-    // Addition
-    DenseMatrix operator+(const DenseMatrix& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator+(DenseMatrix&& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator+(const DenseMatrix& LHS, DenseMatrix&& RHS);
-    DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS);
-    
-    // Multiplication
-    DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS);
-    DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS);
-    DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS);
-    DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS);
-    
-    DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS);
-    
-    // Transpose
-    DenseMatrix transposed(const DenseMatrix& M);
-    DenseMatrix&& transposed(DenseMatrix&& M);
-    
-    // Swap
-    void swap(DenseMatrix& v1, DenseMatrix& v2);
-    
-    // Solve
-    DenseMatrix solve(const DenseMatrix& A, const DenseMatrix& b);
-    DenseMatrix solve(DenseMatrix&& A, const DenseMatrix& b);
-    DenseMatrix&& solve(const DenseMatrix& A, DenseMatrix&& b);
-    DenseMatrix&& solve(DenseMatrix&& A, DenseMatrix&& b);
-    
-    // Print
-    std::ostream& operator<<(std::ostream& os, const DenseMatrix& A);
 }
 
 

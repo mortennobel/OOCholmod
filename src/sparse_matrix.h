@@ -256,46 +256,5 @@ namespace oocholmod {
         Symmetry symmetry;
         int maxTripletElements;
     };
-    
-    // Addition
-    SparseMatrix operator+(const SparseMatrix& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator+(SparseMatrix&& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator+(const SparseMatrix& LHS, SparseMatrix&& RHS);
-    SparseMatrix&& operator+(SparseMatrix&& LHS, SparseMatrix&& RHS);
-    
-    // Subtraction
-    SparseMatrix operator-(const SparseMatrix& M);
-    SparseMatrix&& operator-(SparseMatrix&& M);
-    
-    SparseMatrix operator-(const SparseMatrix& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator-(SparseMatrix&& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator-(const SparseMatrix& LHS, SparseMatrix&& RHS);
-    SparseMatrix&& operator-(SparseMatrix&& LHS, SparseMatrix&& RHS);
-    
-    // Multiplication
-    SparseMatrix operator*(const SparseMatrix& LHS, const double& RHS);
-    SparseMatrix&& operator*(SparseMatrix&& LHS, const double& RHS);
-    SparseMatrix operator*(const double& LHS, const SparseMatrix& RHS);
-    SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS);
-    
-    SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS);
-    
-    // DenseMatrix times SparseMatrix (Note that SparseMatrix times DenseMatrix may be faster).
-    DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS);
-    DenseMatrix operator*(const SparseMatrix& LHS, const DenseMatrix& RHS);
-    
-    // Transpose
-    SparseMatrix transposed(const SparseMatrix& M);
-    SparseMatrix&& transposed(SparseMatrix&& M);
-    
-    // Swap
-    void swap(SparseMatrix& v1, SparseMatrix& v2);
-    
-    // Solve
-    DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
-    SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b);
-    
-    // Print
-    std::ostream& operator<<(std::ostream& os, const SparseMatrix& A);
 }
 
