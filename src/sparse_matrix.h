@@ -113,7 +113,13 @@ namespace oocholmod {
         friend DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
         friend SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b);
         friend SparseMatrix solve(const Factor& F, const SparseMatrix& b);
-        
+
+	// Sum the rows and return a vector
+        void sumRows(DenseMatrix& b);
+
+	// Hard coded method to perform: sparse = spdiags(N)^T * sparse * spdiags(N) - (spdiags(N) - speye())
+	void setNullSpace( DenseMatrix& N);       
+ 
         void build();
         
         SparseMatrix copy() const;
