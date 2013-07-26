@@ -116,6 +116,7 @@ namespace oocholmod {
         void elemMultiply(const DenseMatrix& b);
         void elemMultiply(const DenseMatrix& b , DenseMatrix& dest) const;
         
+        SparseMatrix toSparse() const;
         
         double dot(const DenseMatrix& b) const;
         void fill(double value);

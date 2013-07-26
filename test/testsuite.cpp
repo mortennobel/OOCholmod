@@ -935,6 +935,8 @@ int SparseToDense(){
     B(1, 2) = 0.5;
     B(2, 2) = -0.5;
     TINYTEST_ASSERT(A.toDense() == B);
+
+    TINYTEST_ASSERT(A.toDense().toSparse() == A);
     
     B(2, 2) = 999;
     TINYTEST_ASSERT(A.toDense() != B);

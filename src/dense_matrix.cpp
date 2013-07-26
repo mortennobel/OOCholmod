@@ -18,6 +18,7 @@
 
 #include "dense_matrix.h"
 #include "config_singleton.h"
+#include "sparse_matrix.h"
 
 using namespace std;
 
@@ -79,6 +80,9 @@ namespace oocholmod {
         memset(dense->x, 0, nrow * ncol * sizeof(double));
     }
     
+    SparseMatrix DenseMatrix::toSparse() const {
+        return SparseMatrix(cholmod_dense_to_sparse(dense, true, ConfigSingleton::getCommonPtr()));
+    }
     void DenseMatrix::fill(double value)
     {
         double *data = getData();
