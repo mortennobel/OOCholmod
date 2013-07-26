@@ -951,10 +951,55 @@ int DenseSubstractionTest(){
     B(1, 1) = 4;
     
     DenseMatrix B2{2,2,0};
-    B2(0, 0) = 1;
-    B2(1, 0) = 2;
-    B2(0, 1) = 3;
-    B2(1, 1) = 4;
+    B2(0, 0) = 5;
+    B2(1, 0) = 6;
+    B2(0, 1) = 7;
+    B2(1, 1) = 8;
+
+    DenseMatrix R = B2-B;
+    for (int i=0;i<4;i++){        
+        TINYTEST_ASSERT(R.getData()[i] == 4);
+    }
+    
+    R = B2.copy();
+    
+    R-=B;
+    for (int i=0;i<4;i++){
+        TINYTEST_ASSERT(R.getData()[i] == 4);
+    }
+    
+    R = move(B2)-B;
+    for (int i=0;i<4;i++){
+        TINYTEST_ASSERT(R.getData()[i] == 4);
+    }
+    
+    DenseMatrix B3{2,2,0};
+    B3(0, 0) = 5;
+    B3(1, 0) = 6;
+    B3(0, 1) = 7;
+    B3(1, 1) = 8;
+    
+    R = B3-move(B);
+    for (int i=0;i<4;i++){
+        TINYTEST_ASSERT(R.getData()[i] == 4);
+    }
+    
+    DenseMatrix B4{2,2,0};
+    B4(0, 0) = 1;
+    B4(1, 0) = 2;
+    B4(0, 1) = 3;
+    B4(1, 1) = 4;
+    
+    DenseMatrix B5{2,2,0};
+    B5(0, 0) = 5;
+    B5(1, 0) = 6;
+    B5(0, 1) = 7;
+    B5(1, 1) = 8;
+    
+    R = move(B5)-move(B4);
+    for (int i=0;i<4;i++){
+        TINYTEST_ASSERT(R.getData()[i] == 4);
+    }
 
     return 1;
 }

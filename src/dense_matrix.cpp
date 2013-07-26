@@ -245,8 +245,8 @@ namespace oocholmod {
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
-        DenseMatrix res = RHS.copy();
-        cblas_daxpy(LHS.nrow*LHS.ncol, -1., LHS.getData(), 1, res.getData(), 1);
+        DenseMatrix res = RHS.copy()*-1;
+        cblas_daxpy(LHS.nrow*LHS.ncol, 1.,LHS.getData(), 1,  res.getData(), 1);
         return res;
     }
 
@@ -280,7 +280,7 @@ namespace oocholmod {
 
     DenseMatrix& DenseMatrix::operator-=(const DenseMatrix& RHS)
     {
-        RHS - std::move(*this);
+        std::move(*this) - RHS;
         return *this;
     }
 
