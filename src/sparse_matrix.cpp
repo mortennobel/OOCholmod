@@ -199,7 +199,48 @@ namespace oocholmod {
         assert(sparse->packed);
 #endif
     }
-    
+   
+    void SparseMatrix::sumRows(DenseMatrix& x){
+        int idx = 0;
+        for (int j=0;j<ncol;j++){
+                int iFrom = ((int*)sparse->p)[j];
+                int iTo = ((int*)sparse->p)[j+1]-1;
+                for (int i=iFrom;i<=iTo;i++){
+                        int row = ((int*)sparse->i)[i];
+                        x(row)+=((double*)sparse->x)[idx];
+                        if (symmetry == SYMMETRIC_UPPER){
+                                if (row!=j){
+                                        x(j)+=((double*)sparse->x)[idx];
+                                }
+                        }
+#ifdef DEBUG
+                        printf("A[%d,%d]=%f \n",row,j,((double*)sparse->x)[idx]);
+#endif
+                        idx++;
+                }
+        }
+
+    }
+
+
+    void SparseMatrix::setNullSpace(DenseMatrix& v){
+        int idx = 0;
+        for (int j=0;j<ncol;j++){
+                int iFrom = ((int*)sparse->p)[j];
+                int iTo = ((int*)sparse->p)[j+1]-1;
+                for (int i=iFrom;i<=iTo;i++){
+                        int row = ((int*)sparse->i)[i];
+                        ((double*)sparse->x)[idx] *= v(row)*v(j);
+                        idx++;
+                }
+        }
+        for (int i=0;i<ncol;i++){
+                if (v(i) == 0){
+                        (*this)(i,i)=1.0;
+                }
+    }
+    }
+ 
     bool SparseMatrix::operator==(const SparseMatrix& RHS) const
     {
         for(int r = 0; r < nrow; r++)
