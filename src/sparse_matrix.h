@@ -9,7 +9,7 @@
 #pragma once
 
 #include <map>
-#include <string.h>
+#include <string> 
 #include <cholmod.h>
 
 #include "config_singleton.h"
