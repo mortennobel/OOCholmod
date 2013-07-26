@@ -108,19 +108,33 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2844fc5401b27ed53f12a03ece076ae5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2844fc5401b27ed53f12a03ece076ae5"></a>
 <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;other)</td></tr>
 <tr class="separator:a2844fc5401b27ed53f12a03ece076ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6631a9de6909b3221ca59bd08ed3ca56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6631a9de6909b3221ca59bd08ed3ca56"></a>
+<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>toDense</b> () const </td></tr>
+<tr class="separator:a6631a9de6909b3221ca59bd08ed3ca56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09fcf539ee76dd4619515e422612c3bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a09fcf539ee76dd4619515e422612c3bd"></a>
 MatrixState&#160;</td><td class="memItemRight" valign="bottom"><b>getMatrixState</b> () const </td></tr>
 <tr class="separator:a09fcf539ee76dd4619515e422612c3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f5514d580f288e6c4b4e138595c88c8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f5514d580f288e6c4b4e138595c88c8"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasElement</b> (unsigned int row, unsigned int column) const </td></tr>
 <tr class="separator:a7f5514d580f288e6c4b4e138595c88c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5761360586d8e4c971cac6145314e70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#af5761360586d8e4c971cac6145314e70">append</a> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;m)</td></tr>
+<tr class="separator:af5761360586d8e4c971cac6145314e70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa281049cb8b723fcfb49de5bce0d9807"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#aa281049cb8b723fcfb49de5bce0d9807">norm</a> (int norm) const </td></tr>
 <tr class="separator:aa281049cb8b723fcfb49de5bce0d9807"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37193ab45b4d0860eff9a30f4e6c8cf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#a37193ab45b4d0860eff9a30f4e6c8cf5">dropSmallEntries</a> (double tol=1e-7f)</td></tr>
 <tr class="separator:a37193ab45b4d0860eff9a30f4e6c8cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15e3023b104e3fe8074effb8d294515a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15e3023b104e3fe8074effb8d294515a"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getNumberOfElements</b> ()</td></tr>
+<tr class="separator:a15e3023b104e3fe8074effb8d294515a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6009ddf0f2c71fe8419eb23a2236633f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6009ddf0f2c71fe8419eb23a2236633f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>transpose</b> ()</td></tr>
 <tr class="separator:a6009ddf0f2c71fe8419eb23a2236633f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a461ab4173593ebc76812e45257e90a7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a461ab4173593ebc76812e45257e90a7f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>sumRows</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;b)</td></tr>
+<tr class="separator:a461ab4173593ebc76812e45257e90a7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6f230754a23af85ccaad83379341ddc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab6f230754a23af85ccaad83379341ddc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNullSpace</b> (<a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;N)</td></tr>
+<tr class="separator:ab6f230754a23af85ccaad83379341ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f38b01008f5dccf99b2f43943e23561"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f38b01008f5dccf99b2f43943e23561"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>build</b> ()</td></tr>
 <tr class="separator:a3f38b01008f5dccf99b2f43943e23561"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,10 +159,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getRows</b> () const <
 <tr class="memitem:afbf6f81812792fd83fc44196714e8ee4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afbf6f81812792fd83fc44196714e8ee4"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getColumns</b> () const </td></tr>
 <tr class="separator:afbf6f81812792fd83fc44196714e8ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae2290a7064f64d624979af8f080b97d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aae2290a7064f64d624979af8f080b97d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classoocholmod_1_1_sparse_matrix.html#aae2290a7064f64d624979af8f080b97d">print</a> (const char *name=&quot;&quot;) const </td></tr>
-<tr class="memdesc:aae2290a7064f64d624979af8f080b97d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print debugging information. <br/></td></tr>
-<tr class="separator:aae2290a7064f64d624979af8f080b97d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa8be6a77d9b44e074e63cfaa0d55c8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa8be6a77d9b44e074e63cfaa0d55c8e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;other)</td></tr>
 <tr class="separator:aaa8be6a77d9b44e074e63cfaa0d55c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,9 +168,12 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (uns
 <tr class="memitem:a7f6cccae668f175d9e97e811370fdf73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f6cccae668f175d9e97e811370fdf73"></a>
 double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (unsigned int row, unsigned int column=0)</td></tr>
 <tr class="separator:a7f6cccae668f175d9e97e811370fdf73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49f2412b7a3ff7582a8418aa47dc4368"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49f2412b7a3ff7582a8418aa47dc4368"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS)</td></tr>
-<tr class="separator:a49f2412b7a3ff7582a8418aa47dc4368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e6164bed8b0664967943c35e0e04b56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e6164bed8b0664967943c35e0e04b56"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS) const </td></tr>
+<tr class="separator:a3e6164bed8b0664967943c35e0e04b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a467ba9f2c1298b0d2f86dcfa834dc8af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a467ba9f2c1298b0d2f86dcfa834dc8af"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS) const </td></tr>
+<tr class="separator:a467ba9f2c1298b0d2f86dcfa834dc8af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -179,6 +192,24 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
 <tr class="memitem:ae01e63d886b5efc0631121eb020eeaba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae01e63d886b5efc0631121eb020eeaba"></a>
 <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;LHS, <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;RHS)</td></tr>
 <tr class="separator:ae01e63d886b5efc0631121eb020eeaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9977047259581b3ea58a28e3a367c980"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9977047259581b3ea58a28e3a367c980"></a>
+<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;M)</td></tr>
+<tr class="separator:a9977047259581b3ea58a28e3a367c980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02c5ded7b4a3c5a42cf26712b6016275"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a02c5ded7b4a3c5a42cf26712b6016275"></a>
+<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;M)</td></tr>
+<tr class="separator:a02c5ded7b4a3c5a42cf26712b6016275"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad962e8c04236c9ce8c46e33d3496a8dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad962e8c04236c9ce8c46e33d3496a8dd"></a>
+<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;LHS, const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:ad962e8c04236c9ce8c46e33d3496a8dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae13d5ad59e5090e5f5b83ad980ce2f21"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae13d5ad59e5090e5f5b83ad980ce2f21"></a>
+<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;LHS, const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;RHS)</td></tr>
+<tr class="separator:ae13d5ad59e5090e5f5b83ad980ce2f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a514200405e82e7b2c3f9a1a6fecd8efb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a514200405e82e7b2c3f9a1a6fecd8efb"></a>
+<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;LHS, <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:a514200405e82e7b2c3f9a1a6fecd8efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a619029ca5509f726f9b64395aacfeaff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a619029ca5509f726f9b64395aacfeaff"></a>
+<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (<a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;LHS, <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&amp;RHS)</td></tr>
+<tr class="separator:a619029ca5509f726f9b64395aacfeaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a750025176b8f98c2bc373f888e18c8ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a750025176b8f98c2bc373f888e18c8ed"></a>
 <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;LHS, const double &amp;RHS)</td></tr>
 <tr class="separator:a750025176b8f98c2bc373f888e18c8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,6 +231,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
 <tr class="memitem:ad633e114f39ed728a39f58924b666895"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad633e114f39ed728a39f58924b666895"></a>
 <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;LHS, const <a class="el" href="classoocholmod_1_1_dense_matrix.html">DenseMatrix</a> &amp;RHS)</td></tr>
 <tr class="separator:ad633e114f39ed728a39f58924b666895"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d521825f7dda55be17e482493b2a4f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d521825f7dda55be17e482493b2a4f1"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;os, const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;A)</td></tr>
+<tr class="separator:a1d521825f7dda55be17e482493b2a4f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1248906760a39a6a0c67dad70f9c90e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af1248906760a39a6a0c67dad70f9c90e"></a>
 <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><b>transposed</b> (const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;M)</td></tr>
 <tr class="separator:af1248906760a39a6a0c67dad70f9c90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,6 +298,23 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af5761360586d8e4c971cac6145314e70"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void oocholmod::SparseMatrix::append </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classoocholmod_1_1_sparse_matrix.html">SparseMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em>)</td><td></td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>append an another matrix in the init state useful for parallel matrix assembly </p>
+
+</div>
+</div>
 <a class="anchor" id="a37193ab45b4d0860eff9a30f4e6c8cf5"></a>
 <div class="memitem">
 <div class="memproto">
@@ -305,7 +356,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Factor</b></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 23 2013 13:20:41 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jul 26 2013 13:58:17 for OOCholmod by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
