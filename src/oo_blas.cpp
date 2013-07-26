@@ -65,10 +65,8 @@ void cblas_dgemv(const enum CBLAS_ORDER Order,
     for (int row=0;row<M;row++){
         double sum = 0;
         for (int column=0;column<N;column++){
-            cout << A[row*M + column]<<" x "<<X[column]<<endl;
             sum += A[row*M + column] * X[column];
         }
-        cout << " set row " << row << " to " << sum << endl;
         Y[row] = sum;
     }
 }

@@ -943,6 +943,22 @@ int SparseToDense(){
     return 1;
 }
 
+int DenseSubstractionTest(){
+    DenseMatrix B{2,2,0};
+    B(0, 0) = 1;
+    B(1, 0) = 2;
+    B(0, 1) = 3;
+    B(1, 1) = 4;
+    
+    DenseMatrix B2{2,2,0};
+    B2(0, 0) = 1;
+    B2(1, 0) = 2;
+    B2(0, 1) = 3;
+    B2(1, 1) = 4;
+
+    return 1;
+}
+
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(BuildSparseTestObj);
 TINYTEST_ADD_TEST(EqualSparseTestObj);
@@ -983,6 +999,7 @@ TINYTEST_ADD_TEST(NumberOfElementsTest);
 TINYTEST_ADD_TEST(ZeroTest);
 TINYTEST_ADD_TEST(DenseSetGetTest);
 TINYTEST_ADD_TEST(SparseToDense);
+TINYTEST_ADD_TEST(DenseSubstractionTest);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();
