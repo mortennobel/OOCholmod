@@ -5,7 +5,11 @@
 //  Copyright (c) 2013 DTU Compute. All rights reserved.
 //  License: LGPL 3.0
 
-#include <cmath>
+#include <float.h>
+#ifdef WIN32
+#define isnan _isnan
+#endif
+
 #ifdef NO_BLAS
 #include "oo_blas.h"
 #else
@@ -29,7 +33,7 @@ namespace oocholmod {
     :nrow(rows), ncol(cols)
     {
         dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
-        if (!_isnan(value)) {
+        if (!isnan(value)) {
             fill(value);
         } else {
 #ifdef DEBUG
