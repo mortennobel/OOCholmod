@@ -19,6 +19,7 @@ namespace oocholmod {
         static cholmod_common *getCommonPtr();
         static void destroy();
     private:
+        ConfigSingleton(){};
     };
     
 }

@@ -36,7 +36,7 @@ namespace oocholmod {
         
         bool isInitialized();
     private:
-        Factor(const Factor& that) = delete; // prevent copy constructor
+        Factor(const Factor& that) {} // prevent copy constructor
         cholmod_factor *factor;
     };
     
