@@ -29,7 +29,7 @@ namespace oocholmod {
     :nrow(rows), ncol(cols)
     {
         dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
-        if (!isnan(value)) {
+        if (!_isnan(value)) {
             fill(value);
         } else {
 #ifdef DEBUG
@@ -408,13 +408,14 @@ namespace oocholmod {
         __CLPK_integer nrhs = b.ncol;
         __CLPK_integer lda = A.nrow;
         __CLPK_integer ldb = b.nrow;
-        __CLPK_integer ipiv[N];
+        __CLPK_integer* ipiv = new __CLPK_integer[N];
         __CLPK_integer info;
         
         cholmod_dense *a = cholmod_copy_dense(A.dense, ConfigSingleton::getCommonPtr());
         cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
         
         dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, (double*)res->x, &ldb, &info);
+		delete [] ipiv;
 #ifdef DEBUG
         assert(info == 0);
 #endif
@@ -432,11 +433,12 @@ namespace oocholmod {
         __CLPK_integer nrhs = b.ncol;
         __CLPK_integer lda = A.nrow;
         __CLPK_integer ldb = b.nrow;
-        __CLPK_integer ipiv[N];
+        __CLPK_integer* ipiv = new __CLPK_integer[N];
         __CLPK_integer info;
         
         cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
         dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, (double*)res->x, &ldb, &info);
+		delete [] ipiv;
 #ifdef DEBUG
         assert(info == 0);
 #endif
@@ -454,11 +456,12 @@ namespace oocholmod {
         __CLPK_integer nrhs = b.ncol;
         __CLPK_integer lda = A.nrow;
         __CLPK_integer ldb = b.nrow;
-        __CLPK_integer ipiv[N];
+        __CLPK_integer* ipiv = new __CLPK_integer[N];
         __CLPK_integer info;
         
         cholmod_dense *a = cholmod_copy_dense(A.dense, ConfigSingleton::getCommonPtr());
         dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, b.getData(), &ldb, &info);
+		delete [] ipiv;
 #ifdef DEBUG
         assert(info == 0);
 #endif
@@ -476,10 +479,11 @@ namespace oocholmod {
         __CLPK_integer nrhs = b.ncol;
         __CLPK_integer lda = A.nrow;
         __CLPK_integer ldb = b.nrow;
-        __CLPK_integer ipiv[N];
+        __CLPK_integer* ipiv = new __CLPK_integer[N];
         __CLPK_integer info;
         
         dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, b.getData(), &ldb, &info);
+		delete [] ipiv;
 #ifdef DEBUG
         assert(info == 0);
 #endif

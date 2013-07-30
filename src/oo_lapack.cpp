@@ -14,6 +14,7 @@
 int dgesv_(__CLPK_integer *n, __CLPK_integer *nrhs, __CLPK_doublereal *a, __CLPK_integer
            *lda, __CLPK_integer *ipiv, __CLPK_doublereal *b, __CLPK_integer *ldb, __CLPK_integer *info){
     assert(false); // not implemented
+	return 1;
 }
 
 #endif
