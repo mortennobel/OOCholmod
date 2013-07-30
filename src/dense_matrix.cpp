@@ -26,7 +26,7 @@ using namespace std;
 namespace oocholmod {
    
     DenseMatrix::DenseMatrix(unsigned int rows, unsigned int cols, double value)
-    :nrow{rows}, ncol{cols}
+    :nrow(rows), ncol(cols)
     {
         dense = cholmod_allocate_dense(rows, cols, rows /* leading dimension (equal rows) */ , CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
         if (!isnan(value)) {
@@ -39,12 +39,12 @@ namespace oocholmod {
     }
     
     DenseMatrix::DenseMatrix(cholmod_dense *dense_)
-    :dense{dense_}, nrow{static_cast<unsigned int>(dense_->nrow)}, ncol{static_cast<unsigned int>(dense_->ncol)}
+    :dense(dense_), nrow(static_cast<unsigned int>(dense_->nrow)), ncol(static_cast<unsigned int>(dense_->ncol))
     {
     }
     
     DenseMatrix::DenseMatrix(DenseMatrix&& move)
-    :dense{move.dense}, nrow{move.nrow}, ncol{move.ncol}
+    :dense(move.dense), nrow(move.nrow), ncol(move.ncol)
     {
         move.dense = nullptr;
         move.nrow = 0;
@@ -246,7 +246,7 @@ namespace oocholmod {
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
-        DenseMatrix res = RHS.copy()*-1;
+        DenseMatrix res = RHS.copy() * -1;
         cblas_daxpy(LHS.nrow*LHS.ncol, 1.,LHS.getData(), 1,  res.getData(), 1);
         return res;
     }

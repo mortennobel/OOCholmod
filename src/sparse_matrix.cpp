@@ -17,7 +17,7 @@ using namespace std;
 namespace oocholmod {
     
     SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, bool symmetric, int maxSize)
-    :sparse{nullptr}, triplet{nullptr}, nrow{nrow}, ncol{ncol}
+    :sparse(nullptr), triplet(nullptr), nrow(nrow), ncol(ncol)
     {
         if (symmetric && nrow == ncol) {
             symmetry = SYMMETRIC_UPPER;
@@ -38,9 +38,9 @@ namespace oocholmod {
     }
     
     SparseMatrix::SparseMatrix(cholmod_sparse *sparse)
-    :sparse{sparse}, triplet{nullptr}, nrow{static_cast<unsigned int>(sparse->nrow)},
-    ncol{static_cast<unsigned int>(sparse->ncol)},
-    values{(double*)sparse->x}, iRow{(int*)sparse->i}, jColumn{(int*)sparse->p}, symmetry{static_cast<Symmetry>(sparse->stype)}, maxTripletElements{0}
+    :sparse(sparse), triplet(nullptr), nrow(static_cast<unsigned int>(sparse->nrow)),
+    ncol(static_cast<unsigned int>(sparse->ncol)),
+    values((double*)sparse->x), iRow((int*)sparse->i), jColumn((int*)sparse->p), symmetry(static_cast<Symmetry>(sparse->stype)), maxTripletElements(0)
     {
 #ifdef DEBUG
         assert(sparse->itype == CHOLMOD_INT);
@@ -48,7 +48,7 @@ namespace oocholmod {
     }
     
     SparseMatrix::SparseMatrix(SparseMatrix&& other)
-    :sparse{other.sparse}, triplet{other.triplet}, nrow{other.nrow}, ncol{other.ncol}, values{other.values}, iRow{other.iRow}, jColumn{other.jColumn}, symmetry{other.symmetry}, maxTripletElements{other.maxTripletElements}
+    :sparse(other.sparse), triplet(other.triplet), nrow(other.nrow), ncol(other.ncol), values(other.values), iRow(other.iRow), jColumn(other.jColumn), symmetry(other.symmetry), maxTripletElements(other.maxTripletElements)
     {
         other.sparse = nullptr;
         other.triplet = nullptr;
