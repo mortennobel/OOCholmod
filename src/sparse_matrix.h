@@ -156,8 +156,8 @@ namespace oocholmod {
         bool operator==(const SparseMatrix& RHS) const;
         bool operator!=(const SparseMatrix& RHS) const;
     private:
-        SparseMatrix(const SparseMatrix& that) {} // prevent copy constructor
-        SparseMatrix operator=(const SparseMatrix& other) {} // prevent copy assignment operator
+        SparseMatrix(const SparseMatrix& that); // prevent copy constructor (no implementation)
+        SparseMatrix operator=(const SparseMatrix& other); // prevent copy assignment operator (no implementation)
         inline long key(unsigned int row, unsigned int column) const{
             int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
             return (((long)row)<<shiftBits)+column;

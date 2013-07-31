@@ -146,8 +146,8 @@ namespace oocholmod {
         bool operator==(const DenseMatrix& RHS) const;
         bool operator!=(const DenseMatrix& RHS) const;
     private:
-        DenseMatrix(const DenseMatrix& that) {} // prevent copy constructor
-        DenseMatrix operator=(const DenseMatrix& other) {} // prevent copy assignment operator
+        DenseMatrix(const DenseMatrix& that); // prevent copy constructor (no implementation)
+        DenseMatrix operator=(const DenseMatrix& other);  // prevent copy assignment operator (no implementation)
         cholmod_dense *dense;
         unsigned int nrow;
         unsigned int ncol;
