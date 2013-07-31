@@ -276,11 +276,12 @@ namespace oocholmod {
         v1.swap(v2);
     }
     
-    void SparseMatrix::symmetrize(){
-        
+    void SparseMatrix::symmetrize(){        
+#ifdef DEBUG
         // The original must be asymmetric - otherwise return unchanged
         assert(symmetry == ASYMMETRIC);
         assertHasSparse();
+#endif
         
         // allocate a new SYMMETRIX UPPER triplet matrix !
         int numberOfNonZeros = (int)cholmod_nnz(sparse,ConfigSingleton::getCommonPtr());
