@@ -1004,6 +1004,26 @@ int DenseSubstractionTest(){
     return 1;
 }
 
+int SparseSymmetrize(){
+    SparseMatrix A{3,3};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(1, 0) = 1;
+    A(0, 2) = 1;
+    A(2, 0) = 1;
+    A(1, 2) = 0.5;
+    A(2, 1) = 0.5;
+    A(2, 2) = -0.5;
+    A.build();
+    
+    SparseMatrix B = A.copy();
+    B.symmetrize();
+    
+    TINYTEST_ASSERT(A.toDense() == B.toDense());
+    
+    return 1;
+}
+
 TINYTEST_START_SUITE(ObjSuite);
 TINYTEST_ADD_TEST(BuildSparseTestObj);
 TINYTEST_ADD_TEST(EqualSparseTestObj);
@@ -1045,6 +1065,7 @@ TINYTEST_ADD_TEST(ZeroTest);
 TINYTEST_ADD_TEST(DenseSetGetTest);
 TINYTEST_ADD_TEST(SparseToDense);
 TINYTEST_ADD_TEST(DenseSubstractionTest);
+TINYTEST_ADD_TEST(SparseSymmetrize);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();

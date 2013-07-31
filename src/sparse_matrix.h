@@ -51,6 +51,8 @@ namespace oocholmod {
         
         ~SparseMatrix();
         
+        void symmetrize();
+        
         DenseMatrix toDense() const;
         
         MatrixState getMatrixState() const;

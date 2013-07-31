@@ -275,7 +275,50 @@ namespace oocholmod {
     void swap(SparseMatrix& v1, SparseMatrix& v2) {
         v1.swap(v2);
     }
-   
+    
+    void SparseMatrix::symmetrize(){
+        
+        // The original must be asymmetric - otherwise return unchanged
+        assert(symmetry == ASYMMETRIC);
+        assertHasSparse();
+        
+        // allocate a new SYMMETRIX UPPER triplet matrix !
+        int numberOfNonZeros = (int)cholmod_nnz(sparse,ConfigSingleton::getCommonPtr());
+        cholmod_triplet *triplet_symm = cholmod_allocate_triplet(nrow,ncol,
+                                                                 numberOfNonZeros,SYMMETRIC_UPPER,CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        
+        // Insert the upper part of sparse into the new triplet
+        int idx=0;
+        for (int col=0;col<ncol;col++){
+            int iFrom = ((int*)sparse->p)[col];
+            int iTo = ((int*)sparse->p)[col+1]-1;
+            for (int i=iFrom;i<=iTo;i++){
+                int row = ((int*)sparse->i)[i];
+                if (col >= row){ // Upper half
+                    ((int*)triplet_symm->i)[triplet_symm->nnz] = row;
+                    ((int*)triplet_symm->j)[triplet_symm->nnz] = col;
+                    ((double*)triplet_symm->x)[triplet_symm->nnz] = ((double*)sparse->x)[idx];
+                    triplet_symm->nnz++;
+                }
+                idx++;
+            }
+        }
+        
+        // Make sure not to leak
+        cholmod_free_sparse(&sparse, ConfigSingleton::getCommonPtr());
+        
+        // build the new sparse matrix
+        sparse = cholmod_triplet_to_sparse(triplet_symm, triplet_symm->nnz, ConfigSingleton::getCommonPtr());
+        // deallocate the triplet
+        cholmod_free_triplet(&triplet_symm, ConfigSingleton::getCommonPtr());
+        triplet_symm = nullptr;
+        // Set pointers to the sparse data
+        values = ((double*)sparse->x);
+        iRow = ((int*)sparse->i);
+        jColumn = ((int*)sparse->p);
+        
+        symmetry = SYMMETRIC_UPPER;
+    }
     
     Factor SparseMatrix::analyze() const
     {
