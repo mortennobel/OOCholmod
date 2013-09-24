@@ -401,6 +401,52 @@ namespace oocholmod {
         return move(M);
     }
     
+    void DenseMatrix::inverse()
+    {
+#ifdef DEBUG
+        assert(dense);
+        assert(nrow == ncol);
+#endif
+        __CLPK_integer N = nrow;
+        __CLPK_integer lwork = N*N;
+        __CLPK_integer *ipiv = new __CLPK_integer[N+1];
+        __CLPK_doublereal *work = new __CLPK_doublereal[lwork];
+        __CLPK_integer info;
+        
+        dgetrf_(&N, &N, (double*)dense->x, &N, ipiv, &info);
+        dgetri_(&N, (double*)dense->x, &N, ipiv, work, &lwork, &info);
+        
+        delete[] ipiv;
+        delete[] work;
+    }
+    
+    DenseMatrix inversed(const DenseMatrix& M)
+    {
+#ifdef DEBUG
+        assert(M.dense);
+        assert(M.nrow == M.ncol);
+#endif
+        __CLPK_integer N = M.nrow;
+        __CLPK_integer lwork = N*N;
+        __CLPK_integer *ipiv = new __CLPK_integer[N+1];
+        __CLPK_doublereal *work = new __CLPK_doublereal[lwork];
+        __CLPK_integer info;
+        
+        cholmod_dense *res = cholmod_copy_dense(M.dense, ConfigSingleton::getCommonPtr());
+        dgetrf_(&N, &N, (double*)res->x, &N, ipiv, &info);
+        dgetri_(&N, (double*)res->x, &N, ipiv, work, &lwork, &info);
+        
+        delete[] ipiv;
+        delete[] work;
+        return DenseMatrix(res);
+    }
+    
+    DenseMatrix&& inversed(DenseMatrix&& M)
+    {
+        M.inverse();
+        return move(M);
+    }
+    
     DenseMatrix solve(const DenseMatrix& A, const DenseMatrix& b)
     {
 #ifdef DEBUG

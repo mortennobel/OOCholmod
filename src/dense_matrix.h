@@ -100,6 +100,11 @@ namespace oocholmod {
         friend DenseMatrix transposed(const DenseMatrix& M);
         friend DenseMatrix&& transposed(DenseMatrix&& M);
         
+        // Inverse
+        void inverse();
+        friend DenseMatrix inversed(const DenseMatrix& M);
+        friend DenseMatrix&& inversed(DenseMatrix&& M);
+        
         // Solve
         friend DenseMatrix solve(const DenseMatrix& A, const DenseMatrix& b);
         friend DenseMatrix solve(DenseMatrix&& A, const DenseMatrix& b);

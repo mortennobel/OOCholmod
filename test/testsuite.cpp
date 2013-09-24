@@ -335,6 +335,45 @@ int TransposeDenseTestObj()
     return 1;
 }
 
+int InverseDenseTestObj()
+{
+    DenseMatrix A{3,3};
+    A(0,0) = 10;
+    A(0,1) = 3;
+    A(0,2) = 1;
+    A(1,0) = -1;
+    A(1,1) = 4;
+    A(1,2) = 1;
+    A(2,0) = 5.1;
+    A(2,1) = -2.1;
+    A(2,2) = 4.5;
+    
+    DenseMatrix B = inversed(A);
+    
+    DenseMatrix Ai(3,3);
+    Ai(0,0) = 0.0950;
+    Ai(0,1) = -0.0738;
+    Ai(0,2) = -0.0047;
+    Ai(1,0) = 0.0454;
+    Ai(1,1) = 0.1887;
+    Ai(1,2) = -0.0520;
+    Ai(2,0) = -0.0865;
+    Ai(2,1) = 0.1716;
+    Ai(2,2) = 0.2033;
+    
+    assertEqual(B.getData(), Ai.getData(), 9)
+    
+    B.inverse();
+    
+    assertEqual(B.getData(), A.getData(), 9)
+    
+    DenseMatrix C = inversed(std::move(B));
+    
+    assertEqual(C.getData(), Ai.getData(), 9)
+    
+    return 1;
+}
+
 int TestCaseFunctionOperatorObj(){
     
     SparseMatrix A{3,3, true};
@@ -1037,6 +1076,7 @@ TINYTEST_ADD_TEST(AddDenseDenseTestObj);
 TINYTEST_ADD_TEST(AddEqualDenseDenseTestObj);
 TINYTEST_ADD_TEST(SubtractSparseSparseTestObj);
 TINYTEST_ADD_TEST(TransposeDenseTestObj);
+TINYTEST_ADD_TEST(InverseDenseTestObj);
 TINYTEST_ADD_TEST(MultiplySparseSparseTestObj);
 TINYTEST_ADD_TEST(MultiplyScalarSparseTestObj);
 TINYTEST_ADD_TEST(MultiplyScalarDenseTestObj);
