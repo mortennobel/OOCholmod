@@ -1000,6 +1000,11 @@ int DenseSubstractionTest(){
         TINYTEST_ASSERT(R.getData()[i] == 4);
     }
     
+    R = (-B) + B2;
+    for (int i=0;i<4;i++){
+        TINYTEST_ASSERT(R.getData()[i] == 4);
+    }
+    
     R = B2.copy();
     
     R-=B;

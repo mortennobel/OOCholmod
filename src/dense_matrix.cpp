@@ -234,7 +234,7 @@ namespace oocholmod {
     
     DenseMatrix&& operator+(DenseMatrix&& LHS, DenseMatrix&& RHS)
     {
-        return LHS+move(RHS);
+        return move(LHS)+RHS;
     }
     
     DenseMatrix& DenseMatrix::operator+=(const DenseMatrix& RHS)
@@ -250,9 +250,7 @@ namespace oocholmod {
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
-        DenseMatrix res = RHS.copy() * -1;
-        cblas_daxpy(LHS.nrow*LHS.ncol, 1.,LHS.getData(), 1,  res.getData(), 1);
-        return res;
+        return LHS + (-RHS);
     }
 
     DenseMatrix&& operator-(DenseMatrix&& LHS, const DenseMatrix& RHS)
@@ -261,10 +259,7 @@ namespace oocholmod {
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
-	
-        cblas_daxpy(LHS.nrow*LHS.ncol, 1., (-1.0*RHS).getData(), 1, LHS.getData(), 1);
-        return std::move(LHS);
-	
+        return move(LHS) + (-RHS);
     }
 
     DenseMatrix&& operator-(const DenseMatrix& LHS, DenseMatrix&& RHS)
@@ -273,22 +268,34 @@ namespace oocholmod {
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
-	RHS = -1.*RHS;
-        cblas_daxpy(LHS.nrow*LHS.ncol, 1., LHS.getData(), 1, RHS.getData(), 1);
-        return std::move(RHS);
+        return LHS + (-move(RHS));
     }
 
     DenseMatrix&& operator-(DenseMatrix&& LHS, DenseMatrix&& RHS)
     {
-        return LHS-std::move(RHS);
+        return move(LHS)-RHS;
     }
 
     DenseMatrix& DenseMatrix::operator-=(const DenseMatrix& RHS)
     {
-        std::move(*this) - RHS;
+        move(*this) - RHS;
         return *this;
     }
-
+    
+    DenseMatrix operator-(const DenseMatrix& M)
+    {
+        return -move(M.copy());
+    }
+    
+    DenseMatrix&& operator-(DenseMatrix&& M)
+    {
+        for (int r = 0; r < M.nrow; r++) {
+            for (int c = 0; c < M.ncol; c++) {
+                M(r,c) = -M(r,c);
+            }
+        }
+        return move(M);
+    }
     
     // Multiplication
     DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS)
