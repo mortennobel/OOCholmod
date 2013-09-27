@@ -72,6 +72,13 @@ int BuildSparseTestObj()
     assert(B(0,2) == 1);
     assert(B(2,0) == -3);
     assert(B(0,0) == 4);
+    
+    SparseMatrix C{3,3};
+    C.build();
+    
+    assert(C(0,0) == 0);
+    assert(C(0,1) == 0);
+    
     return 1;
 }
 

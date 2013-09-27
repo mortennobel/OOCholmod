@@ -182,12 +182,16 @@ namespace oocholmod {
     
     void SparseMatrix::build(){
 #ifdef DEBUG
-        assert(triplet != nullptr);
         assert(sparse == nullptr);
 #endif
-        sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, ConfigSingleton::getCommonPtr());
-        cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
-        triplet = nullptr;
+        if (triplet){
+            sparse = cholmod_triplet_to_sparse(triplet, triplet->nnz, ConfigSingleton::getCommonPtr());
+            cholmod_free_triplet(&triplet, ConfigSingleton::getCommonPtr());
+            triplet = nullptr;
+        }
+        else {
+            sparse = cholmod_allocate_sparse(nrow, ncol, 0, false, true, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        }
         values = ((double*)sparse->x);
         iRow = ((int*)sparse->i);
         jColumn = ((int*)sparse->p);
