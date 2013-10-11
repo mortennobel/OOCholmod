@@ -42,23 +42,9 @@ namespace oocholmod {
         ~DenseMatrix();
         
         
-        inline double& operator()(unsigned int row, unsigned int col = 0)
-        {
-#ifdef DEBUG
-            assert(dense);
-            assert(row < nrow && col < ncol);
-#endif
-            return ((double*)dense->x)[col*nrow + row];
-        }
+        double& operator()(unsigned int row, unsigned int col = 0);
         
-        inline double operator()(unsigned int row, unsigned int col = 0) const
-        {
-#ifdef DEBUG
-            assert(dense);
-            assert(row < nrow && col < ncol);
-#endif
-            return ((double*)dense->x)[col*nrow + row];
-        }
+        double operator()(unsigned int row, unsigned int col = 0) const;
         
         // OPERATORS
         
@@ -120,12 +106,12 @@ namespace oocholmod {
         // Print
         friend std::ostream& operator<<(std::ostream& os, const DenseMatrix& A);
         
-        inline double *getData(){ return (double *)(dense->x); };
-        inline double *getData() const { return (double *)(dense->x); };
+        double *getData();
+        double *getData() const;
         
-        int getRows() const{ return nrow; }
+        int getRows() const;
         
-        int getColumns() const{ return ncol; }
+        int getColumns() const;
         
         DenseMatrix copy() const;
         void zero();
@@ -160,6 +146,34 @@ namespace oocholmod {
         unsigned int nrow;
         unsigned int ncol;
     };
+    
+    // ---------- inline functions -----------
+    
+    inline double& DenseMatrix::operator()(unsigned int row, unsigned int col)
+    {
+#ifdef DEBUG
+        assert(dense);
+        assert(row < nrow && col < ncol);
+#endif
+        return ((double*)dense->x)[col*nrow + row];
+    }
+    
+    inline double DenseMatrix::operator()(unsigned int row, unsigned int col) const
+    {
+#ifdef DEBUG
+        assert(dense);
+        assert(row < nrow && col < ncol);
+#endif
+        return ((double*)dense->x)[col*nrow + row];
+    }
+    
+    inline double *DenseMatrix::getData(){ return (double *)(dense->x); };
+    inline double *DenseMatrix::getData() const { return (double *)(dense->x); };
+    
+    inline int DenseMatrix::getRows() const{ return nrow; }
+    
+    inline int DenseMatrix::getColumns() const{ return ncol; }
+    
 }
 
 

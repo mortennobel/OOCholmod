@@ -139,114 +139,32 @@ namespace oocholmod {
         
         void swap(SparseMatrix& other);
         
-        inline double operator()(unsigned int row, unsigned int column = 0) const
-        {
-            return getValue(row, column);
-        }
+        double operator()(unsigned int row, unsigned int column = 0) const;
         
-        inline double& operator()(unsigned int row, unsigned int column = 0)
-        {
-            if (sparse != nullptr){
-                return getValue(row, column);
-            } else {
-                return initAddValue(row, column);
-            }
-        }
+        double& operator()(unsigned int row, unsigned int column = 0);
         
         bool operator==(const SparseMatrix& RHS) const;
         bool operator!=(const SparseMatrix& RHS) const;
     private:
         SparseMatrix(const SparseMatrix& that); // prevent copy constructor (no implementation)
         SparseMatrix operator=(const SparseMatrix& other); // prevent copy assignment operator (no implementation)
-        inline long key(unsigned int row, unsigned int column) const{
-            int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
-            return (((long)row)<<shiftBits)+column;
-        }
+        long key(unsigned int row, unsigned int column) const;
         void assertValidIndex(unsigned int row, unsigned int column) const;
         void assertHasSparse() const;
         void increaseTripletCapacity();
         void assertValidInitAddValue(unsigned int row, unsigned int column) const;
         
-        inline int binarySearch(int *array, int low, int high, unsigned int value) const {
-            while (low <= high)
-            {
-                // http://googleresearch.blogspot.dk/2006/06/extra-extra-read-all-about-it-nearly.html
-                int midpoint = (((unsigned int)high + (unsigned int)low) >> 1);
-                int midpointValue = array[midpoint];
-                if (value == midpointValue) {
-                    return midpoint;
-                } else if (value < midpointValue) {
-                    high = midpoint - 1;
-                } else {
-                    low = midpoint + 1;
-                }
-            }
-            return -1;
-        }
+        int binarySearch(int *array, int low, int high, unsigned int value) const;
         
-        inline int getIndex(unsigned int row, unsigned int column) const
-        {
-#if DEBUG
-            assertValidIndex(row, column);
-#endif
-            if ((symmetry == SYMMETRIC_UPPER && row > column) || (symmetry == SYMMETRIC_LOWER && row < column)) {
-                std::swap(row, column);
-            }
-            
-            int iFrom = jColumn[column];
-            int iTo = jColumn[column+1]-1;
-            
-            return binarySearch(iRow, iFrom, iTo, row);
-        }
+        int getIndex(unsigned int row, unsigned int column) const;
         
-        inline void createTriplet(){
-            triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
-            values = (double *)triplet->x;
-            iRow = (int *)triplet->i;
-            jColumn = (int *)triplet->j;
-        }
+        void createTriplet();
         
-        inline double& initAddValue(unsigned int row, unsigned int column)
-        {
-            if (!triplet){
-                createTriplet();
-            } else if (triplet->nnz == maxTripletElements ){
-                increaseTripletCapacity();
-            }
-            assertValidInitAddValue(row, column);
-            iRow[triplet->nnz] = row;
-            jColumn[triplet->nnz] = column;
-            values[triplet->nnz] = 0;
-            
-            triplet->nnz++;
-            return values[triplet->nnz - 1];
-        }
+        double& initAddValue(unsigned int row, unsigned int column);
         
-        inline double& getValue(unsigned int row, unsigned int column)
-        {
-#ifdef DEBUG
-            assertHasSparse();
-#endif
-            int index = getIndex(row, column);
-            if (index == -1){
-                static double zero = 0;
-                zero = 0;
-                return zero;
-            }
-            return values[index];
-        }
+        double& getValue(unsigned int row, unsigned int column);
         
-        double getValue(unsigned int row, unsigned int column) const
-        {
-#ifdef DEBUG
-            assertHasSparse();
-#endif
-            int index = getIndex(row, column);
-            if (index == -1){
-                return 0;
-            }
-            return values[index];
-        }
+        double getValue(unsigned int row, unsigned int column) const;
         
         cholmod_sparse *sparse;
         cholmod_triplet *triplet;
@@ -258,5 +176,107 @@ namespace oocholmod {
         Symmetry symmetry;
         int maxTripletElements;
     };
+    
+    // ----------- inline functions ------------
+    
+    inline double SparseMatrix::operator()(unsigned int row, unsigned int column) const
+    {
+        return getValue(row, column);
+    }
+    
+    inline double& SparseMatrix::operator()(unsigned int row, unsigned int column)
+    {
+        if (sparse != nullptr){
+            return getValue(row, column);
+        } else {
+            return initAddValue(row, column);
+        }
+    }
+    
+    inline int SparseMatrix::binarySearch(int *array, int low, int high, unsigned int value) const {
+        while (low <= high)
+        {
+            // http://googleresearch.blogspot.dk/2006/06/extra-extra-read-all-about-it-nearly.html
+            int midpoint = (((unsigned int)high + (unsigned int)low) >> 1);
+            int midpointValue = array[midpoint];
+            if (value == midpointValue) {
+                return midpoint;
+            } else if (value < midpointValue) {
+                high = midpoint - 1;
+            } else {
+                low = midpoint + 1;
+            }
+        }
+        return -1;
+    }
+    
+    inline int SparseMatrix::getIndex(unsigned int row, unsigned int column) const
+    {
+#if DEBUG
+        assertValidIndex(row, column);
+#endif
+        if ((symmetry == SYMMETRIC_UPPER && row > column) || (symmetry == SYMMETRIC_LOWER && row < column)) {
+            std::swap(row, column);
+        }
+        
+        int iFrom = jColumn[column];
+        int iTo = jColumn[column+1]-1;
+        
+        return binarySearch(iRow, iFrom, iTo, row);
+    }
+    
+    inline long SparseMatrix::key(unsigned int row, unsigned int column) const {
+        int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
+        return (((long)row)<<shiftBits)+column;
+    }
+    
+    inline void SparseMatrix::createTriplet(){
+        triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
+        values = (double *)triplet->x;
+        iRow = (int *)triplet->i;
+        jColumn = (int *)triplet->j;
+    }
+    
+    inline double& SparseMatrix::initAddValue(unsigned int row, unsigned int column)
+    {
+        if (!triplet){
+            createTriplet();
+        } else if (triplet->nnz == maxTripletElements ){
+            increaseTripletCapacity();
+        }
+        assertValidInitAddValue(row, column);
+        iRow[triplet->nnz] = row;
+        jColumn[triplet->nnz] = column;
+        values[triplet->nnz] = 0;
+        
+        triplet->nnz++;
+        return values[triplet->nnz - 1];
+    }
+    
+    inline double& SparseMatrix::getValue(unsigned int row, unsigned int column)
+    {
+#ifdef DEBUG
+        assertHasSparse();
+#endif
+        int index = getIndex(row, column);
+        if (index == -1){
+            static double zero = 0;
+            zero = 0;
+            return zero;
+        }
+        return values[index];
+    }
+    
+    inline double SparseMatrix::getValue(unsigned int row, unsigned int column) const
+    {
+#ifdef DEBUG
+        assertHasSparse();
+#endif
+        int index = getIndex(row, column);
+        if (index == -1){
+            return 0;
+        }
+        return values[index];
+    }
 }
 
