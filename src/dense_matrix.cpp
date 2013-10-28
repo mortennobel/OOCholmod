@@ -122,11 +122,12 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(nrow == b.getRows() && ncol == b.getColumns());
 #endif
-        double *thisData = getData();
-        double *bData = b.getData();
+        const double *thisData = getData();
+        double *destData = dest.getData();
+        const double *bData = b.getData();
         for (int c = 0; c < ncol; c++){
             for (int r = 0; r < nrow; r++){
-                thisData[c*nrow + r] /= bData[c*nrow + r];
+                destData[c*nrow + r] = thisData[c*nrow + r] / bData[c*nrow + r];
             }
         }
     }
@@ -143,11 +144,12 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(nrow == b.getRows() && ncol == b.getColumns());
 #endif
-        double *thisData = dest.getData();
-        double *bData = b.getData();
+        const double *thisData = getData();
+        double *destData = dest.getData();
+        const double *bData = b.getData();
         for (int c = 0; c < ncol; c++){
             for (int r = 0; r < nrow; r++){
-                thisData[c*nrow + r] *= bData[c*nrow + r];
+                destData[c*nrow + r] = thisData[c*nrow + r]*bData[c*nrow + r];
             }
         }
     }
@@ -187,7 +189,7 @@ namespace oocholmod {
     }
     
     void DenseMatrix::get(float *outData) const {
-        double *data = getData();
+        const double *data = getData();
         for (int c = 0; c < ncol; c++){
             for (int r = 0; r < nrow; r++){
                 outData[c*nrow + r] = (float)data[c*nrow + r];
@@ -356,8 +358,8 @@ namespace oocholmod {
         if (nrow != RHS.nrow || ncol != RHS.ncol){
             return false;
         }
-        double *data = getData();
-        double *rhsData = RHS.getData();
+        const double *data = getData();
+        const double *rhsData = RHS.getData();
         for (int i=0;i<nrow*ncol;i++){
             if (data[i] != rhsData[i]){
                 return false;
@@ -392,7 +394,7 @@ namespace oocholmod {
     DenseMatrix transposed(const DenseMatrix& M)
     {
         DenseMatrix res(M.ncol, M.nrow);
-        double *data = M.getData();
+        const double *data = M.getData();
         double *outData = res.getData();
         for (int c = 0; c < M.ncol; c++){
             for (int r = 0; r < M.nrow; r++){

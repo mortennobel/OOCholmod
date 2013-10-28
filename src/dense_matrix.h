@@ -107,7 +107,7 @@ namespace oocholmod {
         friend std::ostream& operator<<(std::ostream& os, const DenseMatrix& A);
         
         double *getData();
-        double *getData() const;
+        const double *getData() const;
         
         int getRows() const;
         
@@ -168,7 +168,7 @@ namespace oocholmod {
     }
     
     inline double *DenseMatrix::getData(){ return (double *)(dense->x); };
-    inline double *DenseMatrix::getData() const { return (double *)(dense->x); };
+    inline const double *DenseMatrix::getData() const { return (double *)(dense->x); };
     
     inline int DenseMatrix::getRows() const{ return nrow; }
     
