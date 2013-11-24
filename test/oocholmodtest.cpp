@@ -880,6 +880,29 @@ int NormTest(){
     return 1;
 }
 
+int DeterminantTest()
+{
+    DenseMatrix A{2,2,0};
+    A(0, 0) = -7;
+    A(1, 1) = 11;
+    A(0, 1) = -1;
+    A(1, 0) = 1.6;
+    TINYTEST_ASSERT(A.determinant() == A(0,0)*A(1,1) - A(1,0)*A(0,1));
+    
+    DenseMatrix B{3,3,0};
+    B(0, 0) = 1;
+    B(2, 2) = -7.7;
+    B(0, 1) = -1;
+    B(1, 0) = 1;
+    B(0, 2) = 10.5;
+    B(2, 0) = 5;
+    B(1, 2) = 0.5;
+    B(2, 1) = 0.5;
+    B(2, 2) = -0.5;
+    TINYTEST_ASSERT(B.determinant() == B(0,0)*B(1,1)*B(2,2) + B(0,1)*B(1,2)*B(2,0) + B(0,2)*B(1,0)*B(2,1) - B(0,0)*B(1,2)*B(2,1) - B(0,1)*B(1,0)*B(2,2) - B(0,2)*B(1,1)*B(2,0));
+    return 1;
+}
+
 int AppendTest(){
     vector<SparseMatrix> AS;
     for(int i=0;i<5;i++){

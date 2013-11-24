@@ -79,6 +79,8 @@ int CopyTest();
 
 int NormTest();
 
+int DeterminantTest();
+
 int AppendTest();
 
 int NumberOfElementsTest();

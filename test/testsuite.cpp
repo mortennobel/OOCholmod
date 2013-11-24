@@ -39,6 +39,7 @@ TINYTEST_ADD_TEST(LargeMatrixPerformance);
 TINYTEST_ADD_TEST(DropSmallEntriesTest);
 TINYTEST_ADD_TEST(CopyTest);
 TINYTEST_ADD_TEST(NormTest);
+TINYTEST_ADD_TEST(DeterminantTest);
 TINYTEST_ADD_TEST(AppendTest);
 TINYTEST_ADD_TEST(NumberOfElementsTest);
 TINYTEST_ADD_TEST(ZeroTest);

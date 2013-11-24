@@ -84,6 +84,9 @@ namespace oocholmod {
         ///  type of norm: 0: inf. norm, 1: 1-norm, 2: 2-norm 
         double norm(int norm) const;
         
+        // Returns the determinant. For square matrices ONLY.
+        double determinant() const;
+        
         // Transpose
         void transpose();
         friend DenseMatrix transposed(const DenseMatrix& M);

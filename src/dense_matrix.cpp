@@ -102,6 +102,34 @@ namespace oocholmod {
         return cholmod_norm_dense(dense, norm, ConfigSingleton::getCommonPtr());
     }
     
+    double DenseMatrix::determinant() const
+    {
+#ifdef DEBUG
+        assert(ncol == nrow);
+#endif
+        const double *data = getData();
+        if(ncol == 1)
+        {
+            return data[0];
+        }
+        if(ncol == 2)
+        {
+            return data[0]*data[3] - data[1]*data[2];
+        }
+        
+        double det = 0.0;
+        for (int i = 0; i < ncol; i++)
+        {
+            double a = 1.0, b = 1.0;
+            for (int row = 0; row < ncol; row++)
+            {
+                a *= data[row + ncol * ((i+row)%ncol)];
+                b *= data[row + ncol * ((ncol-1) - (i+row)%ncol)];
+            }
+            det += a - b;
+        }
+        return det;
+    }
     
     double DenseMatrix::dot(const DenseMatrix& b) const {
 #ifdef DEBUG
