@@ -116,6 +116,10 @@ namespace oocholmod {
         {
             return data[0]*data[3] - data[1]*data[2];
         }
+        if(ncol == 3)
+        {
+            return data[0]*data[4]*data[8] + data[3]*data[7]*data[2] + data[6]*data[1]*data[5] - data[0]*data[7]*data[5] - data[3]*data[1]*data[8] - data[6]*data[4]*data[2];
+        }
         
         double det = 0.0;
         for (int i = 0; i < ncol; i++)
