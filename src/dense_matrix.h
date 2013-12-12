@@ -21,13 +21,14 @@
 #endif
 #endif
 
+
 namespace oocholmod {
     
     // forward declaration
     class SparseMatrix;
     class Factor;
     
-    class DenseMatrix {
+	class DenseMatrix {
     public:
         // In debug the matrix will be initialized to NAN
         // In release mode, NAN will leave the matrix uninitialized

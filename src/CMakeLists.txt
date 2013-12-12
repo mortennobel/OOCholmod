@@ -1,0 +1,28 @@
+# CMakeLists of OOCholmod src
+
+set(INCS config_singleton.h dense_matrix.h factor.h sparse_matrix.h)
+set(SRCS config_singleton.cpp dense_matrix.cpp factor.cpp sparse_matrix.cpp)
+add_library(ooholdmod STATIC ${SRCS} ${INCS})
+
+ if (CHOLMOD_LIBRARY)
+	target_link_libraries(ooholdmod "${CHOLMOD_LIBRARY}")
+ endif ()
+ if (USE_ACML)
+	set(compDefs ${compDefs} USE_ACML=1)
+	#set_property( TARGET ooholdmod PROPERTY COMPILE_DEFINITIONS USE_ACML=1 )
+	if (ACML_LIBRARY)
+		TARGET_LINK_LIBRARIES(ooholdmod "${ACML_LIBRARY}")
+	endif()
+else (USE_ACML)
+	if (ACML_LIBRARY)
+		TARGET_LINK_LIBRARIES(ooholdmod "${BLAS_LIBRARY}")
+	endif ()
+	if (LAPACK_LIBRARY)
+		TARGET_LINK_LIBRARIES(ooholdmod "${LAPACK_LIBRARY}")
+	endif ()
+endif (USE_ACML)
+
+if(MSVC)
+set(compDefs "${compDefs};DLL_EXPORT=__declspec(dllexport)")
+endif(MSVC)
+set_property( TARGET ooholdmod PROPERTY COMPILE_DEFINITIONS "${compDefs}" )

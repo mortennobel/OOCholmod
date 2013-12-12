@@ -705,7 +705,7 @@ int SparseStateTest(){
 }
 
 int DynamicTripletGrow(){
-    int size = 1000;
+    unsigned int size = 1000;
     SparseMatrix A{size,size,true, 1};
     for (int i=0;i<size;i++){
         A(i,i) = 123;
@@ -720,7 +720,7 @@ int DynamicTripletGrow(){
 }
 
 int LargeSparseMatrix(){
-    int size = UINT_MAX/100;
+    unsigned int size = UINT_MAX/100;
     SparseMatrix A{size,size,true, 1};
     A(0,0) = 1;
     A(size-1,size-1) = 2;
@@ -732,7 +732,7 @@ int LargeSparseMatrix(){
 }
 
 int IndexTest2(){
-    int size = 3;
+    unsigned int size = 3;
     SparseMatrix C{size,size,false};
     int value = 1;
     for (int x=0;x<size;x++) for (int y=0;y<size;y++){
@@ -749,7 +749,7 @@ int IndexTest2(){
 }
 
 int IndexTest(){
-    int size = 3;
+    unsigned int size = 3;
     SparseMatrix A{size,size,true};
     DenseMatrix B{size,size};
     SparseMatrix C{size,size,false};
@@ -780,7 +780,7 @@ int IndexTest(){
 int LargeMatrixPerformance(){
     Timer timer;
     
-    int size = 30000;
+    unsigned int size = 30000;
     int testSize = 5000;
     SparseMatrix A{size,size};
     timer.start();

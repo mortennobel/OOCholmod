@@ -38,7 +38,7 @@ namespace oocholmod {
     /// 2. Call build()
     /// 3. Update matrix with elements using the (unsigned int row, unsigned int column) function operator
     ///
-    class SparseMatrix {
+	class SparseMatrix {
         friend class Factor;
     public:
         /// nrow # of rows of A

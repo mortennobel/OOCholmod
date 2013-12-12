@@ -12,13 +12,14 @@
 
 #include <cholmod.h>
 
+
 namespace oocholmod {
     
     
     class SparseMatrix; // forward declaration
     class DenseMatrix;
     
-    class Factor {
+	class Factor {
         friend class SparseMatrix;
         Factor(cholmod_factor *factor);
     public:
@@ -40,7 +41,7 @@ namespace oocholmod {
         cholmod_factor *factor;
     };
     
-    DenseMatrix solve(const Factor& F, const DenseMatrix& b);
-    SparseMatrix solve(const Factor& F, const SparseMatrix& b);
+	DenseMatrix solve(const Factor& F, const DenseMatrix& b);
+	SparseMatrix solve(const Factor& F, const SparseMatrix& b);
 }
 

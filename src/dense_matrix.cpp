@@ -10,6 +10,17 @@
 #define isnan _isnan
 #endif
 
+#ifdef USE_ACML
+#include "acml.h"
+typedef int __CLPK_integer;
+typedef double __CLPK_doublereal;
+#define CblasColMajor
+#define CblasTrans 'T'
+#define CblasNoTrans 'N'
+#define CblasRight 'R'
+#define CblasLeft 'L'
+#define CblasUpper 'U'
+#else
 #ifdef NO_BLAS
 #include "oo_blas.h"
 #else
@@ -20,7 +31,7 @@
 #else
 #include <clapack.h>
 #endif
-
+#endif
 #include "dense_matrix.h"
 #include "config_singleton.h"
 #include "sparse_matrix.h"
@@ -140,14 +151,22 @@ namespace oocholmod {
         assert(ncol == 1 || nrow == 1);
         assert(b.ncol == ncol && b.nrow == nrow);
 #endif
+#ifdef USE_ACML
+		return ddot(nrow*ncol, const_cast<double*>(getData()), 1, const_cast<double*>(b.getData()), 1);
+#else
         return cblas_ddot(nrow*ncol, getData(), 1, b.getData(), 1);
+#endif
     }
     
     double DenseMatrix::length() const {
 #ifdef DEBUG
         assert(ncol == 1 || nrow == 1);
 #endif
+#ifdef USE_ACML
+		return dnrm2(ncol*nrow, const_cast<double*>(getData()), 1);
+#else
         return cblas_dnrm2(ncol*nrow, getData(), 1);
+#endif
     }
     
     void DenseMatrix::elemDivide(const DenseMatrix& b, DenseMatrix& dest) const {
@@ -247,7 +266,11 @@ namespace oocholmod {
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
         DenseMatrix res = RHS.copy();
+#ifdef USE_ACML
+		daxpy(LHS.nrow*LHS.ncol, 1., const_cast<double*>(LHS.getData()), 1, res.getData(), 1);
+#else
         cblas_daxpy(LHS.nrow*LHS.ncol, 1., LHS.getData(), 1, res.getData(), 1);
+#endif
         return res;
     }
     
@@ -262,7 +285,11 @@ namespace oocholmod {
         assert(LHS.dense && RHS.dense);
         assert(LHS.nrow == RHS.nrow && LHS.ncol == RHS.ncol);
 #endif
+#ifdef USE_ACML
+		daxpy(LHS.nrow*LHS.ncol, 1., const_cast<double*>(LHS.getData()), 1, RHS.getData(), 1);
+#else
         cblas_daxpy(LHS.nrow*LHS.ncol, 1., LHS.getData(), 1, RHS.getData(), 1);
+#endif
         return move(RHS);
     }
     
@@ -339,7 +366,11 @@ namespace oocholmod {
 #endif
         cholmod_dense *dense = cholmod_copy_dense(LHS.dense, ConfigSingleton::getCommonPtr());
         DenseMatrix res(dense);
+#ifdef USE_ACML
+		dscal (LHS.nrow*LHS.ncol, RHS, res.getData(), 1);
+#else
         cblas_dscal (LHS.nrow*LHS.ncol, RHS, res.getData(), 1);
+#endif
         return res;
     }
     
@@ -348,7 +379,11 @@ namespace oocholmod {
 #ifdef DEBUG
         assert(LHS.dense);
 #endif
+#ifdef USE_ACML
+		dscal(LHS.nrow*LHS.ncol, RHS, LHS.getData(), 1);
+#else
         cblas_dscal (LHS.nrow*LHS.ncol, RHS, LHS.getData(), 1);
+#endif
         return move(LHS);
     }
     
@@ -378,10 +413,18 @@ namespace oocholmod {
         
         if(RHS.ncol == 1)
         {
-            cblas_dgemv(CblasColMajor, CblasNoTrans, LHS.nrow, LHS.ncol, 1., LHS.getData(), LHS.nrow, RHS.getData(), 1, 0., res.getData(), 1);
-        }
+#ifdef USE_ACML
+			dgemv(CblasNoTrans, LHS.nrow, LHS.ncol, 1., const_cast<double*>(LHS.getData()), LHS.nrow, const_cast<double*>(RHS.getData()), 1, 0., res.getData(), 1);
+#else
+			cblas_dgemv(CblasColMajor, CblasNoTrans, LHS.nrow, LHS.ncol, 1., LHS.getData(), LHS.nrow, RHS.getData(), 1, 0., res.getData(), 1);
+#endif
+		}
         else {
+#ifdef USE_ACML
+			dgemm(CblasNoTrans, CblasNoTrans, LHS.nrow, RHS.ncol, LHS.ncol, 1., const_cast<double*>(LHS.getData()), LHS.nrow, const_cast<double*>(RHS.getData()), RHS.nrow, 0., res.getData(), res.nrow);
+#else
             cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, LHS.nrow, RHS.ncol, LHS.ncol, 1., LHS.getData(), LHS.nrow, RHS.getData(), RHS.nrow, 0., res.getData(), res.nrow);
+#endif
         }
         return res;
     }
@@ -448,7 +491,7 @@ namespace oocholmod {
         assert(dense);
         assert(nrow == ncol);
 #endif
-        __CLPK_integer N = nrow;
+		__CLPK_integer N = nrow;
         __CLPK_integer lwork = N*N;
         __CLPK_integer *ipiv = new __CLPK_integer[N+1];
         __CLPK_doublereal *work = new __CLPK_doublereal[lwork];
@@ -467,6 +510,8 @@ namespace oocholmod {
         assert(M.dense);
         assert(M.nrow == M.ncol);
 #endif
+		
+
         __CLPK_integer N = M.nrow;
         __CLPK_integer lwork = N*N;
         __CLPK_integer *ipiv = new __CLPK_integer[N+1];

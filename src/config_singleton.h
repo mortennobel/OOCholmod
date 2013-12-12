@@ -13,11 +13,11 @@
 
 namespace oocholmod {
     
-    class ConfigSingleton{
+	class ConfigSingleton{
     public:
-        static void config(cholmod_common *);
-        static cholmod_common *getCommonPtr();
-        static void destroy();
+		static void config(cholmod_common *);
+		static cholmod_common *getCommonPtr();
+		static void destroy();
     private:
         ConfigSingleton(){};
     };
