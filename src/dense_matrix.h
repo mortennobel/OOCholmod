@@ -123,6 +123,8 @@ namespace oocholmod {
         
         DenseMatrix copy() const;
         void zero();
+        
+        // assumes that matrix is 1xN or Mx1
         // computes the L^2 norm of the vector
         double length() const;
         

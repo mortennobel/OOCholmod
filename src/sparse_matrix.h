@@ -140,10 +140,10 @@ namespace oocholmod {
         friend SparseMatrix solve(const SparseMatrix& A, const SparseMatrix& b);
         friend SparseMatrix solve(const Factor& F, const SparseMatrix& b);
 
-	// Sum the rows and return a vector
-        void sumRows(DenseMatrix& b);
+        // Sum the rows and return a vector
+        void sumRows(DenseMatrix& outVector);
 
-	// Hard coded method to perform: sparse = spdiags(N)^T * sparse * spdiags(N) - (spdiags(N) - speye())
+        // Hard coded method to perform: sparse = spdiags(N)^T * sparse * spdiags(N) - (spdiags(N) - speye())
         void setNullSpace( DenseMatrix& N);
  
         void build();
