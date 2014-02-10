@@ -379,7 +379,7 @@ int InverseDenseTestObj()
     
     assertEqual(B.getData(), A.getData(), 9)
     
-    DenseMatrix C = inversed(std::move(B));
+    DenseMatrix C = inversed(move(B));
     
     assertEqual(C.getData(), Ai.getData(), 9)
     
@@ -1099,6 +1099,47 @@ int SparseSymmetrize(){
     B.symmetrize();
     
     TINYTEST_ASSERT(A.toDense() == B.toDense());
+    
+    return 1;
+}
+
+int SparseBeginEnd(){
+    SparseMatrix A{3,3};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(1, 0) = 1;
+    A(0, 2) = 1;
+    A(2, 0) = 1;
+    
+    double sum = 0;
+    for (auto d : A){
+        sum += d;
+    }
+    TINYTEST_ASSERT(fabs(sum-5)<0.001);
+    A.build();
+    sum = 0;
+    for (auto d : A){
+        sum += d;
+    }
+    TINYTEST_ASSERT(fabs(sum-5)<0.001);
+    
+    return 1;
+}
+
+int DenseBeginEnd(){
+    
+    DenseMatrix A{3,3,0};
+    A(0, 0) = 1;
+    A(0, 1) = 1;
+    A(1, 0) = 1;
+    A(0, 2) = 1;
+    A(2, 2) = 1;
+    
+    double sum = 0;
+    for (auto d : A){
+        sum += d;
+    }
+    TINYTEST_ASSERT(fabs(sum-5)<0.001);
     
     return 1;
 }

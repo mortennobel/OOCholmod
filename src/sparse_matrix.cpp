@@ -16,6 +16,10 @@ using namespace std;
 
 namespace oocholmod {
     
+    SparseMatrixIter::SparseMatrixIter(const SparseMatrix* sparseMatrix, int pos)
+    :sparseMatrix(sparseMatrix), pos(pos)
+    {}
+    
     SparseMatrix::SparseMatrix(unsigned int nrow, unsigned int ncol, bool symmetric, int maxSize)
     :sparse(nullptr), triplet(nullptr), nrow(nrow), ncol(ncol)
     {
@@ -92,7 +96,6 @@ namespace oocholmod {
     
     SparseMatrix::~SparseMatrix(){
         if (sparse != nullptr || triplet != nullptr){
-
             if (sparse != nullptr){
                 cholmod_free_sparse(&sparse, ConfigSingleton::getCommonPtr());
                 sparse = nullptr;
@@ -102,6 +105,14 @@ namespace oocholmod {
                 triplet = nullptr;
             }
         }
+    }
+    
+    SparseMatrixIter SparseMatrix::begin(){
+        return SparseMatrixIter(this, 0);
+    }
+    
+    SparseMatrixIter SparseMatrix::end(){
+        return SparseMatrixIter(this, getNumberOfElements());
     }
     
     size_t SparseMatrix::getNumberOfElements(){

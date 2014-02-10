@@ -9,7 +9,7 @@
 #pragma once
 
 #include <map>
-#include <string> 
+#include <string>
 #include <cholmod.h>
 
 #include "config_singleton.h"
@@ -33,6 +33,27 @@ namespace oocholmod {
         DESTROYED
     };
     
+    class SparseMatrix;
+    
+    class SparseMatrixIter {
+    public:
+        SparseMatrixIter(const SparseMatrix* sparseMatrix, int pos);
+        
+        bool operator!= (const SparseMatrixIter& other) const{
+            return pos != other.pos;
+        }
+        
+        inline double operator* () const;
+        
+        const SparseMatrixIter& operator++() {
+            ++pos;
+            return *this;
+        }
+    private:
+        const SparseMatrix* sparseMatrix;
+        int pos;
+    };
+    
     /// The sparse matrix must be used in the following way:
     /// 1. Fill the matrix elements using the (unsigned int row, unsigned int column) function operator
     /// 2. Call build()
@@ -50,6 +71,9 @@ namespace oocholmod {
         SparseMatrix& operator=(SparseMatrix&& other);
         
         ~SparseMatrix();
+        
+        SparseMatrixIter begin();
+        SparseMatrixIter end();
         
         void symmetrize();
         
@@ -120,7 +144,7 @@ namespace oocholmod {
         void sumRows(DenseMatrix& b);
 
 	// Hard coded method to perform: sparse = spdiags(N)^T * sparse * spdiags(N) - (spdiags(N) - speye())
-	void setNullSpace( DenseMatrix& N);       
+        void setNullSpace( DenseMatrix& N);
  
         void build();
         
@@ -145,6 +169,8 @@ namespace oocholmod {
         
         bool operator==(const SparseMatrix& RHS) const;
         bool operator!=(const SparseMatrix& RHS) const;
+        
+        friend class SparseMatrixIter;
     private:
         SparseMatrix(const SparseMatrix& that); // prevent copy constructor (no implementation)
         SparseMatrix operator=(const SparseMatrix& other); // prevent copy assignment operator (no implementation)
@@ -178,6 +204,20 @@ namespace oocholmod {
     };
     
     // ----------- inline functions ------------
+    
+    double SparseMatrixIter::operator* () const{
+        if (sparseMatrix->getMatrixState() == INIT){
+            double * ptr = static_cast<double*>(sparseMatrix->triplet->x);
+            return *(ptr + pos);
+        } else if (sparseMatrix->getMatrixState() == BUILT){
+            double * ptr = static_cast<double*>(sparseMatrix->sparse->x);
+            return *(ptr + pos);
+        } else {
+            throw std::runtime_error("Invalid matrix state");
+        }
+    }
+    
+    
     
     inline double SparseMatrix::operator()(unsigned int row, unsigned int column) const
     {

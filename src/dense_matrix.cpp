@@ -92,6 +92,15 @@ namespace oocholmod {
         }
     }
     
+    double *DenseMatrix::begin(){
+        return getData();
+    }
+    
+    double *DenseMatrix::end(){
+        return getData()+(nrow * ncol);
+    }
+    
+    
     void DenseMatrix::zero(){
         memset(dense->x, 0, nrow * ncol * sizeof(double));
     }

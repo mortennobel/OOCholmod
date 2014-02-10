@@ -47,7 +47,11 @@ namespace oocholmod {
         
         double operator()(unsigned int row, unsigned int col = 0) const;
         
+        double *begin();
+        double *end();
+        
         // OPERATORS
+        
         
         // Addition
         friend DenseMatrix operator+(const DenseMatrix& LHS, const DenseMatrix& RHS);

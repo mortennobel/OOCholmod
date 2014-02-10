@@ -95,4 +95,8 @@ int DenseSubstractionTest();
 
 int SparseSymmetrize();
 
+int SparseBeginEnd();
+
+int DenseBeginEnd();
+
 #endif /* defined(__OOCholmod__oocholmodtest__) */
