@@ -43,7 +43,7 @@ namespace oocholmod {
             return pos != other.pos;
         }
         
-        inline double operator* () const;
+        inline double &operator* () const;
         
         const SparseMatrixIter& operator++() {
             ++pos;
@@ -205,7 +205,7 @@ namespace oocholmod {
     
     // ----------- inline functions ------------
     
-    double SparseMatrixIter::operator* () const{
+    double& SparseMatrixIter::operator* () const{
         if (sparseMatrix->getMatrixState() == INIT){
             double * ptr = static_cast<double*>(sparseMatrix->triplet->x);
             return *(ptr + pos);
