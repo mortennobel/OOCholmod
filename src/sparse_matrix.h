@@ -130,6 +130,13 @@ namespace oocholmod {
         // in built state returns the number of elements
         size_t getNumberOfElements();
         
+        // Computes result = alpha*(A*X) + beta*Y (where this == A) or Y = alpha*(A'*X) + beta*Y when transpose is true
+        // transpose is ignores if matrix is symmetric of Hermitian
+        void multiply(bool transpose, double alpha, double beta, const DenseMatrix& X, DenseMatrix& result);
+        // Computes result = alpha*(A*X) (where this == A) or Y = alpha*(A'*X) when transpose is true
+        // transpose is ignores if matrix is symmetric of Hermitian
+        DenseMatrix multiply(bool transpose, double alpha, const DenseMatrix& X);
+        
         // Transpose
         void transpose();
         friend SparseMatrix transposed(const SparseMatrix& M);

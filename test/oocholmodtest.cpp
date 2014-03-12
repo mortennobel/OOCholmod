@@ -1104,7 +1104,7 @@ int SparseSymmetrize(){
 }
 
 int SparseBeginEnd(){
-    SparseMatrix A{3,3};
+    SparseMatrix A{3, 3};
     A(0, 0) = 1;
     A(0, 1) = 1;
     A(1, 0) = 1;
@@ -1140,6 +1140,153 @@ int DenseBeginEnd(){
         sum += d;
     }
     TINYTEST_ASSERT(fabs(sum-5)<0.001);
+    
+    return 1;
+}
+
+int SparseMultiply(){
+    SparseMatrix S{3,3};
+    S(0, 0) = 1;
+    S(1, 0) = 2;
+    S(2, 0) = 3;
+    S(0, 1) = 4;
+    S(1, 1) = 5;
+    S(2, 1) = 6;
+    S(0, 2) = 7;
+    S(1, 2) = 8;
+    S(2, 2) = 9;
+    S.build();
+    
+    DenseMatrix D{3,3,0};
+    D(0, 0) = 10;
+    D(1, 0) = 11;
+    D(2, 0) = 12;
+    D(0, 1) = 13;
+    D(1, 1) = 14;
+    D(2, 1) = 15;
+    D(0, 2) = 16;
+    D(1, 2) = 17;
+    D(2, 2) = 18;
+
+    DenseMatrix X{3,3,0};
+    X(0, 0) = 19;
+    X(1, 0) = 20;
+    X(2, 0) = 21;
+    X(0, 1) = 22;
+    X(1, 1) = 23;
+    X(2, 1) = 24;
+    X(0, 2) = 25;
+    X(1, 2) = 26;
+    X(2, 2) = 27;
+
+    // alpha*(A*X) + beta*Y
+    S.multiply(false, 2, 3, D, X);
+    
+    DenseMatrix exp{3,3,0};
+    exp(0, 0) = 333;
+    exp(1, 0) = 402;
+    exp(2, 0) = 471;
+    exp(0, 1) = 414;
+    exp(1, 1) = 501;
+    exp(2, 1) = 588;
+    exp(0, 2) = 495;
+    exp(1, 2) = 600;
+    exp(2, 2) = 705;
+
+    TINYTEST_ASSERT(exp == X);
+    
+    X(0, 0) = 19;
+    X(1, 0) = 20;
+    X(2, 0) = 21;
+    X(0, 1) = 22;
+    X(1, 1) = 23;
+    X(2, 1) = 24;
+    X(0, 2) = 25;
+    X(1, 2) = 26;
+    X(2, 2) = 27;
+    
+    // Y = alpha*(A'*X) + beta*Y
+    S.multiply(true, 2, 3, D, X);
+    
+    exp(0, 0) = 193;
+    exp(1, 0) = 394;
+    exp(2, 0) = 595;
+    exp(0, 1) = 238;
+    exp(1, 1) = 493;
+    exp(2, 1) = 748;
+    exp(0, 2) = 283;
+    exp(1, 2) = 592;
+    exp(2, 2) = 901;
+    
+    TINYTEST_ASSERT(exp == X);
+    
+    return 1;
+}
+
+int SparseMultiplyNoRes(){
+    SparseMatrix S{3,3};
+    S(0, 0) = 1;
+    S(1, 0) = 2;
+    S(2, 0) = 3;
+    S(0, 1) = 4;
+    S(1, 1) = 5;
+    S(2, 1) = 6;
+    S(0, 2) = 7;
+    S(1, 2) = 8;
+    S(2, 2) = 9;
+    S.build();
+    
+    DenseMatrix D{3,3,0};
+    D(0, 0) = 10;
+    D(1, 0) = 11;
+    D(2, 0) = 12;
+    D(0, 1) = 13;
+    D(1, 1) = 14;
+    D(2, 1) = 15;
+    D(0, 2) = 16;
+    D(1, 2) = 17;
+    D(2, 2) = 18;
+    
+    // alpha*(A*X)
+    DenseMatrix X = S.multiply(false, 2, D);
+    
+    DenseMatrix exp{3,3,0};
+    exp(0, 0) = 276;
+    exp(1, 0) = 342;
+    exp(2, 0) = 408;
+    exp(0, 1) = 348;
+    exp(1, 1) = 432;
+    exp(2, 1) = 516;
+    exp(0, 2) = 420;
+    exp(1, 2) = 522;
+    exp(2, 2) = 624;
+    
+    TINYTEST_ASSERT(exp == X);
+    
+    X(0, 0) = 19;
+    X(1, 0) = 20;
+    X(2, 0) = 21;
+    X(0, 1) = 22;
+    X(1, 1) = 23;
+    X(2, 1) = 24;
+    X(0, 2) = 25;
+    X(1, 2) = 26;
+    X(2, 2) = 27;
+    
+    // Y = alpha*(A'*X) + beta*Y
+    X = S.multiply(true, 2, D);
+    
+    exp(0, 0) = 136;
+    exp(1, 0) = 334;
+    exp(2, 0) = 532;
+    exp(0, 1) = 172;
+    exp(1, 1) = 424;
+    exp(2, 1) = 676;
+    exp(0, 2) = 208;
+    exp(1, 2) = 514;
+    exp(2, 2) = 820;
+    
+    TINYTEST_ASSERT(exp == X);
     
     return 1;
 }

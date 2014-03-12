@@ -111,6 +111,8 @@ namespace oocholmod {
         friend DenseMatrix solve(const SparseMatrix& A, const DenseMatrix& b);
         friend DenseMatrix solve(const Factor& F, const DenseMatrix& b);
         
+        friend class SparseMatrix;
+        
         // Print
         friend std::ostream& operator<<(std::ostream& os, const DenseMatrix& A);
         

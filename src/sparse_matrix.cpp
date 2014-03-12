@@ -546,6 +546,21 @@ namespace oocholmod {
         return move(RHS) * LHS;
     }
     
+    // Computes result = alpha*(A*X) + beta*Y (where this == A) or Y = alpha*(A'*X) + beta*Y when transpose is true
+    // transpose is ignores if matrix is symmetric of Hermitian
+    void SparseMatrix::multiply(bool transpose, double alpha, double beta, const DenseMatrix& X, DenseMatrix& result){
+#ifdef DEBUG
+        assert(this->symmetry == Symmetry::ASYMMETRIC || !transpose);
+#endif
+        cholmod_sdmult(sparse, transpose, &alpha, &beta, X.dense, result.dense, ConfigSingleton::getCommonPtr());
+    }
+    
+    DenseMatrix SparseMatrix::multiply(bool transpose, double alpha, const DenseMatrix& X){
+        DenseMatrix res{getRows(), X.getColumns(), 0.0};
+        multiply(transpose, alpha, 0, X, res);
+        return res;
+    }
+    
     
     DenseMatrix operator*(const DenseMatrix& LHS, const SparseMatrix& RHS)
     {

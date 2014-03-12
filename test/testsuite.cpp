@@ -49,6 +49,10 @@ TINYTEST_ADD_TEST(DenseSubstractionTest);
 TINYTEST_ADD_TEST(SparseSymmetrize);
 TINYTEST_ADD_TEST(SparseBeginEnd);
 TINYTEST_ADD_TEST(DenseBeginEnd);
+
+TINYTEST_ADD_TEST(SparseMultiply);
+TINYTEST_ADD_TEST(SparseMultiplyNoRes);
+
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();

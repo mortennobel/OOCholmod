@@ -99,4 +99,8 @@ int SparseBeginEnd();
 
 int DenseBeginEnd();
 
+int SparseMultiply();
+
+int SparseMultiplyNoRes();
+
 #endif /* defined(__OOCholmod__oocholmodtest__) */
