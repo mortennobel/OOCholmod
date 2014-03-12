@@ -111,10 +111,8 @@ namespace oocholmod {
     void DenseMatrix::fill(double value)
     {
         double *data = getData();
-        for (int c = 0; c < ncol; c++){
-            for (int r = 0; r < nrow; r++){
-                data[c*nrow + r] = value;
-            }
+        for (int i = 0; i < ncol * nrow; i++){
+            data[i] = value;
         }
     }
     
