@@ -119,9 +119,9 @@ namespace oocholmod {
         double *getData();
         const double *getData() const;
         
-        int getRows() const;
+        unsigned int getRows() const;
         
-        int getColumns() const;
+        unsigned int getColumns() const;
         
         DenseMatrix copy() const;
         void zero();
@@ -182,9 +182,9 @@ namespace oocholmod {
     inline double *DenseMatrix::getData(){ return (double *)(dense->x); };
     inline const double *DenseMatrix::getData() const { return (double *)(dense->x); };
     
-    inline int DenseMatrix::getRows() const{ return nrow; }
+    inline unsigned int DenseMatrix::getRows() const{ return nrow; }
     
-    inline int DenseMatrix::getColumns() const{ return ncol; }
+    inline unsigned int DenseMatrix::getColumns() const{ return ncol; }
     
 }
 

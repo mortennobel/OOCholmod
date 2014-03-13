@@ -164,9 +164,9 @@ namespace oocholmod {
         void setSymmetry(Symmetry symmetry);
         Symmetry getSymmetry() const { return symmetry; }
         
-        int getRows() const { return nrow; }
+        unsigned int getRows() const { return nrow; }
         
-        int getColumns() const { return ncol; }
+        unsigned int getColumns() const { return ncol; }
         
         void swap(SparseMatrix& other);
         
