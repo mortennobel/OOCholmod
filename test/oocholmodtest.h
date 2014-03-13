@@ -103,4 +103,6 @@ int SparseMultiply();
 
 int SparseMultiplyNoRes();
 
+int SparseMultiplyTranspose();
+
 #endif /* defined(__OOCholmod__oocholmodtest__) */

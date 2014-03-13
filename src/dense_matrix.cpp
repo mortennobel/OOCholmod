@@ -468,9 +468,7 @@ namespace oocholmod {
         cholmod_free_dense(&dense, ConfigSingleton::getCommonPtr());
         dense = d;
         
-        int temp = nrow;
-        nrow = ncol;
-        ncol = temp;
+        std::swap(nrow, ncol);
     }
     
     DenseMatrix transposed(const DenseMatrix& M)

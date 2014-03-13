@@ -551,6 +551,15 @@ namespace oocholmod {
     void SparseMatrix::multiply(bool transpose, double alpha, double beta, const DenseMatrix& X, DenseMatrix& result){
 #ifdef DEBUG
         assert(this->symmetry == Symmetry::ASYMMETRIC || !transpose);
+        if (!transpose){
+            assert(getRows() == result.getRows());
+            assert(X.getColumns() == result.getColumns());
+            assert(getColumns() == X.getRows());
+        } else {
+            assert(getColumns() == result.getRows());
+            assert(X.getColumns() == result.getColumns());
+            assert(getRows() == X.getRows());
+        }
 #endif
         cholmod_sdmult(sparse, transpose, &alpha, &beta, X.dense, result.dense, ConfigSingleton::getCommonPtr());
     }

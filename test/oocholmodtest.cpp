@@ -1290,3 +1290,43 @@ int SparseMultiplyNoRes(){
     
     return 1;
 }
+
+int SparseMultiplyTranspose(){
+    SparseMatrix S{1,3};
+    S(0, 0) = 1;
+    S(0, 1) = 4;
+    S(0, 2) = 7;
+    S.build();
+    
+    DenseMatrix D{3,1,0};
+    D(0, 0) = 10;
+    D(1, 0) = 11;
+    D(2, 0) = 12;
+    
+    DenseMatrix X{1,1,0};
+    
+    // alpha*(A*X) + beta*Y
+    S.multiply(false, 1, 0, D, X);
+    
+    DenseMatrix exp{1,1,0};
+    exp(0, 0) = 138;
+    
+    D.transpose();
+    X = DenseMatrix{3,3,0};
+    S.multiply(true, 1, 0, D, X);
+    
+    exp = DenseMatrix{3,3,0};
+    exp(0, 0) = 10;
+    exp(1, 0) = 40;
+    exp(2, 0) = 70;
+    exp(0, 1) = 11;
+    exp(1, 1) = 44;
+    exp(2, 1) = 77;
+    exp(0, 2) = 12;
+    exp(1, 2) = 48;
+    exp(2, 2) = 84;
+    TINYTEST_ASSERT(exp == X);
+    
+    return 1;
+}
+
