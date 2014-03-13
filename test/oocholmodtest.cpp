@@ -1310,6 +1310,10 @@ int SparseMultiplyTranspose(){
     
     DenseMatrix exp{1,1,0};
     exp(0, 0) = 138;
+    TINYTEST_ASSERT(exp == X);
+    
+    X = S.multiply(false, 1, D);
+    TINYTEST_ASSERT(exp == X);
     
     D.transpose();
     X = DenseMatrix{3,3,0};
@@ -1327,6 +1331,8 @@ int SparseMultiplyTranspose(){
     exp(2, 2) = 84;
     TINYTEST_ASSERT(exp == X);
     
+    X = S.multiply(true, 1, D);
+    TINYTEST_ASSERT(exp == X);
     return 1;
 }
 

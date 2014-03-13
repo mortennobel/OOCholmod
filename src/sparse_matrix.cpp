@@ -565,7 +565,8 @@ namespace oocholmod {
     }
     
     DenseMatrix SparseMatrix::multiply(bool transpose, double alpha, const DenseMatrix& X){
-        DenseMatrix res{getRows(), X.getColumns(), 0.0};
+        unsigned int rows = transpose?getColumns():getRows();
+        DenseMatrix res{rows, X.getColumns(), 0.0};
         multiply(transpose, alpha, 0, X, res);
         return res;
     }
