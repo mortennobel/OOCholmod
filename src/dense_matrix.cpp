@@ -410,6 +410,35 @@ namespace oocholmod {
         return *this;
     }
     
+    void DenseMatrix::multiply(bool transposeA, bool transposeB, double alpha, double beta, const DenseMatrix& B,
+                               DenseMatrix& C){
+        auto transA = transposeA ? CblasTrans : CblasNoTrans;
+        auto transB = transposeB ? CblasTrans : CblasNoTrans;
+        int M = transposeA ? ncol : nrow;
+        int N = transposeB ? B.nrow : B.ncol;
+        int K = transposeA ? nrow : ncol;
+        int LDA = nrow; // stride
+        int LDB = B.nrow; // stride
+        int LDC = C.nrow; // stride
+#ifdef DEBUG
+        assert(M == C.nrow);
+        assert(N == C.ncol);
+#endif
+#ifdef USE_ACML
+        dgemm(CblasNoTrans, transA, transB, M, N, K, alpha, getData(), LDA, B.getData(), LDB, beta, C.getData(), LDC);
+#else
+        cblas_dgemm(CblasColMajor, transA, transB, M, N, K, alpha, getData(), LDA, B.getData(), LDB, beta, C.getData(), LDC);
+#endif
+    }
+    
+    DenseMatrix DenseMatrix::multiply(bool transposeA, bool transposeB, double alpha, const DenseMatrix& B){
+        unsigned int M = transposeA ? ncol : nrow;
+        unsigned int N = transposeB ? B.nrow : B.ncol;
+        DenseMatrix C{M, N, 0};
+        multiply(transposeA, transposeB, alpha, 0, B, C);
+        return C;
+    }
+    
     DenseMatrix operator*(const DenseMatrix& LHS, const DenseMatrix& RHS)
     {
 #ifdef DEBUG

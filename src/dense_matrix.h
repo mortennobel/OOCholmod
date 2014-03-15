@@ -126,6 +126,12 @@ namespace oocholmod {
         DenseMatrix copy() const;
         void zero();
         
+        // Computes  perform one of the matrix-matrix operations   C := alpha*op( A )*op( B ) + beta*C,
+        // this is matrix A
+        // op(N) is transposed if transposeN is true
+        void multiply(bool transposeA, bool transposeB, double alpha, double beta, const DenseMatrix& B, DenseMatrix& C);
+        DenseMatrix multiply(bool transposeA, bool transposeB, double alpha, const DenseMatrix& B);
+        
         // assumes that matrix is 1xN or Mx1
         // computes the L^2 norm of the vector
         double length() const;

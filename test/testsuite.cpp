@@ -53,6 +53,11 @@ TINYTEST_ADD_TEST(DenseBeginEnd);
 TINYTEST_ADD_TEST(SparseMultiply);
 TINYTEST_ADD_TEST(SparseMultiplyNoRes);
 TINYTEST_ADD_TEST(SparseMultiplyTranspose);
+
+TINYTEST_ADD_TEST(DenseMultiply);
+TINYTEST_ADD_TEST(DenseMultiplyNoRes);
+TINYTEST_ADD_TEST(DenseMultiplyTranspose);
+
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();

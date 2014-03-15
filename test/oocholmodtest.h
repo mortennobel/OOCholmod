@@ -105,4 +105,12 @@ int SparseMultiplyNoRes();
 
 int SparseMultiplyTranspose();
 
+int DenseMultiply();
+
+int DenseMultiplyNoRes();
+
+int DenseMultiplyTranspose();
+
+
+
 #endif /* defined(__OOCholmod__oocholmodtest__) */
