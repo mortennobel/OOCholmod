@@ -1525,3 +1525,25 @@ int DenseMultiplyTranspose(){
     
     return 1;
 }
+
+int DenseMultiplyAddTo(){
+    DenseMatrix S{1,3,0};
+    S(0, 0) = 1;
+    S(0, 1) = 4;
+    S(0, 2) = 7;
+    
+    DenseMatrix X{1,3,0};
+    X(0, 0) = 2;
+    X(0, 1) = 3;
+    X(0, 2) = 4;
+    S.multiplyAddTo(2, X);
+
+    DenseMatrix Exp{1,3,0};
+    Exp(0, 0) = 1*2+2;
+    Exp(0, 1) = 4*2+3;
+    Exp(0, 2) = 7*2+4;
+    
+    TINYTEST_ASSERT(Exp == X);
+    
+    return 1;
+}

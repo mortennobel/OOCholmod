@@ -465,6 +465,22 @@ namespace oocholmod {
         return res;
     }
     
+    void DenseMatrix::multiplyAddTo(double alpha, DenseMatrix& C){
+#ifdef DEBUG
+        assert(getRows() == C.getRows());
+        assert(getColumns() == C.getColumns());
+#endif
+        int length = nrow * ncol;
+        const double *data = getData();
+        double *cData = C.getData();
+#ifdef USE_ACML
+        daxpy(length, alpha, data, 1, cData, 1);
+#else
+        cblas_daxpy(length, alpha, data, 1, cData, 1);
+#endif
+    }
+
+    
     bool DenseMatrix::operator==(const DenseMatrix& RHS) const {
         if (nrow != RHS.nrow || ncol != RHS.ncol){
             return false;

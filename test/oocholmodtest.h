@@ -111,6 +111,6 @@ int DenseMultiplyNoRes();
 
 int DenseMultiplyTranspose();
 
-
+int DenseMultiplyAddTo();
 
 #endif /* defined(__OOCholmod__oocholmodtest__) */

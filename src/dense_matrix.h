@@ -126,6 +126,9 @@ namespace oocholmod {
         DenseMatrix copy() const;
         void zero();
         
+        // C = alpha * A + C
+        void multiplyAddTo(double alpha, DenseMatrix& C);
+        
         // Computes  perform one of the matrix-matrix operations   C := alpha*op( A )*op( B ) + beta*C,
         // this is matrix A
         // op(N) is transposed if transposeN is true
