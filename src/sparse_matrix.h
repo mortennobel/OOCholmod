@@ -97,10 +97,10 @@ namespace oocholmod {
         friend SparseMatrix&& operator-(SparseMatrix&& LHS, SparseMatrix&& RHS);
         
         // Multiplication
-        friend SparseMatrix operator*(const SparseMatrix& LHS, const double& RHS);
-        friend SparseMatrix&& operator*(SparseMatrix&& LHS, const double& RHS);
-        friend SparseMatrix operator*(const double& LHS, const SparseMatrix& RHS);
-        friend SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS);
+        friend SparseMatrix operator*(const SparseMatrix& LHS, double RHS);
+        friend SparseMatrix&& operator*(SparseMatrix&& LHS, double RHS);
+        friend SparseMatrix operator*(double LHS, const SparseMatrix& RHS);
+        friend SparseMatrix&& operator*(double LHS, SparseMatrix&& RHS);
         
         friend SparseMatrix operator*(const SparseMatrix& LHS, const SparseMatrix& RHS);
         

@@ -515,7 +515,7 @@ namespace oocholmod {
         return SparseMatrix(sparse);
     }
     
-    SparseMatrix operator*(const SparseMatrix& LHS, const double& RHS)
+    SparseMatrix operator*(const SparseMatrix& LHS, double RHS)
     {
         assert(LHS.sparse);
         cholmod_dense *dense = cholmod_zeros(1, 1, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
@@ -526,7 +526,7 @@ namespace oocholmod {
         return SparseMatrix(sparse);
     }
     
-    SparseMatrix&& operator*(SparseMatrix&& LHS, const double& RHS)
+    SparseMatrix&& operator*(SparseMatrix&& LHS, double RHS)
     {
         assert(LHS.sparse);
         cholmod_dense *dense = cholmod_zeros(1, 1, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
@@ -536,12 +536,12 @@ namespace oocholmod {
         return move(LHS);
     }
     
-    SparseMatrix operator*(const double& LHS, const SparseMatrix& RHS)
+    SparseMatrix operator*(double LHS, const SparseMatrix& RHS)
     {
         return RHS * LHS;
     }
     
-    SparseMatrix&& operator*(const double& LHS, SparseMatrix&& RHS)
+    SparseMatrix&& operator*(double LHS, SparseMatrix&& RHS)
     {
         return move(RHS) * LHS;
     }

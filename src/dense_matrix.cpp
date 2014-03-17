@@ -366,7 +366,7 @@ namespace oocholmod {
     }
     
     // Multiplication
-    DenseMatrix operator*(const DenseMatrix& LHS, const double& RHS)
+    DenseMatrix operator*(const DenseMatrix& LHS, double RHS)
     {
 #ifdef DEBUG
         assert(LHS.dense);
@@ -381,7 +381,7 @@ namespace oocholmod {
         return res;
     }
     
-    DenseMatrix&& operator*(DenseMatrix&& LHS, const double& RHS)
+    DenseMatrix&& operator*(DenseMatrix&& LHS, double RHS)
     {
 #ifdef DEBUG
         assert(LHS.dense);
@@ -394,17 +394,17 @@ namespace oocholmod {
         return move(LHS);
     }
     
-    DenseMatrix operator*(const double& LHS, const DenseMatrix& RHS)
+    DenseMatrix operator*(double LHS, const DenseMatrix& RHS)
     {
         return RHS*LHS;
     }
     
-    DenseMatrix&& operator*(const double& LHS, DenseMatrix&& RHS)
+    DenseMatrix&& operator*(double LHS, DenseMatrix&& RHS)
     {
         return move(RHS)*LHS;
     }
     
-    DenseMatrix& DenseMatrix::operator*=(const double& RHS)
+    DenseMatrix& DenseMatrix::operator*=(double RHS)
     {
         move(*this) * RHS;
         return *this;
