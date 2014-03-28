@@ -16,18 +16,25 @@ namespace oocholmod {
     
     unique_ptr<cholmod_common> common;
     
-    void ConfigSingleton::config(cholmod_common *config){
-        destroy();
-        common.reset(config);
-        cholmod_start(common.get());
+    void errorHandler(int status, const char *file,
+                      int line, const char *message){
+        cout << "OOCholmod error handler "<<status <<" "<<file<<" "<<line<<" "<<message<<endl;
     }
     
     cholmod_common *ConfigSingleton::getCommonPtr(){
         if (!common.get()){
             common.reset(new cholmod_common());
             cholmod_start(common.get());
+            common->error_handler = errorHandler;
+            
         }
         return common.get();
+    }
+    
+    void ConfigSingleton::config(cholmod_common *config){
+        destroy();
+        common.reset(config);
+        cholmod_start(common.get());
     }
     
     void ConfigSingleton::destroy(){
