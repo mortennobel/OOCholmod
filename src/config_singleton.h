@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <cholmod.h>
+#include <string>
 
 namespace oocholmod {
     
@@ -18,6 +19,7 @@ namespace oocholmod {
 		static void config(cholmod_common *);
 		static cholmod_common *getCommonPtr();
 		static void destroy();
+        static std::string getLastError();
     private:
         ConfigSingleton(){};
     };

@@ -15,10 +15,11 @@ namespace oocholmod {
     using namespace std;
     
     unique_ptr<cholmod_common> common;
+    string lastError;
     
     void errorHandler(int status, const char *file,
                       int line, const char *message){
-        cout << "OOCholmod error handler "<<status <<" "<<file<<" "<<line<<" "<<message<<endl;
+        lastError = string{message};
     }
     
     cholmod_common *ConfigSingleton::getCommonPtr(){
@@ -42,6 +43,10 @@ namespace oocholmod {
             cholmod_finish(common.get()) ;
             common.reset(nullptr);
         }
+    }
+    
+    string ConfigSingleton::getLastError(){
+        return lastError;
     }
 }
 

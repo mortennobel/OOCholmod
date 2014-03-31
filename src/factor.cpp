@@ -10,6 +10,7 @@
 #include "sparse_matrix.h"
 #include "dense_matrix.h"
 #include "config_singleton.h"
+#include "ooc_exception.h"
 
 using namespace std;
 
@@ -56,7 +57,7 @@ namespace oocholmod {
         }
     }
     
-    bool Factor::factorize(const SparseMatrix& A){
+    void Factor::factorize(const SparseMatrix& A){
 #ifdef DEBUG
         assert(A.symmetry != ASYMMETRIC);
         assert(A.sparse);
@@ -64,11 +65,11 @@ namespace oocholmod {
 #endif
         auto Common = ConfigSingleton::getCommonPtr();
         cholmod_factorize(A.sparse, factor, Common) ; /* factorize */
-        if (Common->status == CHOLMOD_OK){
-            return true;
-        }
+        auto status = Common->status;
         Common->status = 0;
-        return false;
+        if (status != CHOLMOD_OK){
+            throw OOCException(ConfigSingleton::getLastError());
+        }
     }
     
     DenseMatrix solve(const Factor& F, const DenseMatrix& b)

@@ -17,6 +17,7 @@
 #include "sparse_matrix.h"
 #include "factor.h"
 #include "dense_matrix.h"
+#include "ooc_exception.h"
 #include "timer.h"
 
 using namespace std;
@@ -198,7 +199,7 @@ int SolveSparseDenseFactorTestObj()
     
     Factor F;
     F = A.analyze();
-    bool res = F.factorize(A);
+    F.factorize(A);
     DenseMatrix x = solve(F, b);
     double expected[] = {2.78571f,4.57143f,-1.35714f};
     assertEqual(expected, x.getData(), 3);
@@ -403,8 +404,7 @@ int TestCaseFunctionOperatorObj(){
     
     // Ax = b
     Factor factor = A.analyze();
-    bool res = factor.factorize(A);
-    TINYTEST_ASSERT(res);
+    factor.factorize(A);
     
     DenseMatrix x = solve(factor, b);
     double expected[] = {2.78571f,4.57143f,-1.35714f};
@@ -664,7 +664,13 @@ int SingularTestObj(){
     b(2) = 0;
     
     Factor factor = A.analyze();
-    bool res = factor.factorize(A);
+    
+    bool res = true;
+    try{
+        factor.factorize(A);
+    } catch (OOCException &ce){
+        res = false;
+    }
     TINYTEST_ASSERT(!res);
     DenseMatrix x = solve(factor, b);
     return 1;
