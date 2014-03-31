@@ -666,6 +666,7 @@ int SingularTestObj(){
     Factor factor = A.analyze();
     
     bool res = true;
+#ifndef OOC_NO_EXCEPTION
     try{
         factor.factorize(A);
     } catch (OOCException &ce){
@@ -673,6 +674,7 @@ int SingularTestObj(){
     }
     TINYTEST_ASSERT(!res);
     DenseMatrix x = solve(factor, b);
+#endif
     return 1;
 }
 
@@ -1555,8 +1557,8 @@ int DenseMultiplyAddTo(){
 }
 
 int SingularNoExceptionTestObj(){
+#ifdef OOC_NO_EXCEPTION
     OOCException::clearLastException();
-    ConfigSingleton::setUseException(false);
     SparseMatrix A{3,3, true};
     
     A(2, 2) = 1;
@@ -1564,16 +1566,10 @@ int SingularNoExceptionTestObj(){
     A.build();
     Factor factor = A.analyze();
     
-    bool res = true;
-    try{
-        factor.factorize(A);
-    } catch (OOCException &ce){
-        res = false;
-    }
-    TINYTEST_ASSERT(res);
+    factor.factorize(A);
+    
     TINYTEST_ASSERT(OOCException::getLastException()!=nullptr);
     cout << "Manual caught exception: "<<OOCException::getLastException()->what()<<endl;
-    ConfigSingleton::setUseException(false);
-    
+#endif
     return 1;
 }

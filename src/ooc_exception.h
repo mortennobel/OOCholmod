@@ -15,12 +15,16 @@ namespace oocholmod {
     public:
         static void createOOCException(std::string what);
         const char* what() const throw() override;
+#ifdef OOC_NO_EXCEPTION
         // add support for environments without exception support
         static OOCException* getLastException();
         static void clearLastException();
+#endif
     private:
         OOCException(std::string what);
         std::string whatMsg;
+#ifdef OOC_NO_EXCEPTION
         static OOCException *lastException;
+#endif
     };
 }

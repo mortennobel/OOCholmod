@@ -220,7 +220,12 @@ namespace oocholmod {
             double * ptr = static_cast<double*>(sparseMatrix->sparse->x);
             return *(ptr + pos);
         } else {
+#ifdef OOC_NO_EXCEPTION
+            static double res = 0;
+            return res;
+#else
             throw std::runtime_error("Invalid matrix state");
+#endif
         }
     }
     
