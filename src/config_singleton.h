@@ -13,15 +13,20 @@
 #include <string>
 
 namespace oocholmod {
+    class DenseMatrix;
+    class Factor;
     
 	class ConfigSingleton{
     public:
 		static void config(cholmod_common *);
 		static cholmod_common *getCommonPtr();
 		static void destroy();
-        static std::string getLastError();
+        
     private:
+        static std::string getLastError();
         ConfigSingleton(){};
+        friend class DenseMatrix;
+        friend class Factor;
     };
     
 }
