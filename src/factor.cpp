@@ -68,7 +68,7 @@ namespace oocholmod {
         auto status = Common->status;
         Common->status = 0;
         if (status != CHOLMOD_OK){
-            throw OOCException(ConfigSingleton::getLastError());
+            OOCException::createOOCException(ConfigSingleton::getLastError());
         }
     }
     

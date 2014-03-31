@@ -17,10 +17,21 @@ namespace oocholmod {
     unique_ptr<cholmod_common> common;
     string lastError;
     
+    bool ConfigSingleton::exceptionEnabled = true;
+    
     void errorHandler(int status, const char *file,
                       int line, const char *message){
         lastError = string{message};
     }
+    
+    bool ConfigSingleton::isUsingException(){
+        return exceptionEnabled;
+    }
+    
+    void ConfigSingleton::setUseException(bool use){
+        exceptionEnabled = use;
+    }
+
     
     cholmod_common *ConfigSingleton::getCommonPtr(){
         if (!common.get()){

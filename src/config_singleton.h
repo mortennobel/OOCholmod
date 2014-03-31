@@ -21,8 +21,10 @@ namespace oocholmod {
 		static void config(cholmod_common *);
 		static cholmod_common *getCommonPtr();
 		static void destroy();
-        
+        static bool isUsingException();
+        static void setUseException(bool use);
     private:
+        static bool exceptionEnabled;
         static std::string getLastError();
         ConfigSingleton(){};
         friend class DenseMatrix;

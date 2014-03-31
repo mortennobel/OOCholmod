@@ -7,8 +7,20 @@
 //
 
 #include "ooc_exception.h"
+#include "config_singleton.h"
 
 namespace oocholmod {
+    
+    OOCException *OOCException::lastException = nullptr;
+    
+    void OOCException::createOOCException(std::string what){
+        clearLastException();
+        lastException = new OOCException(what);
+        if (ConfigSingleton::isUsingException()){
+            throw OOCException{what};
+        }
+    }
+    
     OOCException::OOCException(std::string what)
     :whatMsg{what}
     {}
@@ -16,5 +28,14 @@ namespace oocholmod {
     
     const char* OOCException::what() const throw() {
         return whatMsg.c_str();
+    }
+    
+    OOCException* OOCException::getLastException(){
+        return lastException;
+    }
+    
+    void OOCException::clearLastException(){
+        delete lastException;
+        lastException = nullptr;
     }
 }

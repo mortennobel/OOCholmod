@@ -551,10 +551,10 @@ namespace oocholmod {
         dgetrf_(&N, &N, (double*)dense->x, &N, ipiv, &info);
         if (info != 0){
             if (info < 0){
-                throw OOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
+                OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
             if (info > 0){
-                throw OOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
+                OOCException::createOOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
             }
         }
         dgetri_(&N, (double*)dense->x, &N, ipiv, work, &lwork, &info);
@@ -581,10 +581,10 @@ namespace oocholmod {
         dgetrf_(&N, &N, (double*)res->x, &N, ipiv, &info);
         if (info != 0){
             if (info < 0){
-                throw OOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
+                OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
             if (info > 0){
-                throw OOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
+                OOCException::createOOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
             }
         }
 
@@ -621,10 +621,10 @@ namespace oocholmod {
         dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, (double*)res->x, &ldb, &info);
         if (info != 0){
             if (info < 0){
-                throw OOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
+                OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
             if (info > 0){
-                throw OOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
+                OOCException::createOOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
             }
         }
 		delete [] ipiv;
@@ -652,10 +652,10 @@ namespace oocholmod {
         dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, (double*)res->x, &ldb, &info);
         if (info != 0){
             if (info < 0){
-                throw OOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
+                OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
             if (info > 0){
-                throw OOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
+                OOCException::createOOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
             }
         }
 		delete [] ipiv;
@@ -683,10 +683,10 @@ namespace oocholmod {
         dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, b.getData(), &ldb, &info);
         if (info != 0){
             if (info < 0){
-                throw OOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
+                OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
             if (info > 0){
-                throw OOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
+                OOCException::createOOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
             }
         }
 		delete [] ipiv;
@@ -713,10 +713,10 @@ namespace oocholmod {
         dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, b.getData(), &ldb, &info);
         if (info != 0){
             if (info < 0){
-                throw OOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
+                OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
             if (info > 0){
-                throw OOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
+                OOCException::createOOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
             }
         }
 		delete [] ipiv;

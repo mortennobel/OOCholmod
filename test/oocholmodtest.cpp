@@ -1553,3 +1553,27 @@ int DenseMultiplyAddTo(){
     
     return 1;
 }
+
+int SingularNoExceptionTestObj(){
+    OOCException::clearLastException();
+    ConfigSingleton::setUseException(false);
+    SparseMatrix A{3,3, true};
+    
+    A(2, 2) = 1;
+    
+    A.build();
+    Factor factor = A.analyze();
+    
+    bool res = true;
+    try{
+        factor.factorize(A);
+    } catch (OOCException &ce){
+        res = false;
+    }
+    TINYTEST_ASSERT(res);
+    TINYTEST_ASSERT(OOCException::getLastException()!=nullptr);
+    cout << "Manual caught exception: "<<OOCException::getLastException()->what()<<endl;
+    ConfigSingleton::setUseException(false);
+    
+    return 1;
+}
