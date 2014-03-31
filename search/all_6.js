@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['sparsematrix',['SparseMatrix',['../classoocholmod_1_1_sparse_matrix.html',1,'oocholmod']]],
+  ['sparsematrix',['SparseMatrix',['../classoocholmod_1_1_sparse_matrix.html#aedc0fa96d47190aaefd5951b3e3721e6',1,'oocholmod::SparseMatrix']]],
+  ['sparsematrixiter',['SparseMatrixIter',['../classoocholmod_1_1_sparse_matrix_iter.html',1,'oocholmod']]]
+];
