@@ -426,7 +426,7 @@ namespace oocholmod {
         assert(N == C.ncol);
 #endif
 #ifdef USE_ACML
-        dgemm(CblasNoTrans, transA, transB, M, N, K, alpha, getData(), LDA, B.getData(), LDB, beta, C.getData(), LDC);
+        dgemm(transA, transB, M, N, K, alpha, getData(), LDA, const_cast<double*>(B.getData()), LDB, beta, C.getData(), LDC);
 #else
         cblas_dgemm(CblasColMajor, transA, transB, M, N, K, alpha, getData(), LDA, B.getData(), LDB, beta, C.getData(), LDC);
 #endif
@@ -472,7 +472,7 @@ namespace oocholmod {
         assert(getColumns() == C.getColumns());
 #endif
         int length = nrow * ncol;
-        const double *data = getData();
+        double *data = getData();
         double *cData = C.getData();
 #ifdef USE_ACML
         daxpy(length, alpha, data, 1, cData, 1);
