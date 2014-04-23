@@ -228,9 +228,6 @@ namespace oocholmod {
                                         x(j)+=((double*)sparse->x)[idx];
                                 }
                         }
-#ifdef DEBUG
-                        printf("A[%d,%d]=%f \n",row,j,((double*)sparse->x)[idx]);
-#endif
                         idx++;
                 }
         }
