@@ -1,11 +1,11 @@
 # CMakeLists of OOCholmod src
 
-set(INCS config_singleton.h dense_matrix.h factor.h sparse_matrix.h)
-set(SRCS config_singleton.cpp dense_matrix.cpp factor.cpp sparse_matrix.cpp)
+set(INCS config_singleton.h dense_matrix.h factor.h ooc_exception.h sparse_matrix.h)
+set(SRCS config_singleton.cpp dense_matrix.cpp factor.cpp ooc_exception.cpp sparse_matrix.cpp)
 add_library(ooholdmod STATIC ${SRCS} ${INCS})
 
- if (CHOLMOD_LIBRARY)
-	target_link_libraries(ooholdmod "${CHOLMOD_LIBRARY}")
+ if (SUITESPARSE_LIBRARY)
+	target_link_libraries(ooholdmod "${SUITESPARSE_LIBRARY}")
  endif ()
  if (USE_ACML)
 	set(compDefs ${compDefs} USE_ACML=1)

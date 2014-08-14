@@ -40,6 +40,13 @@ Note that sparse matrices may be slightly faster to update after being build tha
 
 See alse test/object.h
 
+Install
+=======
+For Visual Studio see this:
+
+https://github.com/mortennobel/OOCholmod/wiki/Compile-on-MSVC-2012--or-2013
+
+
 API documentation:
 ==================
 

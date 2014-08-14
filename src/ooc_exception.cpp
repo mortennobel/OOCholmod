@@ -34,7 +34,7 @@ namespace oocholmod {
 #endif
     
     OOCException::OOCException(std::string what)
-    :whatMsg{what}
+    :whatMsg(what)
     {}
     
     

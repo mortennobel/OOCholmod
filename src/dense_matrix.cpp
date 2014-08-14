@@ -547,9 +547,12 @@ namespace oocholmod {
         __CLPK_integer *ipiv = new __CLPK_integer[N+1];
         __CLPK_doublereal *work = new __CLPK_doublereal[lwork];
         __CLPK_integer info;
-        
+#ifdef USE_ACML
+		dgetrf(N, N, (double*)dense->x, N, ipiv, &info);
+#else
         dgetrf_(&N, &N, (double*)dense->x, &N, ipiv, &info);
-        if (info != 0){
+#endif        
+		if (info != 0){
             if (info < 0){
                 OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
@@ -557,8 +560,11 @@ namespace oocholmod {
                 OOCException::createOOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
             }
         }
+#ifdef USE_ACML
+		dgetri(N, (double*)dense->x, N, ipiv, &info);
+#else
         dgetri_(&N, (double*)dense->x, &N, ipiv, work, &lwork, &info);
-        
+#endif        
         delete[] ipiv;
         delete[] work;
     }
@@ -578,8 +584,12 @@ namespace oocholmod {
         __CLPK_integer info;
         
         cholmod_dense *res = cholmod_copy_dense(M.dense, ConfigSingleton::getCommonPtr());
+#ifdef USE_ACML
+		dgetrf(N, N, (double*)res->x, N, ipiv, &info);
+#else
         dgetrf_(&N, &N, (double*)res->x, &N, ipiv, &info);
-        if (info != 0){
+#endif
+		if (info != 0){
             if (info < 0){
                 OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
@@ -587,9 +597,11 @@ namespace oocholmod {
                 OOCException::createOOCException(string{"U("}+to_string(-info)+","+to_string(-info)+") is exactly zero. The factor U is exactly singular.");
             }
         }
-
+#ifdef USE_ACML
+		dgetri(N, (double*)res->x, N, ipiv, &info);
+#else
         dgetri_(&N, (double*)res->x, &N, ipiv, work, &lwork, &info);
-        
+#endif        
         delete[] ipiv;
         delete[] work;
         return DenseMatrix(res);
@@ -617,9 +629,12 @@ namespace oocholmod {
         
         cholmod_dense *a = cholmod_copy_dense(A.dense, ConfigSingleton::getCommonPtr());
         cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
-        
+#ifdef USE_ACML
+		dgesv(N, nrhs, (double*)a->x, lda, ipiv, (double*)res->x, ldb, &info);
+#else
         dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, (double*)res->x, &ldb, &info);
-        if (info != 0){
+#endif
+		if (info != 0){
             if (info < 0){
                 OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
@@ -649,8 +664,12 @@ namespace oocholmod {
         __CLPK_integer info;
         
         cholmod_dense *res = cholmod_copy_dense(b.dense, ConfigSingleton::getCommonPtr());
+#ifdef USE_ACML
+		dgesv(N, nrhs, A.getData(), lda, ipiv, (double*)res->x, ldb, &info);
+#else
         dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, (double*)res->x, &ldb, &info);
-        if (info != 0){
+#endif        
+		if (info != 0){
             if (info < 0){
                 OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
@@ -680,8 +699,12 @@ namespace oocholmod {
         __CLPK_integer info;
         
         cholmod_dense *a = cholmod_copy_dense(A.dense, ConfigSingleton::getCommonPtr());
+#ifdef USE_ACML
+		dgesv(N, nrhs, (double*)a->x, lda, ipiv, b.getData(), ldb, &info);
+#else
         dgesv_(&N, &nrhs, (double*)a->x, &lda, ipiv, b.getData(), &ldb, &info);
-        if (info != 0){
+#endif        
+		if (info != 0){
             if (info < 0){
                 OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }
@@ -709,9 +732,12 @@ namespace oocholmod {
         __CLPK_integer ldb = b.nrow;
         __CLPK_integer* ipiv = new __CLPK_integer[N];
         __CLPK_integer info;
-        
+#ifdef USE_ACML
+		dgesv(N, nrhs, A.getData(), lda, ipiv, b.getData(), ldb, &info);
+#else
         dgesv_(&N, &nrhs, A.getData(), &lda, ipiv, b.getData(), &ldb, &info);
-        if (info != 0){
+#endif        
+		if (info != 0){
             if (info < 0){
                 OOCException::createOOCException(string{"The "}+to_string(-info)+" -th argument had an illegal value");
             }

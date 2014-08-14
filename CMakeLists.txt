@@ -39,11 +39,11 @@ else (USE_ACML)
 	endif ()
 endif (USE_ACML)
  
-set(CHOLMOD_INCLUDE "" CACHE STRING "Location of Cholmod include")
-set(CHOLMOD_LIBRARY "" CACHE STRING "Location of Cholmod library")
+set(SUITESPARSE_INCLUDE "" CACHE STRING "Location of Cholmod include")
+set(SUITESPARSE_LIBRARY "" CACHE STRING "Location of Cholmod library")
  
- if (CHOLMOD_INCLUDE)
-	include_directories ("${CHOLMOD_INCLUDE}")
+ if (SUITESPARSE_INCLUDE)
+	include_directories ("${SUITESPARSE_INCLUDE}")
  endif ()
  
 # include header of scr
