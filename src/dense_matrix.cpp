@@ -24,12 +24,12 @@ typedef double __CLPK_doublereal;
 #ifdef NO_BLAS
 #include "oo_blas.h"
 #else
-#include <cblas.h>
+#include <Accelerate/Accelerate.h>
 #endif
 #ifdef NO_LAPACK
 #include "oo_lapack.h"
 #else
-#include <clapack.h>
+//#include <clapack.h>
 #endif
 #endif
 #include "dense_matrix.h"
