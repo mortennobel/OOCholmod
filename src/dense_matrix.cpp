@@ -21,15 +21,11 @@ typedef double __CLPK_doublereal;
 #define CblasLeft 'L'
 #define CblasUpper 'U'
 #else
-#ifdef NO_BLAS
-#include "oo_blas.h"
-#else
+#ifdef __APPLE__
 #include <Accelerate/Accelerate.h>
 #endif
-#ifdef NO_LAPACK
-#include "oo_lapack.h"
-#else
-//#include <clapack.h>
+#ifdef _WIN32
+#include <clapack.h>
 #endif
 #endif
 #include "dense_matrix.h"
