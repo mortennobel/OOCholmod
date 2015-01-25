@@ -192,8 +192,8 @@ namespace oocholmod {
         long key(unsigned int row, unsigned int column) const ndebug_noexcept;
         void assertValidIndex(unsigned int row, unsigned int column) const;
         void assertHasSparse() const;
-        void increaseTripletCapacity();
-        void assertValidInitAddValue(unsigned int row, unsigned int column) const;
+        void increaseTripletCapacity() ndebug_noexcept;
+        void assertValidInitAddValue(unsigned int row, unsigned int column) const ndebug_noexcept;
         
         int binarySearch(int *array, int low, int high, unsigned int value) const ndebug_noexcept;
         
@@ -201,7 +201,7 @@ namespace oocholmod {
         
         void createTriplet() ndebug_noexcept;
         
-        double& initAddValue(unsigned int row, unsigned int column) ;
+        double& initAddValue(unsigned int row, unsigned int column) ndebug_noexcept;
         
         double& getValue(unsigned int row, unsigned int column) ndebug_noexcept;
         
@@ -297,7 +297,7 @@ namespace oocholmod {
         jColumn = (int *)triplet->j;
     }
     
-    inline double& SparseMatrix::initAddValue(unsigned int row, unsigned int column)
+    inline double& SparseMatrix::initAddValue(unsigned int row, unsigned int column) ndebug_noexcept
     {
         if (!triplet){
             createTriplet();

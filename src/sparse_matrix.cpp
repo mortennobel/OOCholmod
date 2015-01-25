@@ -392,7 +392,7 @@ namespace oocholmod {
 #endif
     }
     
-    void SparseMatrix::increaseTripletCapacity(){
+    void SparseMatrix::increaseTripletCapacity() ndebug_noexcept {
         // grow size with factor 1.5
         maxTripletElements = (int)ceil(1.5f*maxTripletElements);
         auto newTriplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
@@ -407,7 +407,7 @@ namespace oocholmod {
         jColumn = (int *)triplet->j;
     }
     
-    void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column) const {
+    void SparseMatrix::assertValidInitAddValue(unsigned int row, unsigned int column) const ndebug_noexcept {
 #ifdef DEBUG
         assert(sparse == nullptr); // must be called before matrix build
         assert(row < nrow);
