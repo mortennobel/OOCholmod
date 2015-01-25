@@ -55,7 +55,7 @@ namespace oocholmod {
     {
     }
     
-    DenseMatrix::DenseMatrix(DenseMatrix&& move)
+    DenseMatrix::DenseMatrix(DenseMatrix&& move) ndebug_noexcept
     :dense(move.dense), nrow(move.nrow), ncol(move.ncol)
     {
         move.dense = nullptr;
@@ -63,7 +63,7 @@ namespace oocholmod {
         move.ncol = 0;
     }
     
-    DenseMatrix& DenseMatrix::operator=(DenseMatrix&& other)
+    DenseMatrix& DenseMatrix::operator=(DenseMatrix&& other) ndebug_noexcept
     {
         if (this != &other)
         {

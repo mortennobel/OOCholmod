@@ -51,7 +51,7 @@ namespace oocholmod {
 #endif
     }
     
-    SparseMatrix::SparseMatrix(SparseMatrix&& other)
+    SparseMatrix::SparseMatrix(SparseMatrix&& other) ndebug_noexcept
     :sparse(other.sparse), triplet(other.triplet), nrow(other.nrow), ncol(other.ncol), values(other.values), iRow(other.iRow), jColumn(other.jColumn), symmetry(other.symmetry), maxTripletElements(other.maxTripletElements)
     {
         other.sparse = nullptr;
@@ -63,7 +63,7 @@ namespace oocholmod {
         other.ncol = 0;
     }
     
-    SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other){
+    SparseMatrix& SparseMatrix::operator=(SparseMatrix&& other) ndebug_noexcept{
         if (this != &other){
             if (sparse != nullptr){
                 cholmod_free_sparse(&sparse, ConfigSingleton::getCommonPtr());

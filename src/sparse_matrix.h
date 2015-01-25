@@ -14,6 +14,14 @@
 
 #include "config_singleton.h"
 
+#ifndef ndebug_noexcept
+#   ifdef DEBUG
+#       define ndebug_noexcept
+#   else
+#       define ndebug_noexcept noexcept
+#   endif
+#endif
+
 namespace oocholmod {
     
     // forward declaration
@@ -67,8 +75,8 @@ namespace oocholmod {
         /// initialNumberOfElements. If exceeded (during initialization of the matrix) the number of elements will automatically grow with a factor of 1.5
         SparseMatrix(unsigned int nrow = 0, unsigned int ncol = 1, bool symmetric = false, int initialNumberOfElements = 200);
         SparseMatrix(cholmod_sparse *sparse);
-        SparseMatrix(SparseMatrix&& move);
-        SparseMatrix& operator=(SparseMatrix&& other);
+        SparseMatrix(SparseMatrix&& move) ndebug_noexcept;
+        SparseMatrix& operator=(SparseMatrix&& other) ndebug_noexcept;
         
         ~SparseMatrix();
         
@@ -170,9 +178,9 @@ namespace oocholmod {
         
         void swap(SparseMatrix& other);
         
-        double operator()(unsigned int row, unsigned int column = 0) const;
+        double operator()(unsigned int row, unsigned int column = 0) const ndebug_noexcept;
         
-        double& operator()(unsigned int row, unsigned int column = 0);
+        double& operator()(unsigned int row, unsigned int column = 0) ndebug_noexcept;
         
         bool operator==(const SparseMatrix& RHS) const;
         bool operator!=(const SparseMatrix& RHS) const;
@@ -181,23 +189,23 @@ namespace oocholmod {
     private:
         SparseMatrix(const SparseMatrix& that); // prevent copy constructor (no implementation)
         SparseMatrix operator=(const SparseMatrix& other); // prevent copy assignment operator (no implementation)
-        long key(unsigned int row, unsigned int column) const;
+        long key(unsigned int row, unsigned int column) const ndebug_noexcept;
         void assertValidIndex(unsigned int row, unsigned int column) const;
         void assertHasSparse() const;
         void increaseTripletCapacity();
         void assertValidInitAddValue(unsigned int row, unsigned int column) const;
         
-        int binarySearch(int *array, int low, int high, unsigned int value) const;
+        int binarySearch(int *array, int low, int high, unsigned int value) const ndebug_noexcept;
         
-        int getIndex(unsigned int row, unsigned int column) const;
+        int getIndex(unsigned int row, unsigned int column) const ndebug_noexcept;
         
-        void createTriplet();
+        void createTriplet() ndebug_noexcept;
         
-        double& initAddValue(unsigned int row, unsigned int column);
+        double& initAddValue(unsigned int row, unsigned int column) ;
         
-        double& getValue(unsigned int row, unsigned int column);
+        double& getValue(unsigned int row, unsigned int column) ndebug_noexcept;
         
-        double getValue(unsigned int row, unsigned int column) const;
+        double getValue(unsigned int row, unsigned int column) const ndebug_noexcept;
         
         cholmod_sparse *sparse;
         cholmod_triplet *triplet;
@@ -231,12 +239,12 @@ namespace oocholmod {
     
     
     
-    inline double SparseMatrix::operator()(unsigned int row, unsigned int column) const
+    inline double SparseMatrix::operator()(unsigned int row, unsigned int column) const ndebug_noexcept
     {
         return getValue(row, column);
     }
     
-    inline double& SparseMatrix::operator()(unsigned int row, unsigned int column)
+    inline double& SparseMatrix::operator()(unsigned int row, unsigned int column) ndebug_noexcept
     {
         if (sparse != nullptr){
             return getValue(row, column);
@@ -245,7 +253,7 @@ namespace oocholmod {
         }
     }
     
-    inline int SparseMatrix::binarySearch(int *array, int low, int high, unsigned int value) const {
+    inline int SparseMatrix::binarySearch(int *array, int low, int high, unsigned int value) const ndebug_noexcept {
         while (low <= high)
         {
             // http://googleresearch.blogspot.dk/2006/06/extra-extra-read-all-about-it-nearly.html
@@ -262,7 +270,7 @@ namespace oocholmod {
         return -1;
     }
     
-    inline int SparseMatrix::getIndex(unsigned int row, unsigned int column) const
+    inline int SparseMatrix::getIndex(unsigned int row, unsigned int column) const ndebug_noexcept
     {
 #if DEBUG
         assertValidIndex(row, column);
@@ -277,12 +285,12 @@ namespace oocholmod {
         return binarySearch(iRow, iFrom, iTo, row);
     }
     
-    inline long SparseMatrix::key(unsigned int row, unsigned int column) const {
+    inline long SparseMatrix::key(unsigned int row, unsigned int column) const ndebug_noexcept {
         int shiftBits = sizeof(long)*8/2; // shift half of the bits of a long
         return (((long)row)<<shiftBits)+column;
     }
     
-    inline void SparseMatrix::createTriplet(){
+    inline void SparseMatrix::createTriplet() ndebug_noexcept {
         triplet = cholmod_allocate_triplet(nrow, ncol, maxTripletElements, symmetry, CHOLMOD_REAL, ConfigSingleton::getCommonPtr());
         values = (double *)triplet->x;
         iRow = (int *)triplet->i;
@@ -305,7 +313,7 @@ namespace oocholmod {
         return values[triplet->nnz - 1];
     }
     
-    inline double& SparseMatrix::getValue(unsigned int row, unsigned int column)
+    inline double& SparseMatrix::getValue(unsigned int row, unsigned int column) ndebug_noexcept
     {
 #ifdef DEBUG
         assertHasSparse();
@@ -319,7 +327,7 @@ namespace oocholmod {
         return values[index];
     }
     
-    inline double SparseMatrix::getValue(unsigned int row, unsigned int column) const
+    inline double SparseMatrix::getValue(unsigned int row, unsigned int column) const ndebug_noexcept
     {
 #ifdef DEBUG
         assertHasSparse();

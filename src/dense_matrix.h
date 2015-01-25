@@ -21,6 +21,14 @@
 #endif
 #endif
 
+#ifndef ndebug_noexcept
+#   ifdef DEBUG
+#       define ndebug_noexcept
+#   else
+#       define ndebug_noexcept noexcept
+#   endif
+#endif
+
 
 namespace oocholmod {
     
@@ -36,16 +44,16 @@ namespace oocholmod {
         
         DenseMatrix(cholmod_dense *x);
         
-        DenseMatrix(DenseMatrix&& move);
+        DenseMatrix(DenseMatrix&& move) ndebug_noexcept;
         
-        DenseMatrix& operator=(DenseMatrix&& other);
+        DenseMatrix& operator=(DenseMatrix&& other) ndebug_noexcept;
         
         ~DenseMatrix();
         
         
-        double& operator()(unsigned int row, unsigned int col = 0);
+        double& operator()(unsigned int row, unsigned int col = 0) ndebug_noexcept;
         
-        double operator()(unsigned int row, unsigned int col = 0) const;
+        double operator()(unsigned int row, unsigned int col = 0) const ndebug_noexcept;
         
         double *begin();
         double *end();
@@ -170,7 +178,7 @@ namespace oocholmod {
     
     // ---------- inline functions -----------
     
-    inline double& DenseMatrix::operator()(unsigned int row, unsigned int col)
+    inline double& DenseMatrix::operator()(unsigned int row, unsigned int col) ndebug_noexcept
     {
 #ifdef DEBUG
         assert(dense);
@@ -179,7 +187,7 @@ namespace oocholmod {
         return ((double*)dense->x)[col*nrow + row];
     }
     
-    inline double DenseMatrix::operator()(unsigned int row, unsigned int col) const
+    inline double DenseMatrix::operator()(unsigned int row, unsigned int col) const ndebug_noexcept
     {
 #ifdef DEBUG
         assert(dense);
