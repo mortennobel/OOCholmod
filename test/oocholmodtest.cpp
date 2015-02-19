@@ -14,11 +14,13 @@
 #include <algorithm>
 #include <climits>
 #include <sstream>
+#include <complex>
 #include "sparse_matrix.h"
 #include "factor.h"
 #include "dense_matrix.h"
 #include "ooc_exception.h"
 #include "timer.h"
+#include "dense_cmatrix.h"
 
 using namespace std;
 using namespace oocholmod;
@@ -1571,5 +1573,24 @@ int SingularNoExceptionTestObj(){
     TINYTEST_ASSERT(OOCException::getLastException()!=nullptr);
     cout << "Manual caught exception: "<<OOCException::getLastException()->what()<<endl;
 #endif
+    return 1;
+}
+
+int CDense(){
+    std::complex<double> x(3,4);
+
+    DenseCMatrix m1(1,1);
+    DenseCMatrix m2(1,1);
+    m1(0,0) = x;
+    m2(0,0) = {3,4};
+
+    auto res = (m1*m2);
+    auto c = res(0,0);
+    
+    std::complex<double> expected(-7,24);
+
+    TINYTEST_ASSERT(abs(c.real()-expected.real())<0.001);
+    TINYTEST_ASSERT(abs(c.real()-expected.real())<0.001);
+    cout << c.real()<<" "<< c.imag() <<"i"<< endl;
     return 1;
 }
