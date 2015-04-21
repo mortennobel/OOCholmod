@@ -234,6 +234,25 @@ namespace oocholmod {
 
     }
 
+    void SparseMatrix::absSumRows(DenseMatrix& x){
+        int idx = 0;
+        for (int j=0;j<ncol;j++){
+                int iFrom = ((int*)sparse->p)[j];
+                int iTo = ((int*)sparse->p)[j+1]-1;
+                for (int i=iFrom;i<=iTo;i++){
+                        int row = ((int*)sparse->i)[i];
+                        x(row)+= abs(((double*)sparse->x)[idx]);
+                        if (symmetry == SYMMETRIC_UPPER){
+                                if (row!=j){
+                                        x(j)+= abs(((double*)sparse->x)[idx]);
+                                }
+                        }
+                        idx++;
+                }
+        }
+
+    }
+
 
     void SparseMatrix::setNullSpace(DenseMatrix& v){
         int idx = 0;

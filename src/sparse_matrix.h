@@ -158,6 +158,8 @@ namespace oocholmod {
         // Sum the rows and return a vector
         void sumRows(DenseMatrix& outVector);
 
+        void absSumRows(DenseMatrix& outVector);
+
         // Hard coded method to perform: sparse = spdiags(N)^T * sparse * spdiags(N) - (spdiags(N) - speye())
         void setNullSpace( DenseMatrix& N);
  
