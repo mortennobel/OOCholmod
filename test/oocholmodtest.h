@@ -114,6 +114,5 @@ int DenseMultiplyTranspose();
 int DenseMultiplyAddTo();
 
 int SingularNoExceptionTestObj();
-int CDense();
 
 #endif /* defined(__OOCholmod__oocholmodtest__) */

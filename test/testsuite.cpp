@@ -59,8 +59,6 @@ TINYTEST_ADD_TEST(DenseMultiplyNoRes);
 TINYTEST_ADD_TEST(DenseMultiplyTranspose);
 TINYTEST_ADD_TEST(DenseMultiplyAddTo);
 TINYTEST_ADD_TEST(SingularNoExceptionTestObj);
-
-    TINYTEST_ADD_TEST(CDense);
 TINYTEST_END_SUITE();
 
 TINYTEST_START_MAIN();
