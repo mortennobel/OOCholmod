@@ -1,7 +1,7 @@
 OOCholmod
 =========
 
-An object oriented C++ wrapper for Timothy A. Davis' Cholmod library (part of SuiteSparse).
+An object oriented C++ header-only wrapper for Timothy A. Davis' Cholmod library (part of SuiteSparse).
 The main purpose of the library is to provide an easy way to use the Cholmod from C++ (without comprimising the performance).
 The library also has a wrapper for dense vectors (which is accelerated by BLAS).
 
