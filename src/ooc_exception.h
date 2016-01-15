@@ -28,3 +28,5 @@ namespace oocholmod {
 #endif
     };
 }
+
+#include "ooc_exception.inc"

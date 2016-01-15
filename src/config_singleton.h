@@ -29,3 +29,5 @@ namespace oocholmod {
     };
     
 }
+
+#include "config_singleton.inc"

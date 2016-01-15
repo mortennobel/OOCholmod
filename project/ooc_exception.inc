@@ -1,11 +1,3 @@
-//
-//  cholmod_exception.cpp
-//  OOCholmod
-//
-//  Created by Morten Nobel-Jørgensen on 31/03/14.
-//  Copyright (c) 2014 Morten Nobel-Joergensen. All rights reserved.
-//
-/*
 #include "ooc_exception.h"
 #include "config_singleton.h"
 
@@ -28,17 +20,17 @@ namespace oocholmod {
         lastException = nullptr;
     }
 #else
-    void OOCException::createOOCException(std::string what){
+    inline void OOCException::createOOCException(std::string what){
         throw OOCException{what};
     }
 #endif
-    
-    OOCException::OOCException(std::string what)
-    :whatMsg(what)
+
+    inline OOCException::OOCException(std::string what)
+            :whatMsg(what)
     {}
-    
-    
-    const char* OOCException::what() const throw() {
+
+
+    inline const char* OOCException::what() const throw() {
         return whatMsg.c_str();
     }
-}              */
+}
