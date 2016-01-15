@@ -205,6 +205,7 @@ namespace oocholmod {
     
 }
 
+#include "dense_matrix.inc"
 
 
 

@@ -45,3 +45,4 @@ namespace oocholmod {
 	SparseMatrix solve(const Factor& F, const SparseMatrix& b);
 }
 
+#include "factor.inc"
