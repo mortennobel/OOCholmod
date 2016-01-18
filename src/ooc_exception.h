@@ -23,9 +23,6 @@ namespace oocholmod {
     private:
         OOCException(std::string what);
         std::string whatMsg;
-#ifdef OOC_NO_EXCEPTION
-        static OOCException *lastException;
-#endif
     };
 }
 

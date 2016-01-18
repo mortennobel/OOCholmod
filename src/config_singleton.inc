@@ -7,17 +7,15 @@ namespace oocholmod {
     using namespace std;
 
 
-    string& lastError(){
+    inline string& lastError(){
         static string lastError;
         return lastError;
     }
 
-    unique_ptr<cholmod_common>& common(){
+    inline unique_ptr<cholmod_common>& common(){
         static unique_ptr<cholmod_common> common;
         return common;
     }
-
-
 
     inline void errorHandler(int status, const char *file,
             int line, const char *message){

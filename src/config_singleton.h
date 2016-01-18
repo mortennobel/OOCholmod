@@ -21,8 +21,8 @@ namespace oocholmod {
 		static void config(cholmod_common *);
 		static cholmod_common *getCommonPtr();
 		static void destroy();
-    private:
         static std::string getLastError();
+    private:
         ConfigSingleton(){};
         friend class DenseMatrix;
         friend class Factor;
